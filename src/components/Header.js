@@ -1,5 +1,4 @@
 import React from "react";
-import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -15,28 +14,28 @@ const Header = () => {
 
         <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           <li>
-            <Link to="#" className="nav-link px-2 link-secondary">
+            <Link to="/" className="nav-link px-2 link-secondary">
               Home
             </Link>
           </li>
           <li>
-            <Link to="#" className="nav-link px-2 link-dark">
-              Features
+            <Link to="/news" className="nav-link px-2 link-dark">
+              News
             </Link>
           </li>
           <li>
-            <Link to="#" className="nav-link px-2 link-dark">
-              Pricing
+            <Link to="/sports" className="nav-link px-2 link-dark">
+              Sports
             </Link>
           </li>
           <li>
-            <Link to="#" className="nav-link px-2 link-dark">
-              FAQs
-            </Link>
-          </li>
-          <li>
-            <Link to="#" className="nav-link px-2 link-dark">
+            <Link to="/about" className="nav-link px-2 link-dark">
               About
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact" className="nav-link px-2 link-dark">
+              Contact
             </Link>
           </li>
         </ul>
