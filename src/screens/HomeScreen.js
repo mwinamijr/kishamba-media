@@ -1,7 +1,8 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import NewsCarousel from "../components/home/NewsSlider";
+import BreakingNewsTicker from "../components/home/BreakingNews";
 
 const Home = () => {
   return (
@@ -13,74 +14,9 @@ const Home = () => {
         <meta name="description" content="Kishamba media home page" />
       </Helmet>
 
-      <Row>
-        <Col xs={8}>
-          <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
-            <div class="col-md-6 px-0">
-              <h1 class="display-4 font-italic">
-                Title of a longer featured blog post
-              </h1>
-              <p class="lead my-3">
-                Multiple lines of text that form the lede, informing new readers
-                quickly and efficiently about what’s most interesting in this
-                post’s contents.
-              </p>
-              <p class="lead mb-0">
-                <Link to="#" class="text-white font-weight-bold">
-                  Continue reading...
-                </Link>
-              </p>
-            </div>
-          </div>
-        </Col>
-        <Col xs={4}>
-          <h1>Most Popular</h1>
-          <div className="row">
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>{" "}
-            <hr />
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>
-            <hr />
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>{" "}
-            <hr />
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>{" "}
-            <hr />
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>{" "}
-            <hr />
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>{" "}
-            <hr />
-            <div className="col-sm-1">1</div>
-            <div className="col-sm-11 bd-l-1">
-              Some random text matchehd dfjkdsjkfsjk sdffhljkgksjdfin
-              sngdsgjhsdogijh
-            </div>{" "}
-            <hr />
-          </div>
-        </Col>
-      </Row>
+      <NewsCarousel />
+      <BreakingNewsTicker />
+
       <br />
       <div className="row mb-2">
         <div className="col-sm-6">
