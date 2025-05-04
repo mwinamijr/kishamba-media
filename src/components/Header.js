@@ -1,55 +1,156 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="blog-header py-3">
-      <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <Link
-          to="/"
-          className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none"
-        >
-          Logo
-        </Link>
+    <div>
+      <Helmet>
+        <title>BizNews - Free News Website Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="Free HTML Templates" />
+        <meta name="description" content="Free HTML Templates" />
+      </Helmet>
 
-        <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li>
-            <Link to="/" className="nav-link px-2 link-secondary">
-              Home
+      {/* Topbar Start */}
+      <div className="container-fluid d-none d-lg-block">
+        <div className="row align-items-center bg-dark px-lg-5">
+          <div className="col-lg-9">
+            <nav className="navbar navbar-expand-sm bg-dark p-0">
+              <ul className="navbar-nav ml-n2">
+                <li className="nav-item border-right border-secondary">
+                  <Link className="nav-link text-body small" href="#">
+                    Monday, January 1, 2045
+                  </Link>
+                </li>
+                <li className="nav-item border-right border-secondary">
+                  <Link className="nav-link text-body small" href="#">
+                    Advertise
+                  </Link>
+                </li>
+                <li className="nav-item border-right border-secondary">
+                  <Link className="nav-link text-body small" href="#">
+                    Contact
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-body small" href="#">
+                    Login
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div className="col-lg-3 text-right d-none d-md-block">
+            <nav className="navbar navbar-expand-sm bg-dark p-0">
+              <ul className="navbar-nav ml-auto mr-n2">
+                {[
+                  "twitter",
+                  "facebook-f",
+                  "linkedin-in",
+                  "instagram",
+                  "google-plus-g",
+                  "youtube",
+                ].map((icon) => (
+                  <li className="nav-item" key={icon}>
+                    <Link className="nav-link text-body" href="#">
+                      <small className={`fab fa-${icon}`}></small>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div className="row align-items-center bg-white py-3 px-lg-5">
+          <div className="col-lg-4">
+            <Link to="/" className="navbar-brand p-0 d-none d-lg-block">
+              <h1 className="m-0 display-4 text-uppercase text-primary">
+                Biz
+                <span className="text-secondary font-weight-normal">News</span>
+              </h1>
             </Link>
-          </li>
-          <li>
-            <Link to="/news" className="nav-link px-2 link-dark">
-              News
-            </Link>
-          </li>
-          <li>
-            <Link to="/sports" className="nav-link px-2 link-dark">
-              Sports
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" className="nav-link px-2 link-dark">
-              About
-            </Link>
-          </li>
-          <li>
-            <Link to="/contact" className="nav-link px-2 link-dark">
-              Contact
-            </Link>
-          </li>
-        </ul>
-
-        <div className="col-md-3 text-end">
-          <button type="button" className="btn btn-outline-primary me-2">
-            Login
-          </button>
-          <button type="button" className="btn btn-primary">
-            Sign-up
-          </button>
+          </div>
+          <div className="col-lg-8 text-center text-lg-right">
+            <img className="img-fluid" src="/img/ads-728x90.png" alt="ads" />
+          </div>
         </div>
       </div>
-    </header>
+      {/* Topbar End */}
+
+      {/* Navbar Start */}
+      <div className="container-fluid p-0">
+        <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
+          <Link to="/" className="navbar-brand d-block d-lg-none">
+            <h1 className="m-0 display-4 text-uppercase text-primary">
+              Biz<span className="text-white font-weight-normal">News</span>
+            </h1>
+          </Link>
+          <button
+            type="button"
+            className="navbar-toggler"
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div
+            className="collapse navbar-collapse justify-content-between px-0 px-lg-3"
+            id="navbarCollapse"
+          >
+            <div className="navbar-nav mr-auto py-0">
+              <Link to="/" className="nav-item nav-link active">
+                Home
+              </Link>
+              <Link to="/category" className="nav-item nav-link">
+                Category
+              </Link>
+              <Link to="/single" className="nav-item nav-link">
+                Single News
+              </Link>
+              <div className="nav-item dropdown">
+                <Link
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  Dropdown
+                </Link>
+                <div className="dropdown-menu rounded-0 m-0">
+                  <Link to="#" className="dropdown-item">
+                    Menu item 1
+                  </Link>
+                  <Link to="#" className="dropdown-item">
+                    Menu item 2
+                  </Link>
+                  <Link to="#" className="dropdown-item">
+                    Menu item 3
+                  </Link>
+                </div>
+              </div>
+              <Link to="/contact" className="nav-item nav-link">
+                Contact
+              </Link>
+            </div>
+            <div
+              className="input-group ml-auto d-none d-lg-flex"
+              style={{ width: "100%", maxWidth: "300px" }}
+            >
+              <input
+                type="text"
+                className="form-control border-0"
+                placeholder="Keyword"
+              />
+              <div className="input-group-append">
+                <button className="input-group-text bg-primary text-dark border-0 px-3">
+                  <i className="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
   );
 };
 

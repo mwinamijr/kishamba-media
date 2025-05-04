@@ -1,10 +1,10 @@
 import React from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <Container className="">
+    <>
       <Row>
         <Col xs={8}>
           <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
@@ -304,7 +304,7 @@ const Home = () => {
           <div className="mb-4 text-muted">2 days ago | Kenya</div>
         </div>
       </div>
-    </Container>
+    </>
   );
 };
 
