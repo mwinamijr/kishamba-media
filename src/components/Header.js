@@ -45,11 +45,10 @@ const Header = () => {
             <nav className="navbar navbar-expand-sm bg-dark p-0">
               <ul className="navbar-nav ml-auto mr-n2">
                 {[
-                  "twitter",
+                  "x-twitter",
                   "facebook-f",
                   "linkedin-in",
                   "instagram",
-                  "google-plus-g",
                   "youtube",
                 ].map((icon) => (
                   <li className="nav-item" key={icon}>
@@ -66,8 +65,8 @@ const Header = () => {
           <div className="col-lg-4">
             <Link to="/" className="navbar-brand p-0 d-none d-lg-block">
               <h1 className="m-0 display-4 text-uppercase text-primary">
-                Biz
-                <span className="text-secondary font-weight-normal">News</span>
+                Kishamba
+                <span className="text-secondary font-weight-normal">Media</span>
               </h1>
             </Link>
           </div>

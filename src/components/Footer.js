@@ -26,7 +26,7 @@ const Footer = () => {
             </h6>
             <div className="d-flex justify-content-start">
               {[
-                "twitter",
+                "x-twitter",
                 "facebook-f",
                 "linkedin-in",
                 "instagram",

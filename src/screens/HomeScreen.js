@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import NewsCarousel from "../components/home/NewsSlider";
 import BreakingNewsTicker from "../components/home/BreakingNews";
+import TopFeature from "../components/home/TopFeature";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
 
       <NewsCarousel />
       <BreakingNewsTicker />
+      <TopFeature />
 
       <br />
       <div className="row mb-2">
