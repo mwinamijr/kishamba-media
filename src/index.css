@@ -8,6 +8,9 @@
   background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
   color: white;
 }
+.overlay Link {
+  text-decoration: none;
+}
 .text-truncate {
   white-space: nowrap;
   overflow: hidden;

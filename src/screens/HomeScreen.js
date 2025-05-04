@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import NewsCarousel from "../components/home/NewsSlider";
 import BreakingNewsTicker from "../components/home/BreakingNews";
 import TopFeature from "../components/home/TopFeature";
+import FeaturedNews from "../components/home/FeaturedNews";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <NewsCarousel />
       <BreakingNewsTicker />
       <TopFeature />
+      <FeaturedNews />
 
       <br />
       <div className="row mb-2">
