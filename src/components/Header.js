@@ -1,17 +1,17 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div>
-      <Helmet>
-        <title>BizNews - Free News Website Template</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="keywords" content="Free HTML Templates" />
-        <meta name="description" content="Free HTML Templates" />
-      </Helmet>
-
       {/* Topbar Start */}
       <div className="container-fluid d-none d-lg-block">
         <div className="row align-items-center bg-dark px-lg-5">
@@ -19,22 +19,22 @@ const Header = () => {
             <nav className="navbar navbar-expand-sm bg-dark p-0">
               <ul className="navbar-nav ml-n2">
                 <li className="nav-item border-right border-secondary">
-                  <Link className="nav-link text-body small" href="#">
-                    Monday, January 1, 2045
+                  <Link className="nav-link text-body small" to="#">
+                    {formattedDate}
                   </Link>
                 </li>
                 <li className="nav-item border-right border-secondary">
-                  <Link className="nav-link text-body small" href="#">
+                  <Link className="nav-link text-body small" to="#">
                     Advertise
                   </Link>
                 </li>
                 <li className="nav-item border-right border-secondary">
-                  <Link className="nav-link text-body small" href="#">
+                  <Link className="nav-link text-body small" to="#">
                     Contact
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link text-body small" href="#">
+                  <Link className="nav-link text-body small" to="#">
                     Login
                   </Link>
                 </li>
@@ -53,7 +53,7 @@ const Header = () => {
                   "youtube",
                 ].map((icon) => (
                   <li className="nav-item" key={icon}>
-                    <Link className="nav-link text-body" href="#">
+                    <Link className="nav-link text-body" to="#">
                       <small className={`fab fa-${icon}`}></small>
                     </Link>
                   </li>
@@ -110,7 +110,7 @@ const Header = () => {
               </Link>
               <div className="nav-item dropdown">
                 <Link
-                  href="#"
+                  to="#"
                   className="nav-link dropdown-toggle"
                   data-toggle="dropdown"
                 >

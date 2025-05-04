@@ -1,10 +1,18 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <>
+      <Helmet>
+        <title>Kishamba Media | Home Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="Kishamba media home page" />
+        <meta name="description" content="Kishamba media home page" />
+      </Helmet>
+
       <Row>
         <Col xs={8}>
           <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
