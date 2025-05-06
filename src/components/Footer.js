@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import NewsletterSubscription from "./home/NewsLetter";
 
 const Footer = () => {
   return (
     <>
       <div className="container-fluid bg-dark pt-3 px-sm-3 px-md-5 mt-2 text-white">
+        <NewsletterSubscription />
         <div className="row py-3">
           {/* Get In Touch */}
           <div className="col-lg-3 col-md-6 mb-3">
@@ -21,7 +23,7 @@ const Footer = () => {
             <p className="font-weight-medium">
               <i className="fa fa-envelope mr-2"></i>info@example.com
             </p>
-            <h6 className="mt-4 mb-3 text-uppercase font-weight-bold">
+            <h6 className="mt-4 mb-3 text-uppercase font-weight-bold text-white">
               Follow Us
             </h6>
             <div className="d-flex justify-content-start">
