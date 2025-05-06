@@ -1,31 +1,42 @@
 import React from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+import FollowUs from "../components/home/Followus";
+import ContactUs from "../components/ContactForm";
 
 const Contact = () => {
   return (
-    <Container className="mt-4">
-      <h2>Contact Us</h2>
-      <Form>
-        <Form.Group controlId="formName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter your name" />
-        </Form.Group>
+    <>
+      <div className="container-fluid">
+        <div className="custom-container">
+          <div className="row">
+            <div className="col-12 col-sm-10 col-md-9 col-lg-8">
+              <ContactUs />
+            </div>
+            <div class="col-lg-4">
+              <FollowUs />
 
-        <Form.Group controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter your email" />
-        </Form.Group>
-
-        <Form.Group controlId="formMessage">
-          <Form.Label>Message</Form.Label>
-          <Form.Control as="textarea" rows={3} />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    </Container>
+              <div className="mb-3">
+                <div className="section-title mb-0">
+                  <h4 className="m-0 text-uppercase font-weight-bold">
+                    Advertisement
+                  </h4>
+                </div>
+                <div className="bg-white text-center border border-top-0 p-3">
+                  <Link to="#">
+                    <img
+                      className="img-fluid"
+                      src="img/news-800x500-2.jpg"
+                      alt="Advertisement"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
