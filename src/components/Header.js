@@ -45,16 +45,36 @@ const Header = () => {
             <nav className="navbar navbar-expand-sm bg-dark p-0">
               <ul className="navbar-nav ml-auto mr-n2">
                 {[
-                  "x-twitter",
-                  "facebook-f",
-                  "linkedin-in",
-                  "instagram",
-                  "youtube",
-                ].map((icon) => (
+                  {
+                    icon: "x-twitter",
+                    link: "https://twitter.com/kishambamedia",
+                  },
+                  {
+                    icon: "facebook-f",
+                    link: "https://facebook.com/kishambamedia",
+                  },
+                  {
+                    icon: "linkedin-in",
+                    link: "https://linkedin.com/kishambamedia",
+                  },
+                  {
+                    icon: "instagram",
+                    link: "https://instagram.com/kishambamedia",
+                  },
+                  {
+                    icon: "youtube",
+                    link: "https://youtube.com/@kishambamedia",
+                  },
+                ].map(({ icon, link }) => (
                   <li className="nav-item" key={icon}>
-                    <Link className="nav-link text-body" to="#">
+                    <a
+                      className="nav-link text-body"
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <small className={`fab fa-${icon}`}></small>
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>

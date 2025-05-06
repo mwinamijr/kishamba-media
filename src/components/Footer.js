@@ -26,16 +26,30 @@ const Footer = () => {
             </h6>
             <div className="d-flex justify-content-start">
               {[
-                "x-twitter",
-                "facebook-f",
-                "linkedin-in",
-                "instagram",
-                "youtube",
-              ].map((icon, idx) => (
+                {
+                  icon: "x-twitter",
+                  link: "https://twitter.com/kishambamedia",
+                },
+                {
+                  icon: "facebook-f",
+                  link: "https://facebook.com/kishambamedia",
+                },
+                {
+                  icon: "linkedin-in",
+                  link: "https://linkedin.com/company/kishambamedia",
+                },
+                {
+                  icon: "instagram",
+                  link: "https://instagram.com/kishambamedia",
+                },
+                { icon: "youtube", link: "https://youtube.com/@kishambamedia" },
+              ].map(({ icon, link }, idx) => (
                 <Link
                   key={idx}
                   className="btn btn-lg btn-secondary btn-lg-square mr-2"
-                  to="#"
+                  to={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <i className={`fab fa-${icon}`}></i>
                 </Link>
