@@ -13,6 +13,7 @@ import Contact from "./screens/ContactScreen";
 import NewsScreen from "./screens/NewsScreen";
 import SportsScreen from "./screens/SportsScreen";
 import LoginScreen from "./screens/LoginScreen";
+import NotFoundPage from "./screens/404Page";
 
 const AppContent = () => {
   const location = useLocation();
@@ -28,6 +29,8 @@ const AppContent = () => {
         <Route path="/news" element={<NewsScreen />} />
         <Route path="/sports" element={<SportsScreen />} />
         <Route path="/login" element={<LoginScreen />} />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>
