@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import CommentsSection from "./CommentsSection";
+import LeaveCommentForm from "./CommentForm";
 
 const NewsArticle = () => {
   return (
@@ -112,6 +114,8 @@ const NewsArticle = () => {
           </span>
         </div>
       </div>
+      <CommentsSection />
+      <LeaveCommentForm />
     </div>
   );
 };
