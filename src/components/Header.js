@@ -124,7 +124,7 @@ const Header = () => {
               <Link to="/category" className="nav-item nav-link">
                 Category
               </Link>
-              <Link to="/single" className="nav-item nav-link">
+              <Link to="/news-details" className="nav-item nav-link">
                 Single News
               </Link>
               <div className="nav-item dropdown">
