@@ -38,8 +38,8 @@ const Home = () => {
       <TopFeature />
 
       <div className="container-fluid">
-        <FeaturedNews />
-        <div className="container py-5">
+        <div className="custom-container">
+          <FeaturedNews />
           <div className="row">
             <div className="col-lg-8">
               <WhatsNew />
@@ -67,7 +67,7 @@ const Home = () => {
 
               <TrendingNews />
 
-              <div className="mb-3">
+              <div className="mb-4">
                 <div className="section-title mb-0">
                   <h4 className="m-0 text-uppercase font-weight-bold">Tags</h4>
                 </div>
@@ -83,6 +83,23 @@ const Home = () => {
                       </Link>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="section-title mb-0">
+                  <h4 className="m-0 text-uppercase font-weight-bold">
+                    Advertisement
+                  </h4>
+                </div>
+                <div className="bg-white text-center border border-top-0 p-3">
+                  <Link to="#">
+                    <img
+                      className="img-fluid"
+                      src="img/news-800x500-2.jpg"
+                      alt="Advertisement"
+                    />
+                  </Link>
                 </div>
               </div>
             </div>

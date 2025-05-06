@@ -16,3 +16,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.custom-container {
+  padding-left: 100px !important;
+  padding-right: 100px !important;
+}
+

@@ -17,13 +17,6 @@ const socialLinks = [
     link: "https://twitter.com/kishambamedia",
   },
   {
-    name: "LinkedIn",
-    color: "#0185AE",
-    icon: "fab fa-linkedin-in",
-    text: "12,345 Connects",
-    link: "https://linkedin.com/kishambamedia",
-  },
-  {
     name: "Instagram",
     color: "#C8359D",
     icon: "fab fa-instagram",

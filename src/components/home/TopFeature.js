@@ -30,8 +30,8 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <div className="container-fluid features mb-5">
-      <div className="container py-5">
+    <div className="container-fluid features mb-3">
+      <div className="custom-container py-3">
         <div className="row g-4">
           {features.map((item, idx) => (
             <div className="col-md-6 col-lg-6 col-xl-3" key={idx}>

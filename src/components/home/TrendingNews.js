@@ -36,7 +36,7 @@ const trendingNews = [
 
 const TrendingNews = () => {
   return (
-    <div className="mb-3">
+    <div className="mb-4">
       <div className="section-title mb-0">
         <h4 className="m-0 text-uppercase font-weight-bold">Trending News</h4>
       </div>

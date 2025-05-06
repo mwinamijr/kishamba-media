@@ -106,7 +106,7 @@ export default function WhatsNew() {
   const [activeTab, setActiveTab] = useState("tab-1");
 
   return (
-    <div className="mb-4">
+    <div className="mb-5">
       <div className="d-flex flex-column flex-md-row justify-content-md-between border-bottom mb-4">
         <h1 className="mb-4">What’s New</h1>
         <ul className="nav nav-pills d-inline-flex text-center">

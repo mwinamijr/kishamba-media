@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <>
-      <div className="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5 text-white">
-        <div className="row py-4">
+      <div className="container-fluid bg-dark pt-3 px-sm-3 px-md-5 mt-2 text-white">
+        <div className="row py-3">
           {/* Get In Touch */}
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="mb-4 text-uppercase font-weight-bold">
+          <div className="col-lg-3 col-md-6 mb-3">
+            <h5 className="mb-4 text-uppercase font-weight-bold text-white">
               Get In Touch
             </h5>
             <p className="font-weight-medium">
@@ -58,8 +58,8 @@ const Footer = () => {
           </div>
 
           {/* Popular News */}
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="mb-4 text-uppercase font-weight-bold">
+          <div className="col-lg-3 col-md-6 mb-3">
+            <h5 className="mb-4 text-uppercase font-weight-bold text-white">
               Popular News
             </h5>
             {[1, 2, 3].map((_, idx) => (
@@ -86,8 +86,10 @@ const Footer = () => {
           </div>
 
           {/* Categories */}
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="mb-4 text-uppercase font-weight-bold">Categories</h5>
+          <div className="col-lg-3 col-md-6 mb-3">
+            <h5 className="mb-4 text-uppercase font-weight-bold text-white">
+              Categories
+            </h5>
             <div className="m-n1">
               {[
                 "Politics",
@@ -120,8 +122,8 @@ const Footer = () => {
           </div>
 
           {/* Flickr Photos */}
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h5 className="mb-4 text-uppercase font-weight-bold">
+          <div className="col-lg-3 col-md-6 mb-3">
+            <h5 className="mb-4 text-uppercase font-weight-bold text-white">
               Flickr Photos
             </h5>
             <div className="row">
@@ -143,14 +145,14 @@ const Footer = () => {
 
       {/* Bottom Footer */}
       <div
-        className="container-fluid py-4 px-sm-3 px-md-5"
+        className="container-fluid py-3 px-sm-3 px-md-5"
         style={{ background: "#111111" }}
       >
         <p className="m-0 text-center text-white">
-          &copy; <Link to="#">Your Site Name</Link>. All Rights Reserved. <br />
-          Design by <Link to="https://htmlcodex.com">HTML Codex</Link>
-          <br />
-          Distributed by <Link to="https://themewagon.com">ThemeWagon</Link>
+          &copy; <Link to="#">Kishamba Media</Link>. All Rights Reserved. <br />
+          Managed by <Link to="https://mwinamijr.github.io">
+            Mwinamijr
+          </Link> of <Link to="https://techdometz.github.io"> Techdometz</Link>
         </p>
       </div>
 

@@ -195,8 +195,13 @@ const LatestNews = () => {
       </div>
 
       {/* Small horizontal cards */}
-      <div className="col-lg-12">
-        {newsItems.slice(2, 4).map((item) => (
+      <div className="col-lg-6">
+        {newsItems.slice(1, 3).map((item) => (
+          <SmallNewsCard key={item.id} item={item} />
+        ))}
+      </div>
+      <div className="col-lg-6">
+        {newsItems.slice(3, 5).map((item) => (
           <SmallNewsCard key={item.id} item={item} />
         ))}
       </div>
