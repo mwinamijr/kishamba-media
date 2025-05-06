@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const today = new Date();
@@ -19,24 +19,24 @@ const Header = () => {
             <nav className="navbar navbar-expand-sm bg-dark p-0">
               <ul className="navbar-nav ml-n2">
                 <li className="nav-item border-right border-secondary">
-                  <Link className="nav-link text-body small" to="#">
+                  <NavLink className="nav-link text-body small" to="#">
                     {formattedDate}
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item border-right border-secondary">
-                  <Link className="nav-link text-body small" to="#">
+                  <NavLink className="nav-link text-body small" to="#">
                     Advertise
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item border-right border-secondary">
-                  <Link className="nav-link text-body small" to="#">
+                  <NavLink className="nav-link text-body small" to="#">
                     Contact
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link text-body small" to="/login">
+                  <NavLink className="nav-link text-body small" to="/login">
                     Login
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </nav>
@@ -83,12 +83,12 @@ const Header = () => {
         </div>
         <div className="row align-items-center bg-white py-3 px-lg-5">
           <div className="col-lg-4">
-            <Link to="/" className="navbar-brand p-0 d-none d-lg-block">
+            <NavLink to="/" className="navbar-brand p-0 d-none d-lg-block">
               <h1 className="m-0 display-4 text-uppercase text-primary">
                 Kishamba
                 <span className="text-secondary font-weight-normal">Media</span>
               </h1>
-            </Link>
+            </NavLink>
           </div>
           <div className="col-lg-8 text-center text-lg-right">
             <img className="img-fluid" src="/img/ads-728x90.png" alt="ads" />
@@ -100,11 +100,11 @@ const Header = () => {
       {/* Navbar Start */}
       <div className="container-fluid p-0">
         <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
-          <Link to="/" className="navbar-brand d-block d-lg-none">
+          <NavLink to="/" className="navbar-brand d-block d-lg-none">
             <h1 className="m-0 display-4 text-uppercase text-primary">
               Biz<span className="text-white font-weight-normal">News</span>
             </h1>
-          </Link>
+          </NavLink>
           <button
             type="button"
             className="navbar-toggler"
@@ -118,38 +118,75 @@ const Header = () => {
             id="navbarCollapse"
           >
             <div className="navbar-nav mr-auto py-0">
-              <Link to="/" className="nav-item nav-link active">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `nav-item nav-link${isActive ? " active" : ""}`
+                }
+                end
+              >
                 Home
-              </Link>
-              <Link to="/category" className="nav-item nav-link">
-                Category
-              </Link>
-              <Link to="/news-details" className="nav-item nav-link">
+              </NavLink>
+              <NavLink
+                to="/sports"
+                className={({ isActive }) =>
+                  `nav-item nav-link${isActive ? " active" : ""}`
+                }
+              >
+                Sports
+              </NavLink>
+              <NavLink
+                to="/news-details"
+                className={({ isActive }) =>
+                  `nav-item nav-link${isActive ? " active" : ""}`
+                }
+              >
                 Single News
-              </Link>
+              </NavLink>
               <div className="nav-item dropdown">
-                <Link
-                  to="#"
+                <span
                   className="nav-link dropdown-toggle"
+                  role="button"
                   data-toggle="dropdown"
                 >
                   Dropdown
-                </Link>
+                </span>
                 <div className="dropdown-menu rounded-0 m-0">
-                  <Link to="#" className="dropdown-item">
+                  <NavLink
+                    to="/menu1"
+                    className={({ isActive }) =>
+                      `dropdown-item${isActive ? " active" : ""}`
+                    }
+                  >
                     Menu item 1
-                  </Link>
-                  <Link to="#" className="dropdown-item">
+                  </NavLink>
+                  <NavLink
+                    to="/menu2"
+                    className={({ isActive }) =>
+                      `dropdown-item${isActive ? " active" : ""}`
+                    }
+                  >
                     Menu item 2
-                  </Link>
-                  <Link to="#" className="dropdown-item">
+                  </NavLink>
+                  <NavLink
+                    to="/menu3"
+                    className={({ isActive }) =>
+                      `dropdown-item${isActive ? " active" : ""}`
+                    }
+                  >
                     Menu item 3
-                  </Link>
+                  </NavLink>
                 </div>
               </div>
-              <Link to="/contact" className="nav-item nav-link">
+
+              <NavLink
+                to="/contact"
+                className={({ isActive }) =>
+                  `nav-item nav-link${isActive ? " active" : ""}`
+                }
+              >
                 Contact
-              </Link>
+              </NavLink>
             </div>
             <div
               className="input-group ml-auto d-none d-lg-flex"

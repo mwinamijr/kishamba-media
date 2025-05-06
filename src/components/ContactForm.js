@@ -44,7 +44,9 @@ const ContactUs = () => {
               <i className="fa fa-map-marker-alt text-primary mr-2"></i>
               <h6 className="font-weight-bold mb-0">Our Office</h6>
             </div>
-            <p className="m-0">123 Street, New York, USA</p>
+            <p className="m-0">
+              Kinondoni Mwanamboka, Dar es salaam, Plot No 12, Block no 31
+            </p>
           </div>
 
           <div className="mb-3">
@@ -52,7 +54,7 @@ const ContactUs = () => {
               <i className="fa fa-envelope-open text-primary mr-2"></i>
               <h6 className="font-weight-bold mb-0">Email Us</h6>
             </div>
-            <p className="m-0">info@example.com</p>
+            <p className="m-0">kishambamedia2023@gmail.com</p>
           </div>
 
           <div className="mb-3">
@@ -60,7 +62,7 @@ const ContactUs = () => {
               <i className="fa fa-phone-alt text-primary mr-2"></i>
               <h6 className="font-weight-bold mb-0">Call Us</h6>
             </div>
-            <p className="m-0">+012 345 6789</p>
+            <p className="m-0">+255 754 675 410</p>
           </div>
         </div>
 

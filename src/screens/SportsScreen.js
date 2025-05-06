@@ -1,7 +1,28 @@
 import React from "react";
+import SportsContent from "../components/sports/SportsContent";
+import PopularSports from "../components/sports/PopularSports";
+import FollowUs from "../components/home/Followus";
+import TopSports from "../components/sports/TopSports";
+import MostViewedSports from "../components/sports/MostViewedSports";
 
 function SportsScreen() {
-  return <div>SportsScreen</div>;
+  return (
+    <div className="container-fluid">
+      <div className="custom-container">
+        <TopSports />
+        <div className="row">
+          <div className="col-12 col-sm-10 col-md-9 col-lg-8">
+            <MostViewedSports />
+            <SportsContent />
+          </div>
+          <div className="col-lg-4">
+            <FollowUs />
+            <PopularSports />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default SportsScreen;

@@ -11,9 +11,11 @@ const Contact = () => {
         <div className="custom-container">
           <div className="row">
             <div className="col-12 col-sm-10 col-md-9 col-lg-8">
+              <br />
               <ContactUs />
             </div>
             <div class="col-lg-4">
+              <br />
               <FollowUs />
 
               <div className="mb-3">

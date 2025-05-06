@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
 const NewsletterSubscription = () => {
   return (
     <div
@@ -9,7 +7,7 @@ const NewsletterSubscription = () => {
     >
       <div className="row g-4">
         <div className="col-lg-3">
-          <Link to="#" className="d-flex flex-column flex-wrap">
+          <div className="d-flex flex-column flex-wrap">
             <p className="text-white mb-0 display-6">Kishamba Media</p>
             <small
               className="text-light"
@@ -17,7 +15,7 @@ const NewsletterSubscription = () => {
             >
               Newspaper
             </small>
-          </Link>
+          </div>
         </div>
         <div className="col-lg-9">
           <div className="d-flex position-relative rounded-pill overflow-hidden">

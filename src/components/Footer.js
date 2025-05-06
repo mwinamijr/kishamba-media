@@ -14,14 +14,14 @@ const Footer = () => {
               Get In Touch
             </h5>
             <p className="font-weight-medium">
-              <i className="fa fa-map-marker-alt mr-2"></i>123 Street, New York,
-              USA
+              <i className="fa fa-map-marker-alt mr-2"></i>Kinondoni Mwanamboka,
+              Dar es salaam, Plot No 12, Block no 31
             </p>
             <p className="font-weight-medium">
-              <i className="fa fa-phone-alt mr-2"></i>+012 345 67890
+              <i className="fa fa-phone-alt mr-2"></i>+255 754 675 410
             </p>
             <p className="font-weight-medium">
-              <i className="fa fa-envelope mr-2"></i>info@example.com
+              <i className="fa fa-envelope mr-2"></i>kishambamedia2023@gmail.com
             </p>
             <h6 className="mt-4 mb-3 text-uppercase font-weight-bold text-white">
               Follow Us
@@ -126,7 +126,7 @@ const Footer = () => {
           {/* Flickr Photos */}
           <div className="col-lg-3 col-md-6 mb-3">
             <h5 className="mb-4 text-uppercase font-weight-bold text-white">
-              Flickr Photos
+              Staff Photos
             </h5>
             <div className="row">
               {[1, 2, 3, 4, 5, 1].map((num, idx) => (
