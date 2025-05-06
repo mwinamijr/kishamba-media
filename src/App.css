@@ -586,19 +586,23 @@ pre code {
   overflow-y: scroll;
 }
 
+/* Bootstrap 5 Container Styles for Bootstrap 4.5 */
+
 .container,
-.container-fluid,
 .container-sm,
 .container-md,
 .container-lg,
-.container-xl {
+.container-xl,
+.container-xxl,
+.container-fluid {
   width: 100%;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
   margin-right: auto;
   margin-left: auto;
 }
 
+/* Responsive containers (fixed-width) */
 @media (min-width: 576px) {
   .container, .container-sm {
     max-width: 540px;
@@ -622,6 +626,13 @@ pre code {
     max-width: 1140px;
   }
 }
+
+@media (min-width: 1400px) {
+  .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+    max-width: 1320px;
+  }
+}
+
 
 .row {
   display: flex;
