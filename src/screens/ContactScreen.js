@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import FollowUs from "../components/home/Followus";
 import ContactUs from "../components/ContactForm";
@@ -7,6 +8,13 @@ import ContactUs from "../components/ContactForm";
 const Contact = () => {
   return (
     <>
+      <Helmet>
+        <title>Kishamba Media | Contact Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="Kishamba media home page" />
+        <meta name="description" content="Kishamba media home page" />
+      </Helmet>
+
       <div className="container-fluid">
         <div className="custom-container">
           <div className="row">
@@ -21,7 +29,7 @@ const Contact = () => {
               <div className="mb-3">
                 <div className="section-title mb-0">
                   <h4 className="m-0 text-uppercase font-weight-bold">
-                    Advertisement
+                    Tangazo
                   </h4>
                 </div>
                 <div className="bg-white text-center border border-top-0 p-3">

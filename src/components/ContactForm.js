@@ -26,23 +26,21 @@ const ContactUs = () => {
     <>
       <div className="section-title mb-0">
         <h4 className="m-0 text-uppercase font-weight-bold">
-          Contact Us For Any Queries
+          Wasiliana nasi kwa maswali yeyote
         </h4>
       </div>
       <div className="bg-white border border-top-0 p-4 mb-3">
         <div className="mb-4">
-          <h6 className="text-uppercase font-weight-bold">Contact Info</h6>
+          <h6 className="text-uppercase font-weight-bold">Taarifa za mawasiliano</h6>
           <p className="mb-4">
-            The contact form is currently inactive. Get a functional and working
-            contact form with Ajax & PHP in a few minutes. Just copy and paste
-            the files, add a little code and you're done.{" "}
-            <Link to="#">Download Now</Link>.
+            Kwa mawasiliano zaidi tumia aina hizi za mawasiliano kutufikia kwa mambo mbalimbali kama taarifa, matangazo au 
+            habari yeyote kutoka kwetu. Pia unaweza kuwasiliana nasi kutuletea habari mbalimbali nasi hatutasita kukusaidia. KARIBU.
           </p>
 
           <div className="mb-3">
             <div className="d-flex align-items-center mb-2">
               <i className="fa fa-map-marker-alt text-primary mr-2"></i>
-              <h6 className="font-weight-bold mb-0">Our Office</h6>
+              <h6 className="font-weight-bold mb-0">Ofisi zetu</h6>
             </div>
             <p className="m-0">
               Kinondoni Mwanamboka, Dar es salaam, Plot No 12, Block no 31
@@ -52,7 +50,7 @@ const ContactUs = () => {
           <div className="mb-3">
             <div className="d-flex align-items-center mb-2">
               <i className="fa fa-envelope-open text-primary mr-2"></i>
-              <h6 className="font-weight-bold mb-0">Email Us</h6>
+              <h6 className="font-weight-bold mb-0">Barua pepe</h6>
             </div>
             <p className="m-0">kishambamedia2023@gmail.com</p>
           </div>
@@ -60,13 +58,13 @@ const ContactUs = () => {
           <div className="mb-3">
             <div className="d-flex align-items-center mb-2">
               <i className="fa fa-phone-alt text-primary mr-2"></i>
-              <h6 className="font-weight-bold mb-0">Call Us</h6>
+              <h6 className="font-weight-bold mb-0">Tupigie simu</h6>
             </div>
             <p className="m-0">+255 754 675 410</p>
           </div>
         </div>
 
-        <h6 className="text-uppercase font-weight-bold mb-3">Contact Us</h6>
+        <h6 className="text-uppercase font-weight-bold mb-3">Wasiliana nasi</h6>
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="col-md-6">
@@ -75,7 +73,7 @@ const ContactUs = () => {
                   type="text"
                   className="form-control p-4"
                   name="name"
-                  placeholder="Your Name"
+                  placeholder="Jina lako"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -88,7 +86,7 @@ const ContactUs = () => {
                   type="email"
                   className="form-control p-4"
                   name="email"
-                  placeholder="Your Email"
+                  placeholder="Barua "
                   value={formData.email}
                   onChange={handleChange}
                   required

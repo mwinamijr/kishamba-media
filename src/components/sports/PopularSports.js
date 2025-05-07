@@ -41,7 +41,7 @@ export default function PopularSports() {
           <div className="col-12" key={index}>
             <div className="row g-4 align-items-center features-item">
               <div className="col-4">
-                <div className="rounded-circle position-relative">
+                <div className="rounded-circle position-relative p-3">
                   <div className="overflow-hidden rounded-circle">
                     <img
                       src={item.img}
@@ -51,7 +51,7 @@ export default function PopularSports() {
                   </div>
                   <span
                     className="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                    style={{ top: "10%", right: "-10px" }}
+                    style={{ top: "10%", right: "20px" }}
                   >
                     {item.badge}
                   </span>

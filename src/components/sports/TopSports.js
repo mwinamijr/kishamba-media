@@ -16,23 +16,23 @@ const TopSports = () => {
             className="d-flex justify-content-center px-4 position-absolute flex-wrap"
             style={{ bottom: "10px", left: 0 }}
           >
-            <Link to="#" className="text-white me-3 link-hover">
+            <Link to="#" className="text-white me-3 link-hover p-2">
               <i className="fa fa-clock"></i> 06 minute read
             </Link>
-            <Link to="#" className="text-white me-3 link-hover">
+            <Link to="#" className="text-white me-3 link-hover p-2">
               <i className="fa fa-eye"></i> 3.5k Views
             </Link>
-            <Link to="#" className="text-white me-3 link-hover">
+            <Link to="#" className="text-white me-3 link-hover p-2">
               <i className="fa fa-comment-dots"></i> 05 Comment
             </Link>
-            <Link to="#" className="text-white link-hover">
+            <Link to="#" className="text-white link-hover p-2">
               <i className="fa fa-arrow-up"></i> 1.5k Share
             </Link>
           </div>
         </div>
 
         <div className="border-bottom py-3">
-          <Link to="#" className="display-4 text-dark mb-0 link-hover">
+          <Link to="#" className="display-5 text-dark mb-0 link-hover">
             Lorem Ipsum is simply dummy text of the printing
           </Link>
         </div>
@@ -91,7 +91,7 @@ const TopSports = () => {
             </div>
             <div className="col-12">
               <div className="d-flex flex-column">
-                <Link to="#" className="h4 mb-2">
+                <Link to="#" className="h4 mb-2 mt-2">
                   Get the best speak market, news.
                 </Link>
                 <p className="fs-5 mb-0">
@@ -108,7 +108,7 @@ const TopSports = () => {
               <div className="col-12" key={index}>
                 <div className="row align-items-center">
                   <div className="col-5">
-                    <div className="overflow-hidden ">
+                    <div className="overflow-hidden p-1 ">
                       <img
                         src={`img/news-${num}.jpg`}
                         className="img-zoomin img-fluid  w-100"
