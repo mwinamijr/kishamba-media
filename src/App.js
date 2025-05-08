@@ -14,10 +14,12 @@ import NewsScreen from "./screens/NewsScreen";
 import SportsScreen from "./screens/SportsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import NotFoundPage from "./screens/404Page";
+import RegisterScreen from "./screens/RegisterScreen";
 
 const AppContent = () => {
   const location = useLocation();
-  const hideLayout = location.pathname === "/login";
+  const hideLayout =
+    location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <>
@@ -29,6 +31,7 @@ const AppContent = () => {
         <Route path="/news-details" element={<NewsScreen />} />
         <Route path="/sports" element={<SportsScreen />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/register" element={<RegisterScreen />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

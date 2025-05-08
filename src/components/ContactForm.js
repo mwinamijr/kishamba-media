@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -31,10 +30,14 @@ const ContactUs = () => {
       </div>
       <div className="bg-white border border-top-0 p-4 mb-3">
         <div className="mb-4">
-          <h6 className="text-uppercase font-weight-bold">Taarifa za mawasiliano</h6>
+          <h6 className="text-uppercase font-weight-bold">
+            Taarifa za mawasiliano
+          </h6>
           <p className="mb-4">
-            Kwa mawasiliano zaidi tumia aina hizi za mawasiliano kutufikia kwa mambo mbalimbali kama taarifa, matangazo au 
-            habari yeyote kutoka kwetu. Pia unaweza kuwasiliana nasi kutuletea habari mbalimbali nasi hatutasita kukusaidia. KARIBU.
+            Kwa mawasiliano zaidi tumia aina hizi za mawasiliano kutufikia kwa
+            mambo mbalimbali kama taarifa, matangazo au habari yeyote kutoka
+            kwetu. Pia unaweza kuwasiliana nasi kutuletea habari mbalimbali nasi
+            hatutasita kukusaidia. KARIBU.
           </p>
 
           <div className="mb-3">

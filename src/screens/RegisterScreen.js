@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   return (
     <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
       <div className="container">
@@ -16,8 +16,19 @@ const LoginScreen = () => {
                   ← Back to Home
                 </Link>
               </div>
-              <h3 className="text-center mb-4 text-primary">Login</h3>
+              <h3 className="text-center mb-4 text-primary">Register</h3>
               <form>
+                <div className="form-group mb-3">
+                  <label htmlFor="username" className="text-muted">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control py-3 rounded-pill"
+                    id="username"
+                    placeholder="Enter username"
+                  />
+                </div>
                 <div className="form-group mb-3">
                   <label htmlFor="email" className="text-muted">
                     Email address
@@ -29,7 +40,7 @@ const LoginScreen = () => {
                     placeholder="Enter email"
                   />
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label htmlFor="password" className="text-muted">
                     Password
                   </label>
@@ -37,21 +48,32 @@ const LoginScreen = () => {
                     type="password"
                     className="form-control py-3 rounded-pill"
                     id="password"
-                    placeholder="Password"
+                    placeholder="Enter password"
+                  />
+                </div>
+                <div className="form-group mb-4">
+                  <label htmlFor="confirmPassword" className="text-muted">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control py-3 rounded-pill"
+                    id="confirmPassword"
+                    placeholder="Confirm password"
                   />
                 </div>
                 <button
                   type="submit"
                   className="btn btn-primary w-100 py-3 rounded-pill"
                 >
-                  Login
+                  Register
                 </button>
               </form>
               <div className="mt-3 text-center">
                 <small>
-                  Don't have an account?{" "}
-                  <Link to="/register" className="text-decoration-none">
-                    Register
+                  Already have an account?{" "}
+                  <Link to="/login" className="text-decoration-none">
+                    Login
                   </Link>
                 </small>
               </div>
@@ -63,4 +85,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
