@@ -38,6 +38,23 @@ export const createSuperUser = createAsyncThunk(
   }
 );
 
+export const registerUser = createAsyncThunk(
+  "users/registerUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${nodejsUrl}/api/auth/register`,
+        userData
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "User registration failed"
+      );
+    }
+  }
+);
+
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   localStorage.removeItem("token");
   return null;
@@ -84,6 +101,19 @@ const authSlice = createSlice({
         state.successMessage = action.payload.message;
       })
       .addCase(createSuperUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

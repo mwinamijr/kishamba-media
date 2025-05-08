@@ -2,21 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nodejsUrl } from "../utils";
 
-// Register normal user
-export const registerUser = createAsyncThunk(
-  "users/registerUser",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`${nodejsUrl}/register`, userData);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "User registration failed"
-      );
-    }
-  }
-);
-
 // Get all users (admin only)
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
@@ -92,20 +77,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
-      // --- REGISTER USER ---
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.successMessage = action.payload.message;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
 
       // --- FETCH USERS ---
       .addCase(fetchUsers.pending, (state) => {
