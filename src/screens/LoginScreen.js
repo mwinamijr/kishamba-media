@@ -10,11 +10,11 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { error, loading, isAuthenticated, user } = useSelector(
+  const { error, loading, isAuthenticated, userInfo } = useSelector(
     (state) => state.auth
   );
 
-  console.log(user);
+  console.log(userInfo);
 
   useEffect(() => {
     if (isAuthenticated) {

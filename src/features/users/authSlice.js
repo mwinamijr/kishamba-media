@@ -14,6 +14,7 @@ export const loginUser = createAsyncThunk(
       );
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
@@ -57,12 +58,17 @@ export const registerUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("userInfo");
   return null;
 });
 
 const initialState = {
-  token: userToken || null,
-  user: null,
+  token: localStorage.getItem("token")
+    ? JSON.parse(localStorage.getItem("token"))
+    : null,
+  userInfo: localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null,
   loading: false,
   error: null,
   isAuthenticated: !!userToken,
@@ -85,8 +91,8 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
+        state.userInfo = action.payload.user;
         state.isAuthenticated = true;
-        state.user = action.payload.user;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -120,7 +126,7 @@ const authSlice = createSlice({
 
       .addCase(logoutUser.fulfilled, (state) => {
         state.token = null;
-        state.user = null;
+        state.userInfo = null;
         state.isAuthenticated = false;
         state.error = null;
         state.loading = false;

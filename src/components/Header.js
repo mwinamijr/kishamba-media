@@ -1,7 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logoutUser } from "../features/users/authSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/login");
+  };
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-US", {
     weekday: "long",
@@ -28,16 +40,29 @@ const Header = () => {
                     Advertise
                   </NavLink>
                 </li>
-                <li className="nav-item border-right border-secondary">
-                  <NavLink className="nav-link text-body small" to="#">
-                    Contact
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link text-body small" to="/login">
-                    Login
-                  </NavLink>
-                </li>
+                {userInfo ? (
+                  <>
+                    <li className="nav-item border-right border-secondary">
+                      <NavLink className="nav-link text-body small">
+                        Hello, {userInfo.username}
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink
+                        onClick={handleLogout}
+                        className="nav-link text-body small"
+                      >
+                        Logout
+                      </NavLink>
+                    </li>
+                  </>
+                ) : (
+                  <li className="nav-item">
+                    <NavLink className="nav-link text-body small" to="/login">
+                      Login
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>
@@ -102,7 +127,8 @@ const Header = () => {
         <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
           <NavLink to="/" className="navbar-brand d-block d-lg-none">
             <h1 className="m-0 display-4 text-uppercase text-primary">
-              Biz<span className="text-white font-weight-normal">News</span>
+              Kishamba
+              <span className="text-white font-weight-normal">Media</span>
             </h1>
           </NavLink>
           <button
