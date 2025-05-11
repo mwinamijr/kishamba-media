@@ -55,6 +55,16 @@ const Header = () => {
                         Logout
                       </NavLink>
                     </li>
+                    {userInfo?.role === "admin" && (
+                      <li className="nav-item border-right border-secondary">
+                        <NavLink
+                          className="nav-link text-body small"
+                          to="/admin"
+                        >
+                          Admin Panel
+                        </NavLink>
+                      </li>
+                    )}
                   </>
                 ) : (
                   <li className="nav-item">

@@ -15,6 +15,9 @@ import SportsScreen from "./screens/SportsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import NotFoundPage from "./screens/404Page";
 import RegisterScreen from "./screens/RegisterScreen";
+import AdminDashboard from "./screens/admin/AdminDashboard";
+import PrivateAdminRoute from "./screens/PrivateAdminRoute";
+import Unauthorized from "./screens/admin/Unauthorized";
 
 const AppContent = () => {
   const location = useLocation();
@@ -32,7 +35,16 @@ const AppContent = () => {
         <Route path="/sports" element={<SportsScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
+        <Route
+          path="/admin"
+          element={
+            <PrivateAdminRoute>
+              <AdminDashboard />
+            </PrivateAdminRoute>
+          }
+        />
 
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       {!hideLayout && <Footer />}
