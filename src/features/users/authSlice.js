@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { nodejsUrl } from "../utils";
+import axiosInstance from "../utils";
 
 const userToken = localStorage.getItem("token");
 
@@ -8,10 +7,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `${nodejsUrl}/api/auth/login`,
-        credentials
-      );
+      const response = await axiosInstance.post(`/api/auth/login`, credentials);
 
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("userInfo", JSON.stringify(response.data.user));
@@ -26,8 +22,8 @@ export const createSuperUser = createAsyncThunk(
   "users/createSuperUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `${nodejsUrl}/api/auth/superuser`,
+      const response = await axiosInstance.post(
+        `/api/auth/superuser`,
         userData
       );
       return response.data;
@@ -43,10 +39,7 @@ export const registerUser = createAsyncThunk(
   "users/registerUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `${nodejsUrl}/api/auth/register`,
-        userData
-      );
+      const response = await axiosInstance.post(`/api/auth/register`, userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(

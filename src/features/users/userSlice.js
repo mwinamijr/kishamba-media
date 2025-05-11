@@ -1,13 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { nodejsUrl } from "../utils";
+import axiosInstance from "../utils";
 
 // Get all users (admin only)
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${nodejsUrl}/users`);
+      const response = await axiosInstance.get(`/api/auth/users`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -22,7 +21,7 @@ export const getUserDetails = createAsyncThunk(
   "users/getUserDetails",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${nodejsUrl}/users/${id}`);
+      const response = await axiosInstance.get(`/api/auth/users/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -37,7 +36,10 @@ export const updateUser = createAsyncThunk(
   "users/updateUser",
   async ({ id, userData }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${nodejsUrl}/users/${id}`, userData);
+      const response = await axiosInstance.put(
+        `/api/auth/users/${id}`,
+        userData
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Update failed");
@@ -50,7 +52,7 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${nodejsUrl}/users/${id}`);
+      const response = await axiosInstance.delete(`/api/auth/users/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Delete failed");

@@ -11,7 +11,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/login");
+    navigate("/");
   };
 
   const today = new Date();
