@@ -1,12 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../utils";
+import axios from "axios";
+import { nodejsUrl } from "../utils";
 
 // Get all users (admin only)
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/api/auth/users`);
+      const {
+        auth: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const response = await axios.get(`${nodejsUrl}/api/auth/users`, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -21,7 +31,7 @@ export const getUserDetails = createAsyncThunk(
   "users/getUserDetails",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/api/auth/users/${id}`);
+      const response = await axios.get(`${nodejsUrl}/api/auth/users/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -36,8 +46,8 @@ export const updateUser = createAsyncThunk(
   "users/updateUser",
   async ({ id, userData }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(
-        `/api/auth/users/${id}`,
+      const response = await axios.put(
+        `${nodejsUrl}/api/auth/users/${id}`,
         userData
       );
       return response.data;
@@ -52,7 +62,7 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.delete(`/api/auth/users/${id}`);
+      const response = await axios.delete(`${nodejsUrl}/api/auth/users/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Delete failed");
@@ -87,7 +97,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload.users;
+        state.users = action.payload;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
@@ -101,7 +111,7 @@ const userSlice = createSlice({
       })
       .addCase(getUserDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
+        state.user = action.payload;
       })
       .addCase(getUserDetails.rejected, (state, action) => {
         state.loading = false;

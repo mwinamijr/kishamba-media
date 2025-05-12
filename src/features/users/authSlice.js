@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../utils";
-
-const userToken = localStorage.getItem("token");
+import axios from "axios";
+import { nodejsUrl } from "../utils";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/api/auth/login`, credentials);
+      const response = await axios.post(
+        `${nodejsUrl}/api/auth/login`,
+        credentials
+      );
 
-      localStorage.setItem("token", JSON.stringify(response.data.token));
-      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
@@ -22,8 +23,8 @@ export const createSuperUser = createAsyncThunk(
   "users/createSuperUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(
-        `/api/auth/superuser`,
+      const response = await axios.post(
+        `${nodejsUrl}/api/auth/superuser`,
         userData
       );
       return response.data;
@@ -39,7 +40,10 @@ export const registerUser = createAsyncThunk(
   "users/registerUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/api/auth/register`, userData);
+      const response = await axios.post(
+        `${nodejsUrl}/api/auth/register`,
+        userData
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -50,21 +54,17 @@ export const registerUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
-  localStorage.removeItem("token");
   localStorage.removeItem("userInfo");
   return null;
 });
 
 const initialState = {
-  token: localStorage.getItem("token")
-    ? JSON.parse(localStorage.getItem("token"))
-    : null,
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
   loading: false,
   error: null,
-  isAuthenticated: !!userToken,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -83,8 +83,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload.token;
-        state.userInfo = action.payload.user;
+        state.userInfo = action.payload;
         state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -118,7 +117,6 @@ const authSlice = createSlice({
       })
 
       .addCase(logoutUser.fulfilled, (state) => {
-        state.token = null;
         state.userInfo = null;
         state.isAuthenticated = false;
         state.error = null;
