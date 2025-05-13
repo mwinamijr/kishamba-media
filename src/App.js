@@ -18,6 +18,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import AdminDashboard from "./screens/admin/AdminDashboard";
 import PrivateAdminRoute from "./screens/PrivateAdminRoute";
 import Unauthorized from "./screens/admin/Unauthorized";
+import AddUser from "./screens/admin/AddUser";
 
 const AppContent = () => {
   const location = useLocation();
@@ -40,6 +41,14 @@ const AppContent = () => {
           element={
             <PrivateAdminRoute>
               <AdminDashboard />
+            </PrivateAdminRoute>
+          }
+        />
+        <Route
+          path="admin/add-user"
+          element={
+            <PrivateAdminRoute>
+              <AddUser />
             </PrivateAdminRoute>
           }
         />

@@ -41,6 +41,33 @@ export const getUserDetails = createAsyncThunk(
   }
 );
 
+export const createUser = createAsyncThunk(
+  "users/createUser",
+  async (userData, { getState, rejectWithValue }) => {
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const response = await axios.post(
+        `${nodejsUrl}/api/auth/create`,
+        userData,
+        config
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "User registration failed"
+      );
+    }
+  }
+);
+
 // Update user
 export const updateUser = createAsyncThunk(
   "users/updateUser",
