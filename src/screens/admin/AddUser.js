@@ -28,7 +28,6 @@ const AddUser = () => {
 
     try {
       await dispatch(createUser(formData)).unwrap();
-      console.log("User Created:", formData); // remove after implementing
       navigate("/admin");
     } catch (err) {
       console.error(err);

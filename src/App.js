@@ -17,8 +17,12 @@ import NotFoundPage from "./screens/404Page";
 import RegisterScreen from "./screens/RegisterScreen";
 import AdminDashboard from "./screens/admin/AdminDashboard";
 import PrivateAdminRoute from "./screens/PrivateAdminRoute";
+import PrivateRoute from "./screens/PrivateRoute";
 import Unauthorized from "./screens/admin/Unauthorized";
 import AddUser from "./screens/admin/AddUser";
+import UserProfile from "./screens/admin/UserProfile";
+import UpdateProfile from "./screens/admin/UserUpdate";
+import ChangePassword from "./screens/admin/ChangePassword";
 
 const AppContent = () => {
   const location = useLocation();
@@ -50,6 +54,31 @@ const AppContent = () => {
             <PrivateAdminRoute>
               <AddUser />
             </PrivateAdminRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <UserProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <PrivateRoute>
+              <UpdateProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile/password"
+          element={
+            <PrivateRoute>
+              <ChangePassword />
+            </PrivateRoute>
           }
         />
 

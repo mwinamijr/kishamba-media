@@ -54,7 +54,6 @@ export const createUser = createAsyncThunk(
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      console.log(userData);
       const response = await axios.post(
         `${nodejsUrl}/api/auth/create`,
         userData,
