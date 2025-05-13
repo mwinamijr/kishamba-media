@@ -34,8 +34,19 @@ const ManageUsers = () => {
       ) : (
         <ul className="list-group">
           {users.map((user) => (
-            <li key={user._id} className="list-group-item">
-              {user.name} - {user.email} - {user.role}
+            <li
+              key={user._id}
+              className="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <div>
+                <Link
+                  to={`/admin/user/${user._id}`}
+                  className="font-weight-bold"
+                >
+                  {user.username}
+                </Link>{" "}
+                - {user.email} - {user.role}
+              </div>
             </li>
           ))}
         </ul>

@@ -29,9 +29,23 @@ export const fetchUsers = createAsyncThunk(
 // Get single user
 export const getUserDetails = createAsyncThunk(
   "users/getUserDetails",
-  async (id, { rejectWithValue }) => {
+  async (id, { getState, rejectWithValue }) => {
     try {
-      const response = await axios.get(`${nodejsUrl}/api/auth/users/${id}`);
+      const {
+        auth: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `${nodejsUrl}/api/auth/users/${id}/profile`,
+        config
+      );
+      console.log("dispatching .....");
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -74,7 +88,7 @@ export const updateUser = createAsyncThunk(
   async ({ id, userData }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `${nodejsUrl}/api/auth/users/${id}`,
+        `${nodejsUrl}/api/auth/users/${id}/profile`,
         userData
       );
       return response.data;

@@ -23,6 +23,7 @@ import AddUser from "./screens/admin/AddUser";
 import UserProfile from "./screens/admin/UserProfile";
 import UpdateProfile from "./screens/admin/UserUpdate";
 import ChangePassword from "./screens/admin/ChangePassword";
+import ViewUserProfile from "./screens/admin/ViewUserProfile";
 
 const AppContent = () => {
   const location = useLocation();
@@ -53,6 +54,14 @@ const AppContent = () => {
           element={
             <PrivateAdminRoute>
               <AddUser />
+            </PrivateAdminRoute>
+          }
+        />
+        <Route
+          path="/admin/user/:id"
+          element={
+            <PrivateAdminRoute>
+              <ViewUserProfile />
             </PrivateAdminRoute>
           }
         />
