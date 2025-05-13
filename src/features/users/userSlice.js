@@ -54,6 +54,7 @@ export const createUser = createAsyncThunk(
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
+      console.log(userData);
       const response = await axios.post(
         `${nodejsUrl}/api/auth/create`,
         userData,
@@ -141,6 +142,21 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(getUserDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // ---CREATE USER ---
+      .addCase(createUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../../features/users/userSlice";
 
 const AddUser = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { user, loading, error } = useSelector((state) => state.getUsers);
+  console.log(user);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -23,14 +26,9 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userPayload = {
-      ...formData,
-      password: "Default@123", // Set default password
-    };
-
     try {
-      await dispatch(createUser(userPayload)).unwrap();
-      console.log("User Created:", userPayload); // remove after implementing
+      await dispatch(createUser(formData)).unwrap();
+      console.log("User Created:", formData); // remove after implementing
       navigate("/admin");
     } catch (err) {
       console.error(err);
@@ -40,6 +38,7 @@ const AddUser = () => {
   return (
     <div className="container mt-5">
       <h3>Add New User</h3>
+      {error && <p className="text-danger">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Username</label>
@@ -109,7 +108,7 @@ const AddUser = () => {
         </div>
 
         <button type="submit" className="btn btn-primary mt-3">
-          Create User
+          {loading ? "Creating user ..." : "Create User"}
         </button>
       </form>
     </div>
