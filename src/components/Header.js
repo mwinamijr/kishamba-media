@@ -68,6 +68,16 @@ const Header = () => {
                         </NavLink>
                       </li>
                     )}
+                    {userInfo?.role === "reporter" && (
+                      <li className="nav-item border-right border-secondary">
+                        <NavLink
+                          className="nav-link text-body small"
+                          to="/reporter"
+                        >
+                          Reporter Panel
+                        </NavLink>
+                      </li>
+                    )}
                   </>
                 ) : (
                   <li className="nav-item">

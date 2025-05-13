@@ -16,14 +16,16 @@ import LoginScreen from "./screens/LoginScreen";
 import NotFoundPage from "./screens/404Page";
 import RegisterScreen from "./screens/RegisterScreen";
 import AdminDashboard from "./screens/admin/AdminDashboard";
-import PrivateAdminRoute from "./screens/PrivateAdminRoute";
-import PrivateRoute from "./screens/PrivateRoute";
+import PrivateAdminRoute from "./screens/protected/PrivateAdminRoute";
+import PrivateRoute from "./screens/protected/PrivateRoute";
 import Unauthorized from "./screens/admin/Unauthorized";
 import AddUser from "./screens/admin/AddUser";
 import UserProfile from "./screens/admin/UserProfile";
 import UpdateProfile from "./screens/admin/UserUpdate";
 import ChangePassword from "./screens/admin/ChangePassword";
 import ViewUserProfile from "./screens/admin/ViewUserProfile";
+import PrivateReporterRoute from "./screens/protected/PrivateReporterRoute";
+import ReporterDashboard from "./screens/reporter/ReporterDashboard";
 
 const AppContent = () => {
   const location = useLocation();
@@ -88,6 +90,15 @@ const AppContent = () => {
             <PrivateRoute>
               <ChangePassword />
             </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/reporter"
+          element={
+            <PrivateReporterRoute>
+              <ReporterDashboard />
+            </PrivateReporterRoute>
           }
         />
 

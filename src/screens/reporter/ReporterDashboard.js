@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import ManageUsers from "./ManageUsers";
-import ManagePosts from "../reporter/ManagePosts";
-import ManageArticles from "../reporter/ManageArticles";
-import ManageComments from "./ManageComments";
+import ManagePosts from "./ManagePosts";
+import ManageArticles from "./ManageArticles";
+import ManageComments from "../admin/ManageComments";
 
-const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState("users");
+const ReporterDashboard = () => {
+  const [activeTab, setActiveTab] = useState("articles");
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "users":
-        return <ManageUsers />;
       case "articles":
         return <ManageArticles />;
       case "posts":
@@ -24,17 +21,9 @@ const AdminDashboard = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Admin Dashboard</h2>
+      <h2 className="mb-4">Reporter Dashboard</h2>
 
       <ul className="nav nav-tabs">
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "users" ? "active" : ""}`}
-            onClick={() => setActiveTab("users")}
-          >
-            Users
-          </button>
-        </li>
         <li className="nav-item">
           <button
             className={`nav-link ${activeTab === "articles" ? "active" : ""}`}
@@ -66,4 +55,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default ReporterDashboard;
