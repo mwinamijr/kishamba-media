@@ -50,6 +50,12 @@ const PostDetails = () => {
       <button onClick={() => navigate("/posts")} className="btn btn-secondary">
         Back to Posts
       </button>
+      <button
+        onClick={() => navigate(`/posts/${id}/edit`)}
+        className="btn btn-warning ms-2"
+      >
+        Edit Post
+      </button>
     </div>
   );
 };

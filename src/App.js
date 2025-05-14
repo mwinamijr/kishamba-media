@@ -28,6 +28,7 @@ import PrivateReporterRoute from "./screens/protected/PrivateReporterRoute";
 import ReporterDashboard from "./screens/reporter/ReporterDashboard";
 import AddPost from "./screens/reporter/AddPost";
 import PostDetails from "./screens/reporter/PostDetails";
+import PostUpdate from "./screens/reporter/PostUpdate";
 
 const AppContent = () => {
   const location = useLocation();
@@ -108,6 +109,14 @@ const AppContent = () => {
           element={
             <PrivateReporterRoute>
               <PostDetails />
+            </PrivateReporterRoute>
+          }
+        />
+        <Route
+          path="/posts/:id/edit"
+          element={
+            <PrivateReporterRoute>
+              <PostUpdate />
             </PrivateReporterRoute>
           }
         />
