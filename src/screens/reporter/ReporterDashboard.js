@@ -4,14 +4,14 @@ import ManageArticles from "./ManageArticles";
 import ManageComments from "../admin/ManageComments";
 
 const ReporterDashboard = () => {
-  const [activeTab, setActiveTab] = useState("articles");
+  const [activeTab, setActiveTab] = useState("posts");
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "articles":
-        return <ManageArticles />;
       case "posts":
         return <ManagePosts />;
+      case "articles":
+        return <ManageArticles />;
       case "comments":
         return <ManageComments />;
       default:
@@ -26,18 +26,18 @@ const ReporterDashboard = () => {
       <ul className="nav nav-tabs">
         <li className="nav-item">
           <button
-            className={`nav-link ${activeTab === "articles" ? "active" : ""}`}
-            onClick={() => setActiveTab("articles")}
-          >
-            Articles
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
             className={`nav-link ${activeTab === "posts" ? "active" : ""}`}
             onClick={() => setActiveTab("posts")}
           >
             Posts
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "articles" ? "active" : ""}`}
+            onClick={() => setActiveTab("articles")}
+          >
+            Articles
           </button>
         </li>
         <li className="nav-item">
