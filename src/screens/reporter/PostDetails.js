@@ -11,8 +11,6 @@ const PostDetails = () => {
   // Extracting state from the Redux store
   const { post, loading, error } = useSelector((state) => state.getPosts);
 
-  console.log(post);
-
   // Fetch the post details on component mount
   useEffect(() => {
     dispatch(fetchPostDetails(id));
@@ -31,8 +29,8 @@ const PostDetails = () => {
       <div>
         {post.contentBlocks.map((block, index) => (
           <div key={index}>
-            {block.type === "paragraph" && <p>{block.content}</p>}
-            {block.type === "subheading" && <h3>{block.content}</h3>}
+            {block.type === "paragraph" && <p>{block.text}</p>}
+            {block.type === "subheading" && <h3>{block.text}</h3>}
             {block.type === "image" && (
               <img
                 src={block.imageUrl}
@@ -47,12 +45,15 @@ const PostDetails = () => {
           </div>
         ))}
       </div>
-      <button onClick={() => navigate("/posts")} className="btn btn-secondary">
+      <button
+        onClick={() => navigate("/posts")}
+        className="btn btn-secondary m-2"
+      >
         Back to Posts
       </button>
       <button
         onClick={() => navigate(`/posts/${id}/edit`)}
-        className="btn btn-warning ms-2"
+        className="btn btn-warning m-2"
       >
         Edit Post
       </button>

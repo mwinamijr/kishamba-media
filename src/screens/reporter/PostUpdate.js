@@ -35,7 +35,7 @@ const PostUpdate = () => {
   };
 
   const addBlock = () => {
-    setContentBlocks([...contentBlocks, { type: "paragraph", content: "" }]);
+    setContentBlocks([...contentBlocks, { type: "paragraph", text: "" }]);
   };
 
   const removeBlock = (index) => {
@@ -78,8 +78,7 @@ const PostUpdate = () => {
                 <option value="image">Image</option>
               </select>
             </div>
-
-            {block.type === "image" ? (
+            {block.type === "image" && (
               <>
                 <div className="form-group">
                   <label>Image URL</label>
@@ -106,20 +105,32 @@ const PostUpdate = () => {
                   </select>
                 </div>
               </>
-            ) : (
+            )}{" "}
+            {block.type === "paragraph" && (
               <div className="form-group">
-                <label>Content</label>
+                <label>Text</label>
                 <textarea
                   className="form-control"
-                  rows="2"
-                  value={block.conten || ""}
+                  rows="5"
+                  value={block.text || ""}
                   onChange={(e) =>
-                    handleBlockChange(index, "content", e.target.value)
+                    handleBlockChange(index, "text", e.target.value)
                   }
                 />
               </div>
             )}
-
+            {block.type === "subheading" && (
+              <div className="form-group">
+                <label>Text</label>
+                <input
+                  className="form-control"
+                  value={block.text || ""}
+                  onChange={(e) =>
+                    handleBlockChange(index, "text", e.target.value)
+                  }
+                />
+              </div>
+            )}
             <button
               type="button"
               onClick={() => removeBlock(index)}
@@ -139,13 +150,13 @@ const PostUpdate = () => {
         </button>
 
         <div className="mt-4">
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary m-2">
             Update Post
           </button>
           <button
             type="button"
             onClick={() => navigate(`/posts/${id}`)}
-            className="btn btn-outline-secondary ms-2"
+            className="btn btn-outline-secondary m-2"
           >
             Cancel
           </button>

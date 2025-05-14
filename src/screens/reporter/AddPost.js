@@ -161,7 +161,7 @@ const AddPost = () => {
                 <label>Paragraph</label>
                 <textarea
                   className="form-control"
-                  rows="4"
+                  rows="5"
                   value={block.content}
                   onChange={(e) =>
                     handleChange(index, "content", e.target.value)

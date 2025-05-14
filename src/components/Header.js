@@ -198,7 +198,7 @@ const Header = () => {
                   role="button"
                   data-toggle="dropdown"
                 >
-                  Dropdown
+                  Other News
                 </span>
                 <div className="dropdown-menu rounded-0 m-0">
                   <NavLink
@@ -207,7 +207,7 @@ const Header = () => {
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Menu item 1
+                    Bussiness
                   </NavLink>
                   <NavLink
                     to="/menu2"
@@ -215,7 +215,7 @@ const Header = () => {
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Menu item 2
+                    Fashion
                   </NavLink>
                   <NavLink
                     to="/menu3"
@@ -223,7 +223,7 @@ const Header = () => {
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Menu item 3
+                    Entertainment
                   </NavLink>
                 </div>
               </div>
