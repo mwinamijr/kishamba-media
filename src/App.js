@@ -26,6 +26,7 @@ import ChangePassword from "./screens/admin/ChangePassword";
 import ViewUserProfile from "./screens/admin/ViewUserProfile";
 import PrivateReporterRoute from "./screens/protected/PrivateReporterRoute";
 import ReporterDashboard from "./screens/reporter/ReporterDashboard";
+import AddPost from "./screens/reporter/AddPost";
 
 const AppContent = () => {
   const location = useLocation();
@@ -94,10 +95,18 @@ const AppContent = () => {
         />
 
         <Route
-          path="/reporter"
+          path="/posts"
           element={
             <PrivateReporterRoute>
               <ReporterDashboard />
+            </PrivateReporterRoute>
+          }
+        />
+        <Route
+          path="/posts/add"
+          element={
+            <PrivateReporterRoute>
+              <AddPost />
             </PrivateReporterRoute>
           }
         />

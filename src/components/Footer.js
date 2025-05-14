@@ -157,10 +157,6 @@ const Footer = () => {
           </Link> of <Link to="https://techdometz.github.io"> Techdometz</Link>
         </p>
       </div>
-
-      <Link to="#" class="btn btn-primary btn-square back-to-top">
-        <i class="fa fa-arrow-up"></i>
-      </Link>
     </>
   );
 };

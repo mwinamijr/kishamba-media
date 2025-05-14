@@ -72,7 +72,7 @@ const Header = () => {
                       <li className="nav-item border-right border-secondary">
                         <NavLink
                           className="nav-link text-body small"
-                          to="/reporter"
+                          to="/posts"
                         >
                           Reporter Panel
                         </NavLink>

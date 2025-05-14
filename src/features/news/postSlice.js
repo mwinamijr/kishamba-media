@@ -54,8 +54,8 @@ export const fetchPosts = createAsyncThunk(
 );
 
 // GET post details
-export const getPostDetails = createAsyncThunk(
-  "posts/getPostDetails",
+export const fetchPostDetails = createAsyncThunk(
+  "posts/fetchPostDetails",
   async (id, { getState, rejectWithValue }) => {
     try {
       const {
@@ -174,14 +174,14 @@ const postSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(getPostDetails.pending, (state) => {
+      .addCase(fetchPostDetails.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getPostDetails.fulfilled, (state, action) => {
+      .addCase(fetchPostDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.post = action.payload;
       })
-      .addCase(getPostDetails.rejected, (state, action) => {
+      .addCase(fetchPostDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
