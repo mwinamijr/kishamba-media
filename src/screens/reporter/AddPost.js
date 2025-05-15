@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 import { createPost } from "../../features/news/postSlice";
 
 const AddPost = () => {
   const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
+  const pathnames = location.pathname.split("/").filter((x) => []);
   const [title, setTitle] = useState("");
   const [contentBlocks, setContentBlocks] = useState([]);
   const [formError, setFormError] = useState("");
@@ -14,24 +15,18 @@ const AddPost = () => {
 
   const { loading, error } = useSelector((state) => state.getPosts);
 
-  const handleAddSubheading = () => {
-    setContentBlocks([...contentBlocks, { type: "subheading", content: "" }]);
-  };
+  const handleAddBlock = (type) => {
+    const newBlock =
+      type === "image"
+        ? {
+            type,
+            file: null,
+            alignment: "left",
+            tempId: `temp-${Date.now()}`,
+          }
+        : { type, content: "" };
 
-  const handleAddParagraph = () => {
-    setContentBlocks([...contentBlocks, { type: "paragraph", content: "" }]);
-  };
-
-  const handleAddImage = () => {
-    setContentBlocks([
-      ...contentBlocks,
-      {
-        type: "image",
-        file: null,
-        alignment: "left",
-        tempId: `temp-${Date.now()}`,
-      },
-    ]);
+    setContentBlocks([...contentBlocks, newBlock]);
   };
 
   const handleChange = (index, field, value) => {
@@ -40,10 +35,30 @@ const AddPost = () => {
     setContentBlocks(updated);
   };
 
-  const handleFileChange = (index, file) => {
+  const handleFileChange = async (index, file) => {
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      });
+      const updated = [...contentBlocks];
+      updated[index].file = compressedFile;
+      updated[index].tempId = compressedFile.name;
+      setContentBlocks(updated);
+    } catch (err) {
+      console.error("Image compression error:", err);
+    }
+  };
+
+  const moveBlock = (index, direction) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= contentBlocks.length) return;
+
     const updated = [...contentBlocks];
-    updated[index].file = file;
-    updated[index].tempId = file.name;
+    const temp = updated[index];
+    updated[index] = updated[newIndex];
+    updated[newIndex] = temp;
     setContentBlocks(updated);
   };
 
@@ -57,11 +72,9 @@ const AddPost = () => {
     e.preventDefault();
 
     const formData = new FormData();
-
     const imageFiles = contentBlocks
       .filter((b) => b.type === "image" && b.file)
       .map((b) => b.file);
-
     imageFiles.forEach((file) => formData.append("images", file));
 
     const cleanedBlocks = contentBlocks.map((b) => {
@@ -70,18 +83,10 @@ const AddPost = () => {
           setFormError("Please select an image file for all image blocks.");
           return null;
         }
-        return {
-          type: "image",
-          tempId: b.tempId,
-          alignment: b.alignment,
-        };
-      } else if (b.type === "subheading" || b.type === "paragraph") {
-        return {
-          type: b.type,
-          text: b.content,
-        };
+        return { type: "image", tempId: b.tempId, alignment: b.alignment };
+      } else {
+        return { type: b.type, text: b.content };
       }
-      return null;
     });
 
     if (cleanedBlocks.includes(null)) return;
@@ -93,7 +98,7 @@ const AddPost = () => {
       setFormError("");
       await dispatch(createPost(formData)).unwrap();
       navigate("/posts");
-    } catch (err) {
+    } catch {
       setFormError("Failed to create post. Please try again.");
     }
   };
@@ -144,16 +149,37 @@ const AddPost = () => {
         </div>
 
         {contentBlocks.map((block, index) => (
-          <div key={index} className="form-group mb-4 border p-3 rounded">
+          <div
+            key={index}
+            className="form-group mb-4 border p-3 rounded position-relative"
+          >
             <div className="d-flex justify-content-between align-items-center mb-2">
               <strong>{block.type.toUpperCase()}</strong>
-              <button
-                type="button"
-                className="btn btn-sm btn-danger"
-                onClick={() => handleRemoveBlock(index)}
-              >
-                Remove
-              </button>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary me-1"
+                  onClick={() => moveBlock(index, -1)}
+                  disabled={index === 0}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary me-1"
+                  onClick={() => moveBlock(index, 1)}
+                  disabled={index === contentBlocks.length - 1}
+                >
+                  ↓
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger"
+                  onClick={() => handleRemoveBlock(index)}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
 
             {block.type === "paragraph" && (
@@ -161,7 +187,7 @@ const AddPost = () => {
                 <label>Paragraph</label>
                 <textarea
                   className="form-control"
-                  rows="5"
+                  rows="4"
                   value={block.content}
                   onChange={(e) =>
                     handleChange(index, "content", e.target.value)
@@ -208,6 +234,14 @@ const AddPost = () => {
                   <option value="right">Right</option>
                   <option value="center">Center</option>
                 </select>
+                {block.file && (
+                  <img
+                    src={URL.createObjectURL(block.file)}
+                    alt="preview"
+                    className="img-thumbnail mt-2"
+                    style={{ maxWidth: "200px" }}
+                  />
+                )}
               </>
             )}
           </div>
@@ -217,21 +251,21 @@ const AddPost = () => {
           <button
             type="button"
             className="btn btn-secondary m-2"
-            onClick={handleAddSubheading}
+            onClick={() => handleAddBlock("subheading")}
           >
             Add Subheading
           </button>
           <button
             type="button"
             className="btn btn-secondary m-2"
-            onClick={handleAddParagraph}
+            onClick={() => handleAddBlock("paragraph")}
           >
             Add Paragraph
           </button>
           <button
             type="button"
             className="btn btn-secondary m-2"
-            onClick={handleAddImage}
+            onClick={() => handleAddBlock("image")}
           >
             Add Image
           </button>
