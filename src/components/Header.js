@@ -78,6 +78,16 @@ const Header = () => {
                         </NavLink>
                       </li>
                     )}
+                    {userInfo?.role === "editor" && (
+                      <li className="nav-item border-right border-secondary">
+                        <NavLink
+                          className="nav-link text-body small"
+                          to="/articles"
+                        >
+                          Editor Panel
+                        </NavLink>
+                      </li>
+                    )}
                   </>
                 ) : (
                   <li className="nav-item">

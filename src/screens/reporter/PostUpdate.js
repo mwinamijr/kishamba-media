@@ -12,7 +12,6 @@ const PostUpdate = () => {
   const [title, setTitle] = useState("");
   const [contentBlocks, setContentBlocks] = useState([]);
 
-  // Populate form with existing data
   useEffect(() => {
     if (!post || post._id.toString() !== id) {
       dispatch(fetchPostDetails(id));
@@ -28,20 +27,31 @@ const PostUpdate = () => {
     setContentBlocks(newBlocks);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await dispatch(updatePost({ id, updatedData: { title, contentBlocks } }));
-    navigate(`/posts/${id}`);
+  const removeBlock = (index) => {
+    const updated = [...contentBlocks];
+    updated.splice(index, 1);
+    setContentBlocks(updated);
+  };
+
+  const moveBlock = (index, direction) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= contentBlocks.length) return;
+
+    const updated = [...contentBlocks];
+    const temp = updated[index];
+    updated[index] = updated[newIndex];
+    updated[newIndex] = temp;
+    setContentBlocks(updated);
   };
 
   const addBlock = () => {
     setContentBlocks([...contentBlocks, { type: "paragraph", text: "" }]);
   };
 
-  const removeBlock = (index) => {
-    const newBlocks = [...contentBlocks];
-    newBlocks.splice(index, 1);
-    setContentBlocks(newBlocks);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await dispatch(updatePost({ id, updatedData: { title, contentBlocks } }));
+    navigate(`/posts/${id}`);
   };
 
   if (loading) return <div>Loading post...</div>;
@@ -63,8 +73,37 @@ const PostUpdate = () => {
 
         <h5 className="mt-3">Content Blocks</h5>
         {contentBlocks.map((block, index) => (
-          <div key={index} className="card p-3 my-2">
-            <div className="form-group">
+          <div key={index} className="card p-3 my-3">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <strong>Block {index + 1}</strong>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary me-1"
+                  onClick={() => moveBlock(index, -1)}
+                  disabled={index === 0}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary me-1"
+                  onClick={() => moveBlock(index, 1)}
+                  disabled={index === contentBlocks.length - 1}
+                >
+                  ↓
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger"
+                  onClick={() => removeBlock(index)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <div className="form-group mb-2">
               <label>Type</label>
               <select
                 className="form-control"
@@ -78,9 +117,10 @@ const PostUpdate = () => {
                 <option value="image">Image</option>
               </select>
             </div>
+
             {block.type === "image" && (
               <>
-                <div className="form-group">
+                <div className="form-group mb-2">
                   <label>Image URL</label>
                   <input
                     className="form-control"
@@ -90,7 +130,8 @@ const PostUpdate = () => {
                     }
                   />
                 </div>
-                <div className="form-group">
+
+                <div className="form-group mb-2">
                   <label>Alignment</label>
                   <select
                     className="form-control"
@@ -104,40 +145,63 @@ const PostUpdate = () => {
                     <option value="center">Center</option>
                   </select>
                 </div>
+
+                <div className="form-group mb-2">
+                  <label>Image Size</label>
+                  <select
+                    className="form-control"
+                    value={block.size || "medium"}
+                    onChange={(e) =>
+                      handleBlockChange(index, "size", e.target.value)
+                    }
+                  >
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                  </select>
+                </div>
+
+                {block.imageUrl && (
+                  <img
+                    src={block.imageUrl}
+                    alt={`preview-${index}`}
+                    className="img-thumbnail mt-2"
+                    style={{
+                      width:
+                        block.size === "small"
+                          ? "150px"
+                          : block.size === "large"
+                          ? "100%"
+                          : "400px",
+                    }}
+                  />
+                )}
               </>
-            )}{" "}
-            {block.type === "paragraph" && (
+            )}
+
+            {(block.type === "paragraph" || block.type === "subheading") && (
               <div className="form-group">
                 <label>Text</label>
-                <textarea
-                  className="form-control"
-                  rows="5"
-                  value={block.text || ""}
-                  onChange={(e) =>
-                    handleBlockChange(index, "text", e.target.value)
-                  }
-                />
+                {block.type === "paragraph" ? (
+                  <textarea
+                    className="form-control"
+                    rows="4"
+                    value={block.text || ""}
+                    onChange={(e) =>
+                      handleBlockChange(index, "text", e.target.value)
+                    }
+                  />
+                ) : (
+                  <input
+                    className="form-control"
+                    value={block.text || ""}
+                    onChange={(e) =>
+                      handleBlockChange(index, "text", e.target.value)
+                    }
+                  />
+                )}
               </div>
             )}
-            {block.type === "subheading" && (
-              <div className="form-group">
-                <label>Text</label>
-                <input
-                  className="form-control"
-                  value={block.text || ""}
-                  onChange={(e) =>
-                    handleBlockChange(index, "text", e.target.value)
-                  }
-                />
-              </div>
-            )}
-            <button
-              type="button"
-              onClick={() => removeBlock(index)}
-              className="btn btn-danger mt-2"
-            >
-              Remove Block
-            </button>
           </div>
         ))}
 

@@ -29,6 +29,8 @@ import ReporterDashboard from "./screens/reporter/ReporterDashboard";
 import AddPost from "./screens/reporter/AddPost";
 import PostDetails from "./screens/reporter/PostDetails";
 import PostUpdate from "./screens/reporter/PostUpdate";
+import PrivateEditorRoute from "./screens/protected/PrivateEditorRoute";
+import EditorDashboard from "./screens/editor/EditorDashboard";
 
 const AppContent = () => {
   const location = useLocation();
@@ -126,6 +128,15 @@ const AppContent = () => {
             <PrivateReporterRoute>
               <AddPost />
             </PrivateReporterRoute>
+          }
+        />
+
+        <Route
+          path="/articles"
+          element={
+            <PrivateEditorRoute>
+              <EditorDashboard />
+            </PrivateEditorRoute>
           }
         />
 
