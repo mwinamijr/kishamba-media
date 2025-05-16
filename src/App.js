@@ -17,7 +17,7 @@ import NotFoundPage from "./screens/404Page";
 import RegisterScreen from "./screens/RegisterScreen";
 import AdminDashboard from "./screens/admin/AdminDashboard";
 import PrivateAdminRoute from "./screens/protected/PrivateAdminRoute";
-import PrivateRoute from "./screens/protected/PrivateRoute";
+import { PrivateRoute } from "./screens/protected/PrivateRoute";
 import Unauthorized from "./screens/admin/Unauthorized";
 import AddUser from "./screens/admin/AddUser";
 import UserProfile from "./screens/admin/UserProfile";
@@ -31,6 +31,9 @@ import PostDetails from "./screens/reporter/PostDetails";
 import PostUpdate from "./screens/reporter/PostUpdate";
 import PrivateEditorRoute from "./screens/protected/PrivateEditorRoute";
 import EditorDashboard from "./screens/editor/EditorDashboard";
+import AddArticle from "./screens/editor/AddArticle";
+import ArticleDetails from "./screens/editor/ArticleDetails";
+import UpdateArticle from "./screens/editor/UpdateArticle";
 
 const AppContent = () => {
   const location = useLocation();
@@ -136,6 +139,30 @@ const AppContent = () => {
           element={
             <PrivateEditorRoute>
               <EditorDashboard />
+            </PrivateEditorRoute>
+          }
+        />
+        <Route
+          path="/articles/add"
+          element={
+            <PrivateEditorRoute>
+              <AddArticle />
+            </PrivateEditorRoute>
+          }
+        />
+        <Route
+          path="/articles/:id"
+          element={
+            <PrivateEditorRoute>
+              <ArticleDetails />
+            </PrivateEditorRoute>
+          }
+        />
+        <Route
+          path="/articles/:id/edit"
+          element={
+            <PrivateEditorRoute>
+              <UpdateArticle />
             </PrivateEditorRoute>
           }
         />

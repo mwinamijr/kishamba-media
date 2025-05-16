@@ -3,7 +3,7 @@ import ManageComments from "../admin/ManageComments";
 import ManagePosts from "../reporter/ManagePosts";
 import ManageArticles from "../reporter/ManageArticles";
 
-const ArticleDashboard = () => {
+const EditorDashboard = () => {
   const [activeTab, setActiveTab] = useState("articles");
 
   const renderTabContent = () => {
@@ -21,7 +21,7 @@ const ArticleDashboard = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Article Dashboard</h2>
+      <h2 className="mb-4">Editor Dashboard</h2>
 
       <ul className="nav nav-tabs">
         <li className="nav-item">
@@ -63,4 +63,4 @@ const ArticleDashboard = () => {
   );
 };
 
-export default ArticleDashboard;
+export default EditorDashboard;
