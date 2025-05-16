@@ -27,7 +27,7 @@ const ManageArticles = () => {
       {error && <p className="text-danger">{error}</p>}
       {successMessage && <p className="text-success">{successMessage}</p>}
 
-      <Link to="/articles/new" className="btn btn-primary mb-3">
+      <Link to="/articles/add" className="btn btn-primary mb-3">
         Add Article
       </Link>
 

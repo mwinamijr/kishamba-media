@@ -6,7 +6,7 @@ import { useParams, Link } from "react-router-dom";
 const ArticleDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { article, loading, error } = useSelector((state) => state.articles);
+  const { article, loading, error } = useSelector((state) => state.getArticles);
 
   useEffect(() => {
     dispatch(getArticleDetails(id));

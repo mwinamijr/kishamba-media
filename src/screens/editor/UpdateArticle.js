@@ -1,19 +1,14 @@
-// src/pages/articles/UpdateArticle.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getArticleDetails,
-  updateArticle,
-  clearMessages,
-} from "../../slices/articleSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { createArticle } from "../../features/news/articleSlice";
+import { useNavigate } from "react-router-dom";
+import { fetchPosts } from "../../features/news/postSlice"; // ensure this exists
 
-const UpdateArticle = () => {
-  const { id } = useParams();
+const AddArticle = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { article, loading, error } = useSelector((state) => state.articles);
+  const { loading, error } = useSelector((state) => state.getArticles);
+  const { posts } = useSelector((state) => state.getPosts); // ensure your slice provides this
 
   const [formData, setFormData] = useState({
     headline: "",
@@ -26,22 +21,8 @@ const UpdateArticle = () => {
   });
 
   useEffect(() => {
-    dispatch(getArticleDetails(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    if (article) {
-      setFormData({
-        headline: article.headline || "",
-        summary: article.summary || "",
-        category: article.category || "",
-        tags: article.tags?.join(", ") || "",
-        isBreaking: article.isBreaking || false,
-        published: article.published || false,
-        post: article.post || "",
-      });
-    }
-  }, [article]);
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -51,28 +32,57 @@ const UpdateArticle = () => {
     });
   };
 
+  const handlePostSelect = (e) => {
+    const selectedPostId = e.target.value;
+    const selectedPost = posts.find((p) => p._id === selectedPostId);
+
+    const firstParagraph =
+      selectedPost?.content?.find((c) => c.type === "paragraph")?.value || "";
+
+    setFormData((prev) => ({
+      ...prev,
+      post: selectedPostId,
+      headline: selectedPost?.headline || "",
+      summary: firstParagraph,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const updatedData = {
+    const data = {
       ...formData,
       tags: formData.tags.split(",").map((tag) => tag.trim()),
     };
 
-    dispatch(updateArticle({ id, articleData: updatedData })).then((res) => {
-      if (!res.error) {
-        navigate("/articles");
-      }
+    dispatch(createArticle(data)).then((res) => {
+      if (!res.error) navigate("/articles");
     });
   };
 
   return (
     <div className="container mt-4">
-      <h2>Edit Article</h2>
+      <h2>Add New Article</h2>
 
       {error && <p className="text-danger">{error}</p>}
 
       <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label>Select Post</label>
+          <select
+            className="form-select"
+            value={formData.post}
+            onChange={handlePostSelect}
+          >
+            <option value="">-- Select a Post --</option>
+            {posts.map((post) => (
+              <option key={post._id} value={post._id}>
+                {post.headline}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="mb-3">
           <label>Headline</label>
           <input
@@ -140,23 +150,12 @@ const UpdateArticle = () => {
           <label className="form-check-label">Published</label>
         </div>
 
-        <div className="mb-3">
-          <label>Post ID</label>
-          <input
-            type="text"
-            name="post"
-            className="form-control"
-            value={formData.post}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Updating..." : "Update Article"}
+        <button type="submit" className="btn btn-success" disabled={loading}>
+          {loading ? "Saving..." : "Save Article"}
         </button>
       </form>
     </div>
   );
 };
 
-export default UpdateArticle;
+export default AddArticle;
