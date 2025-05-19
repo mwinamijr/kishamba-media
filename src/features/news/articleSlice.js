@@ -16,7 +16,7 @@ export const createArticle = createAsyncThunk(
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      console.log(articleData);
+
       const response = await axios.post(
         `${nodejsUrl}/api/articles`,
         articleData,

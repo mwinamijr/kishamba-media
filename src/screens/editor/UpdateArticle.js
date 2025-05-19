@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createArticle } from "../../features/news/articleSlice";
-import { useNavigate } from "react-router-dom";
-import { fetchPosts } from "../../features/news/postSlice"; // ensure this exists
+import Select from "react-select";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import {
+  getArticleDetails,
+  updateArticle,
+} from "../../features/news/articleSlice";
+import { fetchPosts } from "../../features/news/postSlice";
 
-const AddArticle = () => {
+const UpdateArticle = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.getArticles);
-  const { posts } = useSelector((state) => state.getPosts); // ensure your slice provides this
+
+  const { article, loading, error } = useSelector((state) => state.getArticles);
+  const { posts } = useSelector((state) => state.getPosts);
 
   const [formData, setFormData] = useState({
     headline: "",
@@ -21,28 +27,42 @@ const AddArticle = () => {
   });
 
   useEffect(() => {
+    dispatch(getArticleDetails(id));
     dispatch(fetchPosts());
-  }, [dispatch]);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (article) {
+      setFormData({
+        headline: article.headline || "",
+        summary: article.summary || "",
+        category: article.category || "",
+        tags: article.tags?.join(", ") || "",
+        isBreaking: article.isBreaking || false,
+        published: article.published || false,
+        post: article.post || "",
+      });
+    }
+  }, [article]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
-  const handlePostSelect = (e) => {
-    const selectedPostId = e.target.value;
-    const selectedPost = posts.find((p) => p._id === selectedPostId);
-
+  const handlePostSelect = (selectedOption) => {
+    const selectedPost = posts.find((p) => p._id === selectedOption.value);
     const firstParagraph =
-      selectedPost?.content?.find((c) => c.type === "paragraph")?.value || "";
+      selectedPost?.contentBlocks?.find((c) => c.type === "paragraph")?.value ||
+      "";
 
     setFormData((prev) => ({
       ...prev,
-      post: selectedPostId,
-      headline: selectedPost?.headline || "",
+      post: selectedPost._id,
+      headline: selectedPost?.title || "",
       summary: firstParagraph,
     }));
   };
@@ -50,37 +70,59 @@ const AddArticle = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
+    const updatedData = {
       ...formData,
       tags: formData.tags.split(",").map((tag) => tag.trim()),
     };
 
-    dispatch(createArticle(data)).then((res) => {
-      if (!res.error) navigate("/articles");
+    dispatch(updateArticle({ id, articleData: updatedData })).then((res) => {
+      if (!res.error) {
+        navigate("/articles");
+      }
     });
   };
 
   return (
     <div className="container mt-4">
-      <h2>Add New Article</h2>
+      <nav aria-label="breadcrumb" className="mt-3">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link to="/articles">Articles</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Update
+          </li>
+        </ol>
+      </nav>
+
+      <h2>Update Article</h2>
 
       {error && <p className="text-danger">{error}</p>}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Select Post</label>
-          <select
-            className="form-select"
-            value={formData.post}
+          <Select
+            value={
+              formData.post
+                ? {
+                    value: formData.post,
+                    label:
+                      posts.find((p) => p._id === formData.post)?.title || "",
+                  }
+                : null
+            }
+            options={posts.map((post) => ({
+              value: post._id,
+              label: post.title,
+            }))}
             onChange={handlePostSelect}
-          >
-            <option value="">-- Select a Post --</option>
-            {posts.map((post) => (
-              <option key={post._id} value={post._id}>
-                {post.headline}
-              </option>
-            ))}
-          </select>
+            placeholder="Search and select post..."
+            isSearchable
+          />
         </div>
 
         <div className="mb-3">
@@ -91,7 +133,7 @@ const AddArticle = () => {
             className="form-control"
             value={formData.headline}
             onChange={handleChange}
-            required
+            readOnly
           />
         </div>
 
@@ -102,6 +144,7 @@ const AddArticle = () => {
             className="form-control"
             value={formData.summary}
             onChange={handleChange}
+            readOnly
           />
         </div>
 
@@ -139,7 +182,7 @@ const AddArticle = () => {
           <label className="form-check-label">Breaking News</label>
         </div>
 
-        <div className="form-check mb-2">
+        <div className="form-check mb-3">
           <input
             type="checkbox"
             name="published"
@@ -150,12 +193,12 @@ const AddArticle = () => {
           <label className="form-check-label">Published</label>
         </div>
 
-        <button type="submit" className="btn btn-success" disabled={loading}>
-          {loading ? "Saving..." : "Save Article"}
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? "Updating..." : "Update Article"}
         </button>
       </form>
     </div>
   );
 };
 
-export default AddArticle;
+export default UpdateArticle;

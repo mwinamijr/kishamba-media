@@ -38,17 +38,16 @@ const AddArticle = () => {
 
   const handlePostSelect = (e) => {
     const postId = e.target.value;
-    console.log(postId);
     const selectedPost = posts.find((p) => p._id === postId);
 
-    const firstParagraph = selectedPost?.content?.find(
+    const firstParagraph = selectedPost?.contentBlocks?.find(
       (block) => block.type === "paragraph"
     );
 
     setFormData((prev) => ({
       ...prev,
       post: postId,
-      headline: selectedPost?.text || "",
+      headline: selectedPost?.title || "",
       summary: firstParagraph?.text || "",
     }));
   };
