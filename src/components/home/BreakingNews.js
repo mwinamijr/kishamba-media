@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-
-const breakingNewsItems = [
-  "1. Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales",
-  "2. Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales",
-];
+import { fetchArticles } from "../../features/news/articleSlice";
 
 const BreakingNewsTicker = () => {
+  const dispatch = useDispatch();
+
+  const { articles } = useSelector((state) => state.getArticles);
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, [dispatch]);
+
+  // Get top 2 breaking news items
+  const breakingNewsItems = articles
+    ?.filter((article) => article.isBreaking)
+    .slice(0, 2)
+    .map((article) => ({
+      id: article._id,
+      headline: article.headline || "Untitled",
+    }));
+
   const settings = {
     dots: false,
     infinite: true,
@@ -48,12 +62,12 @@ const BreakingNewsTicker = () => {
                   className="d-inline-flex align-items-center"
                 >
                   {breakingNewsItems.map((item, idx) => (
-                    <div key={idx} className="text-truncate px-3">
+                    <div key={item.id} className="text-truncate px-3">
                       <Link
                         className="text-white text-uppercase font-weight-semi-bold"
-                        to="#"
+                        to={`/articles/${item.id}`}
                       >
-                        {item}
+                        {`${idx + 1}. ${item.headline}`}
                       </Link>
                     </div>
                   ))}
