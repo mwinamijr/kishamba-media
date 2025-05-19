@@ -17,7 +17,10 @@ import NotFoundPage from "./screens/404Page";
 import RegisterScreen from "./screens/RegisterScreen";
 import AdminDashboard from "./screens/admin/AdminDashboard";
 import PrivateAdminRoute from "./screens/protected/PrivateAdminRoute";
-import { PrivateRoute } from "./screens/protected/PrivateRoute";
+import {
+  PrivateReporterOrEditorRoute,
+  PrivateRoute,
+} from "./screens/protected/PrivateRoute";
 import Unauthorized from "./screens/admin/Unauthorized";
 import AddUser from "./screens/admin/AddUser";
 import UserProfile from "./screens/admin/UserProfile";
@@ -34,6 +37,7 @@ import EditorDashboard from "./screens/editor/EditorDashboard";
 import AddArticle from "./screens/editor/AddArticle";
 import ArticleDetails from "./screens/editor/ArticleDetails";
 import UpdateArticle from "./screens/editor/UpdateArticle";
+import ImageUploader from "./screens/reporter/ImageUploader";
 
 const AppContent = () => {
   const location = useLocation();
@@ -51,6 +55,14 @@ const AppContent = () => {
         <Route path="/sports" element={<SportsScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
+        <Route
+          path="/upload"
+          element={
+            <PrivateReporterOrEditorRoute>
+              <ImageUploader />
+            </PrivateReporterOrEditorRoute>
+          }
+        />
         <Route
           path="/admin"
           element={

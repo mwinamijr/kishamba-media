@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ManageComments from "../admin/ManageComments";
 import ManagePosts from "../reporter/ManagePosts";
 import ManageArticles from "../reporter/ManageArticles";
+import ImageUploader from "../reporter/ImageUploader";
 
 const EditorDashboard = () => {
   const [activeTab, setActiveTab] = useState("articles");
@@ -14,6 +15,8 @@ const EditorDashboard = () => {
         return <ManageArticles />;
       case "comments":
         return <ManageComments />;
+      case "images":
+        return <ImageUploader />;
       default:
         return null;
     }
