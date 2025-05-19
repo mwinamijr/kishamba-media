@@ -6,8 +6,8 @@ import { nodejsUrl } from "../utils";
 // Async thunk to fetch images
 export const fetchImages = createAsyncThunk("images/fetchImages", async () => {
   try {
-    const response = await axios.get(`${nodejsUrl}/uploads`);
-    return response.data; // Axios automatically parses JSON
+    const response = await axios.get(`${nodejsUrl}/api/images`);
+    return response.data.images;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Failed to fetch images");
   }

@@ -8,6 +8,7 @@ const ManageImages = () => {
   const dispatch = useDispatch();
   const { images, loading, error } = useSelector((state) => state.fetchImages);
   const [copiedUrl, setCopiedUrl] = useState("");
+  console.log(images);
 
   useEffect(() => {
     dispatch(fetchImages());
@@ -40,25 +41,25 @@ const ManageImages = () => {
             <div key={index} className="col-md-4 mb-4">
               <div className="card h-100 shadow-sm">
                 <img
-                  src={img.url}
+                  src={img}
                   className="card-img-top"
-                  alt={img.name}
+                  alt={img}
                   style={{ objectFit: "cover", height: "200px" }}
                 />
                 <div className="card-body">
-                  <h6 className="card-title text-truncate">{img.name}</h6>
+                  <h6 className="card-title text-truncate">{img}</h6>
                   <input
                     className="form-control mb-2"
                     type="text"
                     readOnly
-                    value={img.url}
+                    value={img}
                     onClick={(e) => e.target.select()}
                   />
                   <button
                     className="btn btn-sm btn-outline-primary"
-                    onClick={() => handleCopy(img.url)}
+                    onClick={() => handleCopy(img)}
                   >
-                    {copiedUrl === img.url ? "Copied!" : "Copy URL"}
+                    {copiedUrl === img ? "Copied!" : "Copy URL"}
                   </button>
                 </div>
               </div>
