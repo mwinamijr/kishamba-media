@@ -33,14 +33,22 @@ const PostUpdate = () => {
     setContentBlocks(updated);
   };
 
-  const moveBlock = (index, direction) => {
-    const newIndex = index + direction;
-    if (newIndex < 0 || newIndex >= contentBlocks.length) return;
-
+  const moveBlock = (index, directionOrPosition) => {
     const updated = [...contentBlocks];
-    const temp = updated[index];
-    updated[index] = updated[newIndex];
-    updated[newIndex] = temp;
+    const blockToMove = updated[index];
+
+    if (directionOrPosition === 'top') {
+      updated.splice(index, 1);
+      updated.unshift(blockToMove);
+    } else if (directionOrPosition === 'bottom') {
+      updated.splice(index, 1);
+      updated.push(blockToMove);
+    } else {
+      const newIndex = index + directionOrPosition;
+      if (newIndex < 0 || newIndex >= contentBlocks.length) return;
+      [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
+    }
+
     setContentBlocks(updated);
   };
 
@@ -92,6 +100,22 @@ const PostUpdate = () => {
                   disabled={index === contentBlocks.length - 1}
                 >
                   ↓
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-secondary me-1"
+                  onClick={() => moveBlock(index, 'top')}
+                  disabled={index === 0}
+                >
+                  ⬆ Top
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-secondary me-1"
+                  onClick={() => moveBlock(index, 'bottom')}
+                  disabled={index === contentBlocks.length - 1}
+                >
+                  ⬇ Bottom
                 </button>
                 <button
                   type="button"

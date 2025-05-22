@@ -4,11 +4,11 @@ import { nodejsUrl } from "../utils";
 
 export const uploadImage = createAsyncThunk(
   "imageUpload/uploadImage",
-  async ({ imageFile, name }, { rejectWithValue }) => {
+  async ({ imageFile, title }, { rejectWithValue }) => {
     try {
       const formData = new FormData();
       formData.append("image", imageFile);
-      if (name) formData.append("name", name);
+      if (title) formData.append("title", title);
 
       const response = await axios.post(
         `${nodejsUrl}/api/upload-image`,
@@ -42,6 +42,7 @@ const imageUploadSlice = createSlice({
       state.filename = null;
       state.loading = false;
       state.error = null;
+      state.successUpload = false;
     },
   },
   extraReducers: (builder) => {
