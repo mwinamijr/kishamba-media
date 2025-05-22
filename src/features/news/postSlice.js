@@ -79,7 +79,7 @@ export const fetchPostDetails = createAsyncThunk(
 // UPDATE post
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
-  async ({ id, postData }, { getState, rejectWithValue }) => {
+  async ({ id, updatedData }, { getState, rejectWithValue }) => {
     try {
       const {
         auth: { userInfo },
@@ -90,9 +90,10 @@ export const updatePost = createAsyncThunk(
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
+      console.log(updatedData);
       const response = await axios.put(
         `${nodejsUrl}/api/posts/${id}`,
-        postData,
+        updatedData,
         config
       );
       return response.data;

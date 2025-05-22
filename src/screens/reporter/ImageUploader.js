@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { uploadImage } from "../../features/images/imageUploadSlice";
 import Cropper from "react-easy-crop";
 import { useDropzone } from "react-dropzone";
 import getCroppedImg from "../../components/CropImageHelper";
-import { Link } from "react-router-dom"; // ✅ import Link
 
 function ImageUploader() {
   const dispatch = useDispatch();
-  const { imageUrl, loading, error } = useSelector(
+  const navigate = useNavigate();
+  const { imageUrl, loading, error, successUpload } = useSelector(
     (state) => state.imageUpload
   );
 
@@ -45,6 +46,12 @@ function ImageUploader() {
     );
     dispatch(uploadImage({ imageFile: croppedFile, title }));
   };
+
+  useEffect(() => {
+    if (successUpload) {
+      navigate("/posts");
+    }
+  }, [successUpload, navigate]);
 
   return (
     <div className="container mt-5 mb-5">

@@ -1,4 +1,3 @@
-// src/features/imageUpload/imageUploadSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nodejsUrl } from "../utils";
@@ -35,6 +34,7 @@ const imageUploadSlice = createSlice({
     filename: null,
     loading: false,
     error: null,
+    successUpload: false,
   },
   reducers: {
     clearUpload(state) {
@@ -52,6 +52,7 @@ const imageUploadSlice = createSlice({
       })
       .addCase(uploadImage.fulfilled, (state, action) => {
         state.loading = false;
+        state.successUpload = true;
         state.imageUrl = action.payload.url;
         state.filename = action.payload.filename;
       })
