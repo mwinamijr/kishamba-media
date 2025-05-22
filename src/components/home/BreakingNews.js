@@ -13,9 +13,9 @@ const BreakingNewsTicker = () => {
     dispatch(fetchArticles());
   }, [dispatch]);
 
-  // Get top 2 breaking news items
   const breakingNewsItems = articles
     ?.filter((article) => article.isBreaking)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 2)
     .map((article) => ({
       id: article._id,
