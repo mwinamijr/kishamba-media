@@ -17,7 +17,7 @@ function ImageUploader() {
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropSize, setCropSize] = useState({ width: 700, height: 435 });
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
 
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader();
@@ -43,7 +43,7 @@ function ImageUploader() {
       croppedAreaPixels,
       cropSize
     );
-    dispatch(uploadImage({ imageFile: croppedFile, name }));
+    dispatch(uploadImage({ imageFile: croppedFile, title }));
   };
 
   return (
@@ -91,8 +91,8 @@ function ImageUploader() {
           <input
             type="text"
             placeholder="Optional name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             style={{ marginTop: 10 }}
           />
 

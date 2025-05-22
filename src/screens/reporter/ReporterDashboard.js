@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ManagePosts from "./ManagePosts";
 import ManageArticles from "./ManageArticles";
 import ManageComments from "../admin/ManageComments";
+import ManageImages from "../editor/ManageImages";
 
 const ReporterDashboard = () => {
   const [activeTab, setActiveTab] = useState("posts");
@@ -14,6 +15,8 @@ const ReporterDashboard = () => {
         return <ManageArticles />;
       case "comments":
         return <ManageComments />;
+      case "images":
+        return <ManageImages />;
       default:
         return null;
     }
@@ -46,6 +49,14 @@ const ReporterDashboard = () => {
             onClick={() => setActiveTab("comments")}
           >
             Comments
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "images" ? "active" : ""}`}
+            onClick={() => setActiveTab("images")}
+          >
+            Images
           </button>
         </li>
       </ul>
