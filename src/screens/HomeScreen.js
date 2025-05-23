@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import NewsCarousel from "../components/home/NewsSlider";
 import BreakingNewsTicker from "../components/home/BreakingNews";
 import TopFeature from "../components/home/TopFeature";
-import FeaturedNews from "../components/home/FeaturedNews";
+import InternationalNews from "../components/home/InternationalNews";
 import LatestNews from "../components/home/LatestNews";
 import FollowUs from "../components/home/Followus";
 import TrendingNews from "../components/home/TrendingNews";
@@ -39,7 +39,7 @@ const Home = () => {
 
       <div className="container-fluid">
         <div className="custom-container">
-          <FeaturedNews />
+          <InternationalNews />
           <div className="row">
             <div className="col-lg-8">
               <WhatsNew />
