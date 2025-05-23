@@ -20,7 +20,7 @@ const AddArticle = () => {
     category: "",
     tags: "",
     isBreaking: false,
-    published: false,
+    published: true,
     post: "",
   });
 

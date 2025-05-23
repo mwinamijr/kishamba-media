@@ -51,7 +51,7 @@ const MostViewedSports = () => {
   return (
     <div>
       <div className="border-bottom mb-4">
-        <h2 className="my-4">Most Views News</h2>
+        <h2 className="my-4">International Sports</h2>
       </div>
       <Slider {...settings}>
         {mostViewedNews.map((item, index) => (

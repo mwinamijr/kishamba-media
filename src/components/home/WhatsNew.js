@@ -52,7 +52,6 @@ export default function WhatsNew({ articles = [], loading }) {
       items: sorted.slice(1, 6),
     };
   }, [processedArticles, tabCategory]);
-  console.log(filteredArticles);
 
   return (
     <div className="mb-5">

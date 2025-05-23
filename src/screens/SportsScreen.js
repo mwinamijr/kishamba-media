@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import SportsContent from "../components/sports/SportsContent";
+import InternationalSports from "../components/sports/InternationalSports";
 import PopularSports from "../components/sports/PopularSports";
 import FollowUs from "../components/home/Followus";
-import TopSports from "../components/sports/TopSports";
-import MostViewedSports from "../components/sports/MostViewedSports";
+import LocalSports from "../components/sports/LocalSports";
+import OtherSports from "../components/sports/OtherSports";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArticles } from "../features/news/articleSlice";
 
@@ -34,7 +34,7 @@ function SportsScreen() {
       image:
         article.image ||
         getFirstImageFromContentBlocks(article.post?.contentBlocks) ||
-        "/img/news-110x110-1.jpg",
+        "/img/news-1.jpg",
     };
   });
 
@@ -50,13 +50,13 @@ function SportsScreen() {
 
         {error && <p className="text-danger">{error}</p>}
 
-        <TopSports articles={articles} loading={loading} />
+        <LocalSports articles={sportsArticles} loading={loading} />
         <div className="row">
           <div className="col-12 col-sm-10 col-md-9 col-lg-8">
             <br />
-            <MostViewedSports articles={articles} loading={loading} />
+            <OtherSports articles={sportsArticles} loading={loading} />
             <br />
-            <SportsContent articles={articles} loading={loading} />
+            <InternationalSports articles={sportsArticles} loading={loading} />
           </div>
           <div className="col-lg-4">
             <br />
