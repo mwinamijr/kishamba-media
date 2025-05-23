@@ -1,19 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { fetchArticles } from "../../features/news/articleSlice";
-import { useDispatch, useSelector } from "react-redux";
 
-const TrendingNews = () => {
-  const dispatch = useDispatch();
-
-  const { loading, error, articles } = useSelector(
-    (state) => state.getArticles
-  );
-
-  useEffect(() => {
-    dispatch(fetchArticles());
-  }, [dispatch]);
-
+const TrendingNews = ({ articles = [], loading }) => {
   // Helper to get first image URL from contentBlocks
   const getFirstImageFromContentBlocks = (contentBlocks) => {
     if (!contentBlocks || contentBlocks.length === 0) return null;
@@ -53,7 +41,6 @@ const TrendingNews = () => {
       </div>
 
       {loading && <p className="text-danger">Loading ...</p>}
-      {error && <p className="text-danger">{error}</p>}
 
       <div className="bg-white border border-top-0 p-3">
         {trendingNews.map((news, index) => (

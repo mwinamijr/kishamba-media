@@ -1,31 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import { fetchArticles } from "../../features/news/articleSlice";
-import { useDispatch, useSelector } from "react-redux";
 
-const InternationalNews = () => {
-  const dispatch = useDispatch();
-
-  const { loading, error, articles } = useSelector(
-    (state) => state.getArticles
-  );
-
-  useEffect(() => {
-    dispatch(fetchArticles());
-  }, [dispatch]);
-
-  // Helper to get first image URL from contentBlocks
+const InternationalNews = ({ articles = [], loading }) => {
   const getFirstImageFromContentBlocks = (contentBlocks) => {
-    if (!contentBlocks || contentBlocks.length === 0) return null;
-
+    if (!contentBlocks?.length) return null;
     const firstImageBlock = contentBlocks.find(
       (block) => block.type === "image"
     );
-    return firstImageBlock ? firstImageBlock.imageUrl : null;
+    return firstImageBlock?.imageUrl ?? null;
   };
 
-  // Process articles: filter ones with "international" tag and assign fallback image
   const internationalArticles = articles
     .filter(
       (article) =>
@@ -73,7 +58,6 @@ const InternationalNews = () => {
       </div>
 
       {loading && <p className="text-danger">Loading...</p>}
-      {error && <p className="text-danger">{error}</p>}
 
       <Slider {...settings}>
         {internationalArticles.map((item, index) => (

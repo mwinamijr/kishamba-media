@@ -1,18 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import { fetchArticles } from "../../features/news/articleSlice";
 
-const BreakingNewsTicker = () => {
-  const dispatch = useDispatch();
-
-  const { articles } = useSelector((state) => state.getArticles);
-
-  useEffect(() => {
-    dispatch(fetchArticles());
-  }, [dispatch]);
-
+const BreakingNewsTicker = ({ articles = [] }) => {
   const breakingNewsItems = articles
     ?.filter((article) => article.isBreaking)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))

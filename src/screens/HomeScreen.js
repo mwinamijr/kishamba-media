@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { fetchArticles } from "../features/news/articleSlice";
+
 import NewsCarousel from "../components/home/NewsSlider";
 import BreakingNewsTicker from "../components/home/BreakingNews";
 import TopFeature from "../components/home/TopFeature";
@@ -24,6 +27,15 @@ const tags = [
 ];
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { articles, loading, error } = useSelector(
+    (state) => state.getArticles
+  );
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, [dispatch]);
+
   return (
     <>
       <Helmet>
@@ -33,21 +45,22 @@ const Home = () => {
         <meta name="description" content="Kishamba media home page" />
       </Helmet>
 
+      {error && <p className="text-danger">{error}</p>}
+
       <NewsCarousel />
-      <BreakingNewsTicker />
+      <BreakingNewsTicker articles={articles} />
       <TopFeature />
 
       <div className="container-fluid">
         <div className="custom-container">
-          <InternationalNews />
+          <InternationalNews articles={articles} loading={loading} />
           <div className="row">
             <div className="col-lg-8">
-              <WhatsNew />
-              <LatestNews />
+              <WhatsNew articles={articles} loading={loading} />
+              <LatestNews articles={articles} loading={loading} />
             </div>
-            <div class="col-lg-4">
+            <div className="col-lg-4">
               <FollowUs />
-
               <div className="mb-3">
                 <div className="section-title mb-0">
                   <h4 className="m-0 text-uppercase font-weight-bold">
@@ -64,9 +77,7 @@ const Home = () => {
                   </Link>
                 </div>
               </div>
-
-              <TrendingNews />
-
+              <TrendingNews articles={articles} loading={loading} />
               <div className="mb-4">
                 <div className="section-title mb-0">
                   <h4 className="m-0 text-uppercase font-weight-bold">Tags</h4>
@@ -85,7 +96,6 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-
               <div className="mb-3">
                 <div className="section-title mb-0">
                   <h4 className="m-0 text-uppercase font-weight-bold">
