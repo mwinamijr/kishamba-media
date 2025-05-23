@@ -29,7 +29,7 @@ function NewsScreen() {
             <div className="col-12 col-sm-10 col-md-9 col-lg-8">
               <NewsArticle />
             </div>
-            <div class="col-lg-4">
+            <div className="col-lg-4">
               <FollowUs />
 
               <div className="mb-3">

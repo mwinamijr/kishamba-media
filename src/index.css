@@ -38,3 +38,21 @@
 .nav-link:hover {
   color: #ffffff !important;
 }
+
+.latest-news-item.fixed-height {
+  height: 100%;
+  min-height: 420px; /* Adjust this value as needed */
+  display: flex;
+  flex-direction: column;
+}
+
+.image-wrapper {
+  height: 200px;
+  overflow: hidden;
+}
+
+.image-wrapper img.object-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

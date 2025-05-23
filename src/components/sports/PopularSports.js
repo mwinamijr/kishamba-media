@@ -21,22 +21,32 @@ export default function PopularSports({ articles = [], loading }) {
           <div className="col-12" key={index}>
             <div className="row g-4 align-items-center features-item">
               <div className="col-4">
-                <div className="rounded-circle position-relative p-3">
-                  <div className="overflow-hidden rounded-circle">
+                <div className="position-relative">
+                  <div
+                    className="rounded-circle overflow-hidden m-1"
+                    style={{ width: "100px", height: "100px" }}
+                  >
                     <img
                       src={item.image}
-                      className="img-zoomin img-fluid rounded-circle"
+                      className="img-fluid w-100 h-100"
+                      style={{ objectFit: "cover" }}
                       alt={item.category}
                     />
                   </div>
                   <span
-                    className="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                    style={{ top: "10%", right: "20px" }}
+                    className="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute d-flex align-items-center justify-content-center"
+                    style={{
+                      top: "5px",
+                      right: "10px",
+                      width: "30px",
+                      height: "30px",
+                    }}
                   >
                     {item.views}
                   </span>
                 </div>
               </div>
+
               <div className="col-8">
                 <div className="features-content d-flex flex-column">
                   <p className="text-uppercase mb-2">{item.category}</p>

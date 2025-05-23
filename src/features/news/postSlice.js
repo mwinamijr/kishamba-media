@@ -90,7 +90,6 @@ export const updatePost = createAsyncThunk(
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      console.log(updatedData);
       const response = await axios.put(
         `${nodejsUrl}/api/posts/${id}`,
         updatedData,

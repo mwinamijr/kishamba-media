@@ -131,7 +131,7 @@ export default function WhatsNew({ articles = [], loading }) {
                       <div className="col-7">
                         <div className="features-content d-flex flex-column">
                           <p className="text-uppercase mb-2">{item.category}</p>
-                          <Link to="#" className="h6">
+                          <Link to={`/news/${item._id}`} className="h6">
                             {`${item.headline?.slice(0, 30)}...` ||
                               "Untitled Article"}
                           </Link>

@@ -6,6 +6,7 @@ import LocalSports from "../components/sports/LocalSports";
 import OtherSports from "../components/sports/OtherSports";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArticles } from "../features/news/articleSlice";
+import { Helmet } from "react-helmet";
 
 function SportsScreen() {
   const dispatch = useDispatch();
@@ -44,28 +45,40 @@ function SportsScreen() {
   );
 
   return (
-    <div className="container-fluid">
-      <div className="custom-container">
-        <br />
+    <>
+      <Helmet>
+        <title>Kishamba Media | Sports</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="Kishamba media home page" />
+        <meta name="description" content="Kishamba media home page" />
+      </Helmet>
 
-        {error && <p className="text-danger">{error}</p>}
+      <div className="container-fluid">
+        <div className="custom-container">
+          <br />
 
-        <LocalSports articles={sportsArticles} loading={loading} />
-        <div className="row">
-          <div className="col-12 col-sm-10 col-md-9 col-lg-8">
-            <br />
-            <OtherSports articles={sportsArticles} loading={loading} />
-            <br />
-            <InternationalSports articles={sportsArticles} loading={loading} />
-          </div>
-          <div className="col-lg-4">
-            <br />
-            <FollowUs />
-            <PopularSports articles={sportsArticles} loading={loading} />
+          {error && <p className="text-danger">{error}</p>}
+
+          <LocalSports articles={sportsArticles} loading={loading} />
+          <div className="row">
+            <div className="col-12 col-sm-10 col-md-9 col-lg-8">
+              <br />
+              <OtherSports articles={sportsArticles} loading={loading} />
+              <br />
+              <InternationalSports
+                articles={sportsArticles}
+                loading={loading}
+              />
+            </div>
+            <div className="col-lg-4">
+              <br />
+              <FollowUs />
+              <PopularSports articles={sportsArticles} loading={loading} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

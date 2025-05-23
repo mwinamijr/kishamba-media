@@ -105,27 +105,37 @@ const LocalSports = ({ articles = [], loading }) => {
           <div className="row g-4">
             {remainingArticles.map((article, index) => (
               <div className="col-12 mt-2" key={article.id || index}>
-                <div className="row align-items-center">
-                  <div className="col-5">
-                    <div className="overflow-hidden p-1">
+                <div
+                  className="row align-items-stretch g-0 border rounded overflow-hidden h-100"
+                  style={{ minHeight: "100px", maxHeight: "130px" }} // you can adjust this height as needed
+                >
+                  <div className="col-5 d-flex">
+                    <div className="overflow-hidden w-100 h-100">
                       <img
                         src={article.image || "img/default.jpg"}
-                        className="img-zoomin img-fluid w-100"
+                        className="img-fluid w-100 h-100"
+                        style={{ objectFit: "cover" }}
                         alt={article.headline}
                       />
                     </div>
                   </div>
-                  <div className="col-7">
-                    <div className="features-content d-flex flex-column">
-                      <Link to={`/news/${article._id}`} className="h6">
-                        {article.headline}
+                  <div className="col-7 d-flex flex-column justify-content-center p-2">
+                    <div className="features-content">
+                      <Link
+                        to={`/news/${article._id}`}
+                        className="h6 d-block mb-1"
+                      >
+                        {article.headline.length > 50
+                          ? `${article.headline.slice(0, 50)}...`
+                          : article.headline}
                       </Link>
-                      <small>
-                        <i className="fa fa-clock"></i>{" "}
+                      <small className="d-block">
+                        <i className="fa fa-clock me-1"></i>
                         {article.readTime || "06"} minute read
                       </small>
                       <small>
-                        <i className="fa fa-eye"></i> {article.views} Views
+                        <i className="fa fa-eye me-1"></i>
+                        {article.views} Views
                       </small>
                     </div>
                   </div>
