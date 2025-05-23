@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NewsletterSubscription from "./home/NewsLetter";
+import FooterTrending from "./home/FooterTrending";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchArticles } from "../features/news/articleSlice";
 
 const Footer = () => {
+  const dispatch = useDispatch();
+  const { articles, loading } = useSelector((state) => state.getArticles);
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, [dispatch]);
   return (
     <>
       <div className="container-fluid bg-dark pt-3 px-sm-3 px-md-5 mt-2 text-white">
@@ -60,32 +69,7 @@ const Footer = () => {
           </div>
 
           {/* Popular News */}
-          <div className="col-lg-3 col-md-6 mb-3">
-            <h5 className="mb-4 text-uppercase font-weight-bold text-white">
-              Popular News
-            </h5>
-            {[1, 2, 3].map((_, idx) => (
-              <div key={idx} className="mb-3">
-                <div className="mb-2">
-                  <Link
-                    className="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2"
-                    to="#"
-                  >
-                    Business
-                  </Link>
-                  <Link className="text-body" to="#">
-                    <small>Jan 01, 2045</small>
-                  </Link>
-                </div>
-                <Link
-                  className="small text-body text-uppercase font-weight-medium"
-                  to="#"
-                >
-                  Lorem ipsum dolor sit amet elit. Proin vitae porta diam...
-                </Link>
-              </div>
-            ))}
-          </div>
+          <FooterTrending articles={articles} loading={loading} />
 
           {/* Categories */}
           <div className="col-lg-3 col-md-6 mb-3">

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import BreakingNewsTicker from "../components/home/BreakingNews";
 import FollowUs from "../components/home/Followus";
 import TrendingNews from "../components/home/TrendingNews";
 import NewsArticle from "../components/single-news/NewsArticle";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchArticles } from "../features/news/articleSlice";
 
 const tags = [
   "Politics",
@@ -19,10 +21,22 @@ const tags = [
 ];
 
 function NewsScreen() {
+  const dispatch = useDispatch();
+
+  const { articles, loading, error } = useSelector(
+    (state) => state.getArticles
+  );
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, [dispatch]);
+
   return (
     <>
       <br />
-      <BreakingNewsTicker />
+      {error && <p className="text-danger">{error}</p>}
+
+      <BreakingNewsTicker articles={articles} loading={loading} />
       <div className="container-fluid">
         <div className="custom-container">
           <div className="row">
