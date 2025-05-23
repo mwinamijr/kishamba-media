@@ -1,51 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const popularNews = [
-  {
-    img: "img/features-sports-1.jpg",
-    category: "Sports",
-    title: "Get the best speak market, news.",
-    date: "December 9, 2024",
-    badge: 3,
-  },
-  {
-    img: "img/features-technology.jpg",
-    category: "Technology",
-    title: "Get the best speak market, news.",
-    date: "December 9, 2024",
-    badge: 3,
-  },
-  {
-    img: "img/features-fashion.jpg",
-    category: "Fashion",
-    title: "Get the best speak market, news.",
-    date: "December 9, 2024",
-    badge: 3,
-  },
-  {
-    img: "img/features-life-style.jpg",
-    category: "Life Style",
-    title: "Get the best speak market, news.",
-    date: "December 9, 2024",
-    badge: 3,
-  },
-];
+export default function PopularSports({ articles = [], loading }) {
+  // Filter and sort the top 5 trending articles
+  const popularSports = articles
+    .filter((article) => article.views !== undefined) // filter out invalid articles
+    .sort((a, b) => {
+      if (b.views === a.views) {
+        return new Date(b.createdAt) - new Date(a.createdAt); // newer first if views equal
+      }
+      return b.views - a.views; // higher views first
+    })
+    .slice(0, 5); // take top 5
 
-export default function PopularSports() {
   return (
     <>
       <h4 className="my-4">Popular News</h4>
       <div className="row g-4">
-        {popularNews.map((item, index) => (
+        {popularSports.map((item, index) => (
           <div className="col-12" key={index}>
             <div className="row g-4 align-items-center features-item">
               <div className="col-4">
                 <div className="rounded-circle position-relative p-3">
                   <div className="overflow-hidden rounded-circle">
                     <img
-                      src={item.img}
-                      className="img-zoomin img-fluid rounded-circle w-100"
+                      src={item.image}
+                      className="img-zoomin img-fluid rounded-circle"
                       alt={item.category}
                     />
                   </div>
@@ -53,18 +33,19 @@ export default function PopularSports() {
                     className="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
                     style={{ top: "10%", right: "20px" }}
                   >
-                    {item.badge}
+                    {item.views}
                   </span>
                 </div>
               </div>
               <div className="col-8">
                 <div className="features-content d-flex flex-column">
                   <p className="text-uppercase mb-2">{item.category}</p>
-                  <Link to="#" className="h6">
-                    {item.title}
+                  <Link to={`/news/${item._id}`} className="h6">
+                    {`${item.headline?.slice(0, 30)}...` || "Untitled Article"}
                   </Link>
                   <small className="text-body d-block">
-                    <i className="fas fa-calendar-alt me-1"></i> {item.date}
+                    <i className="fas fa-calendar-alt me-1"></i>{" "}
+                    {new Date(item.createdAt).toLocaleDateString()}
                   </small>
                 </div>
               </div>
