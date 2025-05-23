@@ -8,6 +8,33 @@ import {
 } from "../../features/news/articleSlice";
 import { fetchPosts } from "../../features/news/postSlice";
 
+const categoryOptions = [
+  { value: "politics", label: "Politics" },
+  { value: "sports", label: "Sports" },
+  { value: "business", label: "Business" },
+  { value: "technology", label: "Technology" },
+  { value: "health", label: "Health" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "fashion", label: "Fashion" },
+  { value: "life style", label: "Life style" },
+];
+
+const tagOptions = [
+  { value: "sports", label: "Sports" },
+  { value: "AI", label: "AI" },
+  { value: "football", label: "Football" },
+  { value: "soccer", label: "Soccer" },
+  { value: "health", label: "Health" },
+  { value: "local", label: "Local" },
+  { value: "international", label: "International" },
+  { value: "F1", label: "F1" },
+  { value: "racing", label: "Racing" },
+  { value: "basketball", label: "Basketball" },
+  { value: "cricket", label: "Cricket" },
+  { value: "tennis", label: "Tennis" },
+  { value: "stock market", label: "Stock Market" },
+];
+
 const UpdateArticle = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -19,8 +46,8 @@ const UpdateArticle = () => {
   const [formData, setFormData] = useState({
     headline: "",
     summary: "",
-    category: "",
-    tags: "",
+    category: null,
+    tags: [],
     isBreaking: false,
     published: false,
     post: "",
@@ -36,8 +63,18 @@ const UpdateArticle = () => {
       setFormData({
         headline: article.headline || "",
         summary: article.summary || "",
-        category: article.category || "",
-        tags: article.tags?.join(", ") || "",
+        category: article.category
+          ? categoryOptions.find((c) => c.value === article.category)
+          : null,
+        tags: Array.isArray(article.tags)
+          ? article.tags.map(
+              (tag) =>
+                tagOptions.find((t) => t.value === tag) || {
+                  value: tag,
+                  label: tag,
+                }
+            )
+          : [],
         isBreaking: article.isBreaking || false,
         published: article.published || false,
         post: article.post || "",
@@ -45,11 +82,11 @@ const UpdateArticle = () => {
     }
   }, [article]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: checked,
     }));
   };
 
@@ -71,8 +108,13 @@ const UpdateArticle = () => {
     e.preventDefault();
 
     const updatedData = {
-      ...formData,
-      tags: formData.tags.split(",").map((tag) => tag.trim()),
+      headline: formData.headline,
+      summary: formData.summary,
+      category: formData.category?.value || "",
+      tags: formData.tags.map((tag) => tag.value),
+      isBreaking: formData.isBreaking,
+      published: formData.published,
+      post: formData.post,
     };
 
     dispatch(updateArticle({ id, articleData: updatedData })).then((res) => {
@@ -99,7 +141,6 @@ const UpdateArticle = () => {
       </nav>
 
       <h2>Update Article</h2>
-
       {error && <p className="text-danger">{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -132,7 +173,6 @@ const UpdateArticle = () => {
             name="headline"
             className="form-control"
             value={formData.headline}
-            onChange={handleChange}
             readOnly
           />
         </div>
@@ -143,31 +183,32 @@ const UpdateArticle = () => {
             name="summary"
             className="form-control"
             value={formData.summary}
-            onChange={handleChange}
             readOnly
           />
         </div>
 
         <div className="mb-3">
           <label>Category</label>
-          <input
-            type="text"
-            name="category"
-            className="form-control"
+          <Select
             value={formData.category}
-            onChange={handleChange}
-            required
+            onChange={(selected) =>
+              setFormData((prev) => ({ ...prev, category: selected }))
+            }
+            options={categoryOptions}
+            placeholder="Select category"
           />
         </div>
 
         <div className="mb-3">
-          <label>Tags (comma-separated)</label>
-          <input
-            type="text"
-            name="tags"
-            className="form-control"
+          <label>Tags</label>
+          <Select
+            isMulti
             value={formData.tags}
-            onChange={handleChange}
+            onChange={(selected) =>
+              setFormData((prev) => ({ ...prev, tags: selected }))
+            }
+            options={tagOptions}
+            placeholder="Select tags"
           />
         </div>
 
@@ -177,7 +218,7 @@ const UpdateArticle = () => {
             name="isBreaking"
             className="form-check-input"
             checked={formData.isBreaking}
-            onChange={handleChange}
+            onChange={handleCheckboxChange}
           />
           <label className="form-check-label">Breaking News</label>
         </div>
@@ -188,7 +229,7 @@ const UpdateArticle = () => {
             name="published"
             className="form-check-input"
             checked={formData.published}
-            onChange={handleChange}
+            onChange={handleCheckboxChange}
           />
           <label className="form-check-label">Published</label>
         </div>

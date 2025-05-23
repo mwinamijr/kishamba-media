@@ -5,6 +5,33 @@ import { createArticle } from "../../features/news/articleSlice";
 import { fetchPosts } from "../../features/news/postSlice";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 
+const categoryOptions = [
+  { value: "politics", label: "Politics" },
+  { value: "sports", label: "Sports" },
+  { value: "business", label: "Business" },
+  { value: "technology", label: "Technology" },
+  { value: "health", label: "Health" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "fashion", label: "Fashion" },
+  { value: "life style", label: "Life style" },
+];
+
+const tagOptions = [
+  { value: "sports", label: "Sports" },
+  { value: "AI", label: "AI" },
+  { value: "football", label: "Football" },
+  { value: "soccer", label: "Soccer" },
+  { value: "health", label: "Health" },
+  { value: "local", label: "Local" },
+  { value: "international", label: "International" },
+  { value: "F1", label: "F1" },
+  { value: "racing", label: "Racing" },
+  { value: "basketball", label: "Basketball" },
+  { value: "cricket", label: "Cricket" },
+  { value: "tennis", label: "Tennis" },
+  { value: "stock market", label: "Stock Market" },
+];
+
 const AddArticle = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
@@ -57,7 +84,9 @@ const AddArticle = () => {
 
     const data = {
       ...formData,
-      tags: formData.tags.split(",").map((tag) => tag.trim()),
+      tags: Array.isArray(formData.tags)
+        ? formData.tags
+        : formData.tags.split(",").map((tag) => tag.trim()),
     };
 
     dispatch(createArticle(data)).then((res) => {
@@ -104,10 +133,12 @@ const AddArticle = () => {
         <div className="mb-3">
           <label>Select Post</label>
           <Select
-            options={posts.map((post) => ({
-              value: post._id,
-              label: post.title,
-            }))}
+            options={[...posts]
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // sort by newest first
+              .map((post) => ({
+                value: post._id,
+                label: post.title,
+              }))}
             onChange={(selectedOption) =>
               handlePostSelect({ target: { value: selectedOption.value } })
             }
@@ -140,24 +171,36 @@ const AddArticle = () => {
 
         <div className="mb-3">
           <label>Category</label>
-          <input
-            type="text"
-            name="category"
-            className="form-control"
-            value={formData.category}
-            onChange={handleChange}
-            required
+          <Select
+            options={categoryOptions}
+            value={categoryOptions.find(
+              (opt) => opt.value === formData.category
+            )}
+            onChange={(selectedOption) =>
+              setFormData((prev) => ({
+                ...prev,
+                category: selectedOption.value,
+              }))
+            }
+            placeholder="Select category"
           />
         </div>
 
         <div className="mb-3">
-          <label>Tags (comma-separated)</label>
-          <input
-            type="text"
-            name="tags"
-            className="form-control"
-            value={formData.tags}
-            onChange={handleChange}
+          <label>Tags</label>
+          <Select
+            options={tagOptions}
+            isMulti
+            value={tagOptions.filter((opt) =>
+              formData.tags.includes(opt.value)
+            )}
+            onChange={(selectedOptions) =>
+              setFormData((prev) => ({
+                ...prev,
+                tags: selectedOptions.map((opt) => opt.value),
+              }))
+            }
+            placeholder="Select tags"
           />
         </div>
 

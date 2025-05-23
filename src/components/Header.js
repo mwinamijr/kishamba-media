@@ -212,7 +212,15 @@ const Header = () => {
                 </span>
                 <div className="dropdown-menu rounded-0 m-0">
                   <NavLink
-                    to="/menu1"
+                    to="/health"
+                    className={({ isActive }) =>
+                      `dropdown-item${isActive ? " active" : ""}`
+                    }
+                  >
+                    Health
+                  </NavLink>
+                  <NavLink
+                    to="/business"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }
@@ -220,7 +228,7 @@ const Header = () => {
                     Bussiness
                   </NavLink>
                   <NavLink
-                    to="/menu2"
+                    to="/fashion"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }
@@ -228,7 +236,7 @@ const Header = () => {
                     Fashion
                   </NavLink>
                   <NavLink
-                    to="/menu3"
+                    to="/entertainment"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }

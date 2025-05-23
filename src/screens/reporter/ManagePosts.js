@@ -30,6 +30,9 @@ const ManagePosts = () => {
           </Link>
         ))}
       </div>
+      <Link to="/posts/add" className="btn btn-primary mb-3">
+        Add Post
+      </Link>
     </div>
   );
 };

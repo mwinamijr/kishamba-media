@@ -38,6 +38,10 @@ import AddArticle from "./screens/editor/AddArticle";
 import ArticleDetails from "./screens/editor/ArticleDetails";
 import UpdateArticle from "./screens/editor/UpdateArticle";
 import ImageUploader from "./screens/reporter/ImageUploader";
+import HealthScreen from "./screens/HealthScreen";
+import FashionScreen from "./screens/FashionScreen";
+import EntertainmentScreen from "./screens/EntertainmentScreen";
+import BusinessScreen from "./screens/BusinessScreen";
 
 const AppContent = () => {
   const location = useLocation();
@@ -53,6 +57,10 @@ const AppContent = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/news/:id" element={<NewsScreen />} />
         <Route path="/sports" element={<SportsScreen />} />
+        <Route path="/health" element={<HealthScreen />} />
+        <Route path="/fashion" element={<FashionScreen />} />
+        <Route path="/entertainment" element={<EntertainmentScreen />} />
+        <Route path="/business" element={<BusinessScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route
