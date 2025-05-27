@@ -15,7 +15,7 @@ const FooterTrending = ({ articles = [], loading }) => {
   return (
     <div className="col-lg-3 col-md-6 mb-3">
       <h5 className="mb-4 text-uppercase font-weight-bold text-white">
-        Popular News
+        Habari Maarufu
       </h5>
       {trendingNews.map((item, idx) => (
         <div key={idx} className="mb-3">

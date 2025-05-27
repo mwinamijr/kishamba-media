@@ -37,7 +37,7 @@ const Header = () => {
                 </li>
                 <li className="nav-item border-right border-secondary">
                   <NavLink className="nav-link text-body small" to="#">
-                    Advertise
+                    Tangaza Nasi
                   </NavLink>
                 </li>
                 {userInfo ? (
@@ -47,7 +47,7 @@ const Header = () => {
                         className="nav-link text-body small"
                         to="/profile"
                       >
-                        Hello, {userInfo.username}
+                        Habari, {userInfo.username}
                       </NavLink>
                     </li>
                     <li className="nav-item">
@@ -55,7 +55,7 @@ const Header = () => {
                         onClick={handleLogout}
                         className="nav-link text-body small"
                       >
-                        Logout
+                        Toka Nje
                       </NavLink>
                     </li>
                     {userInfo?.role === "admin" && (
@@ -64,7 +64,7 @@ const Header = () => {
                           className="nav-link text-body small"
                           to="/admin"
                         >
-                          Admin Panel
+                          Admin Dashboard
                         </NavLink>
                       </li>
                     )}
@@ -74,7 +74,7 @@ const Header = () => {
                           className="nav-link text-body small"
                           to="/posts"
                         >
-                          Reporter Panel
+                          Reporter Dashboard
                         </NavLink>
                       </li>
                     )}
@@ -84,15 +84,15 @@ const Header = () => {
                           className="nav-link text-body small"
                           to="/articles"
                         >
-                          Editor Panel
+                          Editor Dashboard
                         </NavLink>
                       </li>
                     )}
                   </>
                 ) : (
                   <li className="nav-item">
-                    <NavLink className="nav-link text-body small" to="/login">
-                      Login
+                    <NavLink className="nav-link text-body small" to="/ingia">
+                      Ingia
                     </NavLink>
                   </li>
                 )}
@@ -140,16 +140,24 @@ const Header = () => {
           </div>
         </div>
         <div className="row align-items-center bg-white py-3 px-lg-5">
-          <div className="col-lg-4">
-            <NavLink to="/" className="navbar-brand p-0 d-none d-lg-block">
-              <h1 className="m-0 display-4 text-uppercase text-primary">
+          <div className="col-12 col-lg-4 text-center text-lg-left mb-2 mb-lg-0">
+            {/* Visible on all screen sizes */}
+            <NavLink to="/" className="navbar-brand p-0">
+              <h1
+                className="m-0 display-5 text-uppercase text-primary"
+                style={{ wordBreak: "break-word" }}
+              >
                 Kishamba
                 <span className="text-secondary font-weight-normal">Media</span>
               </h1>
             </NavLink>
           </div>
-          <div className="col-lg-8 text-center text-lg-right">
-            <img className="img-fluid" src="/img/ads-728x90.png" alt="ads" />
+          <div className="col-12 col-lg-8 text-center text-lg-right">
+            <img
+              className="img-fluid w-100 w-lg-auto"
+              src="/img/ads-728x90.png"
+              alt="ads"
+            />
           </div>
         </div>
       </div>
@@ -184,23 +192,23 @@ const Header = () => {
                 }
                 end
               >
-                Home
+                Nyumbani
               </NavLink>
               <NavLink
-                to="/sports"
+                to="/michezo"
                 className={({ isActive }) =>
                   `nav-item nav-link${isActive ? " active" : ""}`
                 }
               >
-                Sports
+                Michezo
               </NavLink>
               <NavLink
-                to="/news-details"
+                to="/kuhusu"
                 className={({ isActive }) =>
                   `nav-item nav-link${isActive ? " active" : ""}`
                 }
               >
-                Single News
+                Kuhusu
               </NavLink>
               <div className="nav-item dropdown">
                 <span
@@ -208,51 +216,51 @@ const Header = () => {
                   role="button"
                   data-toggle="dropdown"
                 >
-                  Other News
+                  Habari Nyingine
                 </span>
                 <div className="dropdown-menu rounded-0 m-0">
                   <NavLink
-                    to="/health"
+                    to="/afya"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Health
+                    Afya
                   </NavLink>
                   <NavLink
-                    to="/business"
+                    to="/biashara"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Bussiness
+                    Biashara
                   </NavLink>
                   <NavLink
-                    to="/fashion"
+                    to="/mitindo"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Fashion
+                    Mitindo
                   </NavLink>
                   <NavLink
-                    to="/entertainment"
+                    to="/burudani"
                     className={({ isActive }) =>
                       `dropdown-item${isActive ? " active" : ""}`
                     }
                   >
-                    Entertainment
+                    Burudani
                   </NavLink>
                 </div>
               </div>
 
               <NavLink
-                to="/contact"
+                to="/wasiliana-nasi"
                 className={({ isActive }) =>
                   `nav-item nav-link${isActive ? " active" : ""}`
                 }
               >
-                Contact
+                Wasiliana Nasi
               </NavLink>
             </div>
             <div

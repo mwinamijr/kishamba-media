@@ -22,7 +22,7 @@ const Contact = () => {
               <br />
               <ContactUs />
             </div>
-            <div class="col-lg-4">
+            <div className="col-lg-4">
               <br />
               <FollowUs />
 

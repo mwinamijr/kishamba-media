@@ -125,7 +125,7 @@ const ContactUs = () => {
               style={{ height: "50px" }}
               type="submit"
             >
-              Send Message
+              Tuma Ujumbe
             </button>
           </div>
         </form>

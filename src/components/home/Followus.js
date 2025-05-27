@@ -36,7 +36,7 @@ const FollowUs = () => {
   return (
     <div className="mb-3">
       <div className="section-title mb-0">
-        <h4 className="m-0 text-uppercase font-weight-bold">Follow Us</h4>
+        <h4 className="m-0 text-uppercase font-weight-bold">Tufuate</h4>
       </div>
       <div className="bg-white border border-top-0 p-3">
         {socialLinks.map((socialLink, index) => (

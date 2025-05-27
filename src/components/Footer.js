@@ -20,7 +20,7 @@ const Footer = () => {
           {/* Get In Touch */}
           <div className="col-lg-3 col-md-6 mb-3">
             <h5 className="mb-4 text-uppercase font-weight-bold text-white">
-              Get In Touch
+              Wasialiana nasi
             </h5>
             <p className="font-weight-medium">
               <i className="fa fa-map-marker-alt mr-2"></i>Kinondoni Mwanamboka,

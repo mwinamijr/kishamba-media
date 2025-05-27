@@ -53,16 +53,16 @@ const AppContent = () => {
       {!hideLayout && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/news/:id" element={<NewsScreen />} />
-        <Route path="/sports" element={<SportsScreen />} />
-        <Route path="/health" element={<HealthScreen />} />
-        <Route path="/fashion" element={<FashionScreen />} />
-        <Route path="/entertainment" element={<EntertainmentScreen />} />
-        <Route path="/business" element={<BusinessScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/kuhusu" element={<About />} />
+        <Route path="/wasiliana-nasi" element={<Contact />} />
+        <Route path="/habari/:id" element={<NewsScreen />} />
+        <Route path="/michezo" element={<SportsScreen />} />
+        <Route path="/afya" element={<HealthScreen />} />
+        <Route path="/mitindo" element={<FashionScreen />} />
+        <Route path="/burudani" element={<EntertainmentScreen />} />
+        <Route path="/biashara" element={<BusinessScreen />} />
+        <Route path="/ingia" element={<LoginScreen />} />
+        <Route path="/jiunge" element={<RegisterScreen />} />
         <Route
           path="/upload"
           element={
