@@ -21,7 +21,7 @@ export default function getCroppedImg(imageSrc, pixelCrop, cropSize) {
       );
 
       canvas.toBlob((blob) => {
-        const file = new File([blob], `cropped-${Date.now()}.jpg`, {
+        const file = new File([blob], `cropped.jpg`, {
           type: "image/jpeg",
         });
         resolve(file);
