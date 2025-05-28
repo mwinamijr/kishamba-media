@@ -6,24 +6,26 @@ import { fetchPosts } from "../../features/news/postSlice";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 
 const categoryOptions = [
-  { value: "politics", label: "Politics" },
-  { value: "sports", label: "Sports" },
-  { value: "business", label: "Business" },
-  { value: "technology", label: "Technology" },
-  { value: "health", label: "Health" },
-  { value: "entertainment", label: "Entertainment" },
-  { value: "fashion", label: "Fashion" },
-  { value: "life style", label: "Life style" },
+  { value: "siasa", label: "Siasa" },
+  { value: "michezo", label: "Michezo" },
+  { value: "biashara", label: "Biashara" },
+  { value: "teknolojia", label: "Teknolojia" },
+  { value: "afya", label: "Afya" },
+  { value: "burudani", label: "Burudani" },
+  { value: "mitindo", label: "Mitindo" },
 ];
 
 const tagOptions = [
-  { value: "sports", label: "Sports" },
+  { value: "michezo", label: "Michezo" },
   { value: "AI", label: "AI" },
   { value: "football", label: "Football" },
   { value: "soccer", label: "Soccer" },
-  { value: "health", label: "Health" },
-  { value: "local", label: "Local" },
-  { value: "international", label: "International" },
+  { value: "afya", label: "Afya" },
+  { value: "nyumbani", label: "Nyumbani" },
+  { value: "kimataifa", label: "Kimataifa" },
+  { value: "teknolojia", label: "Teknolojia" },
+  { value: "mitindo", label: "Mitindo" },
+  { value: "burudani", label: "Burudani" },
   { value: "F1", label: "F1" },
   { value: "racing", label: "Racing" },
   { value: "basketball", label: "Basketball" },
