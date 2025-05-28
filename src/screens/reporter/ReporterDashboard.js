@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ManagePosts from "./ManagePosts";
-import ManageArticles from "./ManageArticles";
+import ManageArticles from "../editor/ManageArticles";
 import ManageComments from "../admin/ManageComments";
 import ManageImages from "../editor/ManageImages";
 

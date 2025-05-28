@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ManageComments from "../admin/ManageComments";
 import ManagePosts from "../reporter/ManagePosts";
-import ManageArticles from "../reporter/ManageArticles";
+import ManageArticles from "./ManageArticles";
 import ManageImages from "./ManageImages";
 
 const EditorDashboard = () => {

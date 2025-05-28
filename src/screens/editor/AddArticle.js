@@ -26,6 +26,7 @@ const tagOptions = [
   { value: "teknolojia", label: "Teknolojia" },
   { value: "mitindo", label: "Mitindo" },
   { value: "burudani", label: "Burudani" },
+  { value: "siasa", label: "Siasa" },
   { value: "kilimo", label: "Kilimo" },
   { value: "F1", label: "F1" },
   { value: "racing", label: "Racing" },
@@ -41,8 +42,12 @@ const AddArticle = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error } = useSelector((state) => state.getArticles);
-  const { posts } = useSelector((state) => state.getPosts);
+  const {
+    loading,
+    error,
+    articles = [],
+  } = useSelector((state) => state.getArticles);
+  const { posts = [] } = useSelector((state) => state.getPosts);
 
   const [formData, setFormData] = useState({
     headline: "",
@@ -99,6 +104,15 @@ const AddArticle = () => {
     });
   };
 
+  const filteredPosts = posts.filter(
+    (post) =>
+      !articles.some(
+        (article) =>
+          article.headline?.trim().toLowerCase() ===
+          post.title?.trim().toLowerCase()
+      )
+  );
+
   return (
     <div className="container mt-4">
       <nav aria-label="breadcrumb" className="mt-3">
@@ -132,12 +146,18 @@ const AddArticle = () => {
 
       {error && <p className="text-danger">{error}</p>}
 
+      {posts.length > 0 && filteredPosts.length === 0 && (
+        <p className="text-warning">
+          All posts have already been used to create articles.
+        </p>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Select Post</label>
           <Select
-            options={[...posts]
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // sort by newest first
+            options={filteredPosts
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((post) => ({
                 value: post._id,
                 label: post.title,

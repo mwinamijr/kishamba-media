@@ -66,6 +66,12 @@ const ManageArticles = () => {
           ))}
         </tbody>
       </table>
+
+      {articles.length > 10 && (
+        <Link to="/articles/add" className="btn btn-primary mb-3">
+          Add Article
+        </Link>
+      )}
     </div>
   );
 };
