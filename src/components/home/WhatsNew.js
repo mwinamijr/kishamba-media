@@ -2,11 +2,11 @@ import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 const tabs = [
-  { id: "tab-1", title: "Sports" },
-  { id: "tab-2", title: "Entert" },
-  { id: "tab-3", title: "Politics" },
-  { id: "tab-4", title: "Technology" },
-  { id: "tab-5", title: "Fashion" },
+  { id: "tab-1", title: "Michezo" },
+  { id: "tab-2", title: "Burudani" },
+  { id: "tab-3", title: "Siasa" },
+  { id: "tab-4", title: "Teknolojia" },
+  { id: "tab-5", title: "Afya" },
 ];
 
 export default function WhatsNew({ articles = [], loading }) {
@@ -14,11 +14,11 @@ export default function WhatsNew({ articles = [], loading }) {
 
   const tabCategory = useMemo(() => {
     const tabMap = {
-      "tab-1": "sports",
-      "tab-2": "entertainment",
-      "tab-3": "politics",
-      "tab-4": "technology",
-      "tab-5": "fashion",
+      "tab-1": "michezo",
+      "tab-2": "burudani",
+      "tab-3": "siasa",
+      "tab-4": "teknolojia",
+      "tab-5": "afya",
     };
     return tabMap[activeTab];
   }, [activeTab]);
