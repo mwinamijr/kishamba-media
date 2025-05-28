@@ -1,17 +1,45 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import NewsletterSubscription from "./home/NewsLetter";
 import FooterTrending from "./home/FooterTrending";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArticles } from "../features/news/articleSlice";
+import {
+  clearAuthError,
+  loginUser,
+  logoutUser,
+} from "../features/users/authSlice";
 
 const Footer = () => {
   const dispatch = useDispatch();
-  const { articles, loading } = useSelector((state) => state.getArticles);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { userInfo, loading } = useSelector((state) => state.auth);
+  const { articles, loading: articleLoading } = useSelector(
+    (state) => state.getArticles
+  );
 
   useEffect(() => {
     dispatch(fetchArticles());
   }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthError());
+    };
+  }, [dispatch]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(loginUser({ email, password }));
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <>
       <div className="container-fluid bg-dark pt-3 px-sm-3 px-md-5 mt-2 text-white">
@@ -69,42 +97,88 @@ const Footer = () => {
           </div>
 
           {/* Popular News */}
-          <FooterTrending articles={articles} loading={loading} />
+          <FooterTrending articles={articles} loading={articleLoading} />
 
-          {/* Categories */}
+          {/* Staff login */}
           <div className="col-lg-3 col-md-6 mb-3">
             <h5 className="mb-4 text-uppercase font-weight-bold text-white">
-              Categories
+              {userInfo ? "Habari, " : "Staff Login"}
             </h5>
-            <div className="m-n1">
-              {[
-                "Politics",
-                "Business",
-                "Corporate",
-                "Business",
-                "Health",
-                "Education",
-                "Science",
-                "Business",
-                "Foods",
-                "Entertainment",
-                "Travel",
-                "Lifestyle",
-                "Politics",
-                "Business",
-                "Corporate",
-                "Business",
-                "Health",
-                "Education",
-                "Science",
-                "Business",
-                "Foods",
-              ].map((category, idx) => (
-                <Link key={idx} to="#" className="btn btn-sm btn-secondary m-1">
-                  {category}
-                </Link>
-              ))}
-            </div>
+
+            {userInfo ? (
+              <div className="text-body">
+                <p className="mb-2 font-weight-bold">{userInfo.username}</p>
+                <NavLink to="/profile" className="d-block mb-2 text-body small">
+                  View Profile
+                </NavLink>
+
+                {userInfo.role === "admin" && (
+                  <NavLink to="/admin" className="d-block mb-2 text-body small">
+                    Admin Dashboard
+                  </NavLink>
+                )}
+
+                {userInfo.role === "reporter" && (
+                  <NavLink to="/posts" className="d-block mb-2 text-body small">
+                    Reporter Dashboard
+                  </NavLink>
+                )}
+
+                {userInfo.role === "editor" && (
+                  <NavLink
+                    to="/articles"
+                    className="d-block mb-2 text-body small"
+                  >
+                    Editor Dashboard
+                  </NavLink>
+                )}
+
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-outline-light btn-sm mt-2 rounded-pill px-3"
+                >
+                  Toka Nje
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <div className="form-group mb-3">
+                  <label htmlFor="email" className="text-muted small">
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control py-2 rounded-pill"
+                    id="email"
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group mb-3">
+                  <label htmlFor="password" className="text-muted small">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control py-2 rounded-pill"
+                    id="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100 py-2 rounded-pill"
+                  disabled={loading}
+                >
+                  {loading ? "Logging in..." : "Login"}
+                </button>
+              </form>
+            )}
           </div>
 
           {/* Flickr Photos */}
