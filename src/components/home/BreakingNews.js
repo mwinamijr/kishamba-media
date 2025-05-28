@@ -55,7 +55,7 @@ const BreakingNewsTicker = ({ articles = [] }) => {
                     <div key={item.id} className="text-truncate px-3">
                       <Link
                         className="text-white text-uppercase font-weight-semi-bold"
-                        to={`/news/${item.id}`}
+                        to={`/habari/${item.id}`}
                       >
                         {`${idx + 1}. ${item.headline}`}
                       </Link>

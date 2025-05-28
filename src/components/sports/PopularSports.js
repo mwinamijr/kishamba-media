@@ -50,7 +50,7 @@ export default function PopularSports({ articles = [], loading }) {
               <div className="col-8">
                 <div className="features-content d-flex flex-column">
                   <p className="text-uppercase mb-2">{item.category}</p>
-                  <Link to={`/news/${item._id}`} className="h6">
+                  <Link to={`/habari/${item._id}`} className="h6">
                     {`${item.headline?.slice(0, 30)}...` || "Untitled Article"}
                   </Link>
                   <small className="text-body d-block">

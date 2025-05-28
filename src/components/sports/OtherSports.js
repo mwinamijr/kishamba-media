@@ -47,7 +47,7 @@ const OtherSports = ({ articles = [], loading }) => {
                 />
               </div>
               <div className="d-flex flex-column justify-content-between p-4 flex-grow-1">
-                <Link to={`/news/${item._id}`} className="h5 mb-2">
+                <Link to={`/habari/${item._id}`} className="h5 mb-2">
                   {item.headline}
                 </Link>
                 <div className="d-flex justify-content-between mt-auto small text-body">

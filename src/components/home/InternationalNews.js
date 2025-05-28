@@ -89,7 +89,7 @@ const InternationalNews = ({ articles = [], loading }) => {
                 </div>
                 <Link
                   className="h6 m-0 text-white text-uppercase font-weight-semi-bold"
-                  to={`/news/${item._id}`}
+                  to={`/habari/${item._id}`}
                 >
                   {item.title.length > 40
                     ? `${item.title.slice(0, 40)}...`

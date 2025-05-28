@@ -32,7 +32,7 @@ const FooterTrending = ({ articles = [], loading }) => {
           </div>
           <Link
             className="small text-body text-uppercase font-weight-medium"
-            to={`/news/${item._id}`}
+            to={`/habari/${item._id}`}
           >
             {item.headline.length > 40
               ? `${item.headline.slice(0, 40)}...`

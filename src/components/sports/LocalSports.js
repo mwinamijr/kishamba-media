@@ -123,7 +123,7 @@ const LocalSports = ({ articles = [], loading }) => {
                   <div className="col-7 d-flex flex-column justify-content-center p-2">
                     <div className="features-content">
                       <Link
-                        to={`/news/${article._id}`}
+                        to={`/habari/${article._id}`}
                         className="h6 d-block mb-1"
                       >
                         {article.headline.length > 50

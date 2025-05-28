@@ -69,7 +69,7 @@ const TrendingNews = ({ articles = [], loading }) => {
               </div>
               <Link
                 className="h6 m-0 text-secondary text-uppercase font-weight-bold"
-                to={`/news/${news._id}`}
+                to={`/habari/${news._id}`}
               >
                 {`${news.headline?.slice(0, 40)}...` || "Untitled Article"}
               </Link>

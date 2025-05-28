@@ -72,7 +72,7 @@ const InternationalSports = ({ articles = [], loading }) => {
                 <div className="row align-items-center">
                   <div className="col-12">
                     <div className="features-content d-flex flex-column">
-                      <Link to={`/news/${article._id}`} className="h6">
+                      <Link to={`/habari/${article._id}`} className="h6">
                         {article.headline}
                       </Link>
                       <small>
