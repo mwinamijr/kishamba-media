@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const InternationalSports = ({ articles = [], loading }) => {
   const localSports = articles.filter(
     (article) =>
-      Array.isArray(article.tags) && article.tags.includes("international")
+      Array.isArray(article.tags) && article.tags.includes("kimataifa")
   );
 
   const sortedLocal = [...localSports].sort(

@@ -41,7 +41,7 @@ function HealthScreen() {
 
   // Filter and sort the top 5 trending articles
   const healthArticles = processedArticles.filter(
-    (article) => article.category === "health"
+    (article) => article.category === "afya"
   );
 
   return (

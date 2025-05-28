@@ -41,7 +41,7 @@ function EntertainmentScreen() {
 
   // Filter and sort the top 5 trending articles
   const healthArticles = processedArticles.filter(
-    (article) => article.category === "entertainment"
+    (article) => article.category === "burudani"
   );
 
   return (

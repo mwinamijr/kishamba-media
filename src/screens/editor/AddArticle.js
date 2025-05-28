@@ -26,6 +26,7 @@ const tagOptions = [
   { value: "teknolojia", label: "Teknolojia" },
   { value: "mitindo", label: "Mitindo" },
   { value: "burudani", label: "Burudani" },
+  { value: "kilimo", label: "Kilimo" },
   { value: "F1", label: "F1" },
   { value: "racing", label: "Racing" },
   { value: "basketball", label: "Basketball" },

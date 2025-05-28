@@ -41,7 +41,7 @@ function FashionScreen() {
 
   // Filter and sort the top 5 trending articles
   const healthArticles = processedArticles.filter(
-    (article) => article.category === "fashion"
+    (article) => article.category === "mitindo"
   );
 
   return (

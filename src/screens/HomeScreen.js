@@ -14,16 +14,16 @@ import TrendingNews from "../components/home/TrendingNews";
 import WhatsNew from "../components/home/WhatsNew";
 
 const tags = [
-  "Politics",
-  "Business",
-  "Corporate",
-  "Business",
-  "Health",
+  "Siasa",
+  "Biashara",
+  "Burudani",
+  "Kilimo",
+  "Afya",
   "Education",
-  "Science",
-  "Business",
-  "Foods",
-  "Travel",
+  "Sayansi",
+  "Biashara",
+  "Chakula",
+  "Safari",
 ];
 
 const Home = () => {

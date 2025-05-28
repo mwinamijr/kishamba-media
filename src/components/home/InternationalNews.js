@@ -17,8 +17,8 @@ const InternationalNews = ({ articles = [], loading }) => {
         Array.isArray(article.tags) &&
         article.tags.some((tag) =>
           typeof tag === "string"
-            ? tag.toLowerCase() === "international"
-            : tag.name?.toLowerCase() === "international"
+            ? tag.toLowerCase() === "kimataifa"
+            : tag.name?.toLowerCase() === "kimataifa"
         )
     )
     .map((article) => ({

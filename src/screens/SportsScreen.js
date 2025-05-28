@@ -41,7 +41,7 @@ function SportsScreen() {
 
   // Filter and sort the top 5 trending articles
   const sportsArticles = processedArticles.filter(
-    (article) => article.category === "sports"
+    (article) => article.category === "michezo"
   );
 
   return (
