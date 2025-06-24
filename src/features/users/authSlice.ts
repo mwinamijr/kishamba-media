@@ -1,5 +1,5 @@
-// features/auth/authSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nodejsUrl } from "../utils";
 
@@ -56,9 +56,7 @@ export const loginUser = createAsyncThunk<
     localStorage.setItem("userInfo", JSON.stringify(response.data));
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(
-      error.response?.data?.message || "Login failed"
-    );
+    return rejectWithValue(error.response?.data?.message || "Login failed");
   }
 });
 
@@ -125,11 +123,14 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserInfo>) => {
-        state.loading = false;
-        state.userInfo = action.payload;
-        state.isAuthenticated = true;
-      })
+      .addCase(
+        loginUser.fulfilled,
+        (state, action: PayloadAction<UserInfo>) => {
+          state.loading = false;
+          state.userInfo = action.payload;
+          state.isAuthenticated = true;
+        }
+      )
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Login failed";
@@ -157,11 +158,14 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action: PayloadAction<UserInfo>) => {
-        state.loading = false;
-        state.userInfo = action.payload;
-        state.isAuthenticated = true;
-      })
+      .addCase(
+        registerUser.fulfilled,
+        (state, action: PayloadAction<UserInfo>) => {
+          state.loading = false;
+          state.userInfo = action.payload;
+          state.isAuthenticated = true;
+        }
+      )
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "User registration failed";

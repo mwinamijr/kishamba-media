@@ -1,8 +1,9 @@
-// features/users/userSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nodejsUrl } from "../utils";
 import type { RootState } from "../../app/store"; // adjust import to your store location
+import { getAuthConfig } from "../../utils/authHeader";
 
 // Define User interface according to your API response shape
 export interface User {
@@ -39,16 +40,14 @@ export const fetchUsers = createAsyncThunk<
   { state: RootState; rejectValue: string }
 >("users/fetchUsers", async (_, { getState, rejectWithValue }) => {
   try {
-    const {
-      auth: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    const response = await axios.get<User[]>(`${nodejsUrl}/api/auth/users`, config);
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
+    }
+    const response = await axios.get<User[]>(
+      `${nodejsUrl}/api/auth/users`,
+      config
+    );
     return response.data;
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
@@ -62,15 +61,10 @@ export const getUserDetails = createAsyncThunk<
   { state: RootState; rejectValue: string }
 >("users/getUserDetails", async (id, { getState, rejectWithValue }) => {
   try {
-    const {
-      auth: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
+    }
     const response = await axios.get<User>(
       `${nodejsUrl}/api/auth/users/${id}/profile`,
       config
@@ -89,16 +83,15 @@ export const createUser = createAsyncThunk<
   { state: RootState; rejectValue: string }
 >("users/createUser", async (userData, { getState, rejectWithValue }) => {
   try {
-    const {
-      auth: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    const response = await axios.post<User>(`${nodejsUrl}/api/auth/create`, userData, config);
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
+    }
+    const response = await axios.post<User>(
+      `${nodejsUrl}/api/auth/create`,
+      userData,
+      config
+    );
     return response.data;
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
@@ -112,7 +105,10 @@ export const updateUser = createAsyncThunk<
   { rejectValue: string }
 >("users/updateUser", async ({ id, userData }, { rejectWithValue }) => {
   try {
-    const response = await axios.put<User>(`${nodejsUrl}/api/auth/users/${id}/profile`, userData);
+    const response = await axios.put<User>(
+      `${nodejsUrl}/api/auth/users/${id}/profile`,
+      userData
+    );
     return response.data;
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
@@ -126,7 +122,9 @@ export const deleteUser = createAsyncThunk<
   { rejectValue: string }
 >("users/deleteUser", async (id, { rejectWithValue }) => {
   try {
-    const response = await axios.delete<{ message: string }>(`${nodejsUrl}/api/auth/users/${id}`);
+    const response = await axios.delete<{ message: string }>(
+      `${nodejsUrl}/api/auth/users/${id}`
+    );
     return response.data;
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
@@ -180,10 +178,13 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(getUserDetails.fulfilled, (state, action: PayloadAction<User>) => {
-        state.loading = false;
-        state.user = action.payload;
-      })
+      .addCase(
+        getUserDetails.fulfilled,
+        (state, action: PayloadAction<User>) => {
+          state.loading = false;
+          state.user = action.payload;
+        }
+      )
       .addCase(getUserDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "User details not found";

@@ -12,21 +12,7 @@ import FollowUs from "../components/home/Followus";
 import TrendingNews from "../components/home/TrendingNews";
 import WhatsNew from "../components/home/WhatsNew";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-
-type Article = {
-  // define your article fields here, example:
-  id: number;
-  title: string;
-  // add other fields your article has
-};
-
-type RootState = {
-  getArticles: {
-    articles: Article[];
-    loading: boolean;
-    error: string | null;
-  };
-};
+import type { RootState } from "../app/store";
 
 const tags = [
   "Siasa",

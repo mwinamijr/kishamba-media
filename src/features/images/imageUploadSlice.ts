@@ -1,5 +1,5 @@
-// features/images/imageUploadSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nodejsUrl } from "../utils";
 
@@ -47,9 +47,7 @@ export const uploadImage = createAsyncThunk<
       return response.data;
     } catch (err: any) {
       // err might not have response or data, so safe check
-      return rejectWithValue(
-        err.response?.data?.error || "Upload failed"
-      );
+      return rejectWithValue(err.response?.data?.error || "Upload failed");
     }
   }
 );

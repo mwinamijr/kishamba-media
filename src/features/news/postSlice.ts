@@ -1,8 +1,9 @@
-// features/posts/postSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nodejsUrl } from "../utils";
 import type { RootState } from "../../app/store"; // adjust import path to your store
+import { getAuthConfig } from "../../utils/authHeader";
 
 // Define Post interface based on your API response
 export interface Post {
@@ -31,76 +32,61 @@ export const createPost = createAsyncThunk<
   Post,
   PostCreateUpdateData,
   { state: RootState; rejectValue: string }
->(
-  "posts/createPost",
-  async (postData, { getState, rejectWithValue }) => {
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const response = await axios.post<Post>(`${nodejsUrl}/api/posts`, postData, config);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+>("posts/createPost", async (postData, { getState, rejectWithValue }) => {
+  try {
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
     }
+    const response = await axios.post<Post>(
+      `${nodejsUrl}/api/posts`,
+      postData,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
   }
-);
+});
 
 // FETCH all posts
 export const fetchPosts = createAsyncThunk<
   Post[],
   void,
   { state: RootState; rejectValue: string }
->(
-  "posts/fetchPosts",
-  async (_, { getState, rejectWithValue }) => {
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const response = await axios.get<Post[]>(`${nodejsUrl}/api/posts`, config);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+>("posts/fetchPosts", async (_, { getState, rejectWithValue }) => {
+  try {
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
     }
+    const response = await axios.get<Post[]>(`${nodejsUrl}/api/posts`, config);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
   }
-);
+});
 
 // GET post details
 export const fetchPostDetails = createAsyncThunk<
   Post,
   string | number,
   { state: RootState; rejectValue: string }
->(
-  "posts/fetchPostDetails",
-  async (id, { getState, rejectWithValue }) => {
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const response = await axios.get<Post>(`${nodejsUrl}/api/posts/${id}`, config);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+>("posts/fetchPostDetails", async (id, { getState, rejectWithValue }) => {
+  try {
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
     }
+    const response = await axios.get<Post>(
+      `${nodejsUrl}/api/posts/${id}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
   }
-);
+});
 
 // UPDATE post
 export const updatePost = createAsyncThunk<
@@ -111,16 +97,15 @@ export const updatePost = createAsyncThunk<
   "posts/updatePost",
   async ({ id, updatedData }, { getState, rejectWithValue }) => {
     try {
-      const {
-        auth: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const response = await axios.put<Post>(`${nodejsUrl}/api/posts/${id}`, updatedData, config);
+      const config = getAuthConfig(getState, rejectWithValue);
+      if (!config) {
+        return rejectWithValue("User is not authenticated");
+      }
+      const response = await axios.put<Post>(
+        `${nodejsUrl}/api/posts/${id}`,
+        updatedData,
+        config
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
@@ -133,25 +118,21 @@ export const deletePost = createAsyncThunk<
   { message: string },
   string | number,
   { state: RootState; rejectValue: string }
->(
-  "posts/deletePost",
-  async (id, { getState, rejectWithValue }) => {
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const response = await axios.delete<{ message: string }>(`${nodejsUrl}/api/posts/${id}`, config);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+>("posts/deletePost", async (id, { getState, rejectWithValue }) => {
+  try {
+    const config = getAuthConfig(getState, rejectWithValue);
+    if (!config) {
+      return rejectWithValue("User is not authenticated");
     }
+    const response = await axios.delete<{ message: string }>(
+      `${nodejsUrl}/api/posts/${id}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
   }
-);
+});
 
 interface PostsState {
   posts: Post[];
@@ -208,10 +189,13 @@ const postSlice = createSlice({
       .addCase(fetchPostDetails.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchPostDetails.fulfilled, (state, action: PayloadAction<Post>) => {
-        state.loading = false;
-        state.post = action.payload;
-      })
+      .addCase(
+        fetchPostDetails.fulfilled,
+        (state, action: PayloadAction<Post>) => {
+          state.loading = false;
+          state.post = action.payload;
+        }
+      )
       .addCase(fetchPostDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Failed to load post";
