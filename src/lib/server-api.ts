@@ -21,8 +21,8 @@ export function getPublishedArticles(params: { category?: string; page?: number 
   return apiFetch<Paginated<Article>>(`/articles?${qs.toString()}`);
 }
 
-export function getArticleBySlug(slug: string) {
-  return apiFetch<Article>(`/articles/${slug}`, 30);
+export function getArticleBySlug(slug: string, revalidate = 30) {
+  return apiFetch<Article>(`/articles/${slug}`, revalidate);
 }
 
 export function getCategories() {

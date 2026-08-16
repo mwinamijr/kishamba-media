@@ -142,20 +142,20 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 
 ```bash
 cp .env.example .env.local   # point at your running backend, see ../backend/README.md §5
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
-Requires the backend running and seeded (`npm run prisma:seed` there) so
+Requires the backend running and seeded (`pnpm run prisma:seed` there) so
 `/api/categories` returns data — the header nav and category pages depend
 on it.
 
 ## 7. Verifying a build
 
 ```bash
-npm install
-npx tsc --noEmit    # type-check
-npm run build        # production build
+pnpm install
+pnpm exec tsc --noEmit    # type-check
+pnpm run build        # production build
 ```
 
 If `next/font/google` fails to fetch in a network-restricted environment

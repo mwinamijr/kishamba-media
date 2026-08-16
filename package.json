@@ -2,6 +2,7 @@
   "name": "kishamba-media-frontend",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@9.12.0",
   "description": "Kishamba Media — news platform frontend (Next.js App Router)",
   "scripts": {
     "dev": "next dev",

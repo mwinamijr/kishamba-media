@@ -5,3 +5,8 @@ out
 .env.local
 *.tsbuildinfo
 next-env.d.ts
+
+# This project uses pnpm — commit pnpm-lock.yaml, ignore other package
+# managers' lockfiles so they don't drift out of sync with it.
+package-lock.json
+yarn.lock
