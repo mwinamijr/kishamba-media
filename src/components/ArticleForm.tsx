@@ -8,6 +8,7 @@ import {
   useUpdateArticleMutation,
 } from "@/lib/api";
 import type { Article, ContentBlock } from "@/types/api";
+import ImageUploader from "./ImageUploader";
 
 interface EditableBlock extends ContentBlock {
   _key: string; // local-only React key, not sent to the backend
@@ -247,12 +248,13 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
               </div>
 
               {block.type === "image" ? (
-                <input
-                  value={block.imageUrl}
-                  onChange={(e) => updateBlock(block._key, { imageUrl: e.target.value })}
-                  placeholder="Image URL (from /api/uploads)"
-                  className="mt-2 w-full rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
-                />
+                <div className="mt-2">
+                  <ImageUploader
+                    value={block.imageUrl}
+                    onChange={(url) => updateBlock(block._key, { imageUrl: url })}
+                    articleId={initial?.id}
+                  />
+                </div>
               ) : (
                 <textarea
                   value={block.text}

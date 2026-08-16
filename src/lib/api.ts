@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
   Article,
+  ArticleImage,
   ArticleRevision,
   ArticleStatus,
   Category,
@@ -20,7 +21,7 @@ export const api = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
     credentials: "include", // sends the httpOnly session cookie set by the backend
   }),
-  tagTypes: ["Article", "Category", "Comment", "Me", "User"],
+  tagTypes: ["Article", "Category", "Comment", "Me", "User", "Image"],
   endpoints: (builder) => ({
     // --- Auth ---------------------------------------------------------
     getMe: builder.query<{ user: User }, void>({
@@ -137,6 +138,25 @@ export const api = createApi({
       }),
       invalidatesTags: (_r, _e, { articleId }) => [{ type: "Comment", id: articleId }],
     }),
+
+    // --- Media ---------------------------------------------------------
+    // formData must contain the file under field name "image", plus
+    // optionally "name" (custom title) and "articleId" (link immediately).
+    // fetchBaseQuery passes FormData through untouched — it only
+    // JSON-stringifies plain objects, so the browser sets the multipart
+    // Content-Type/boundary itself.
+    uploadImage: builder.mutation<ArticleImage, FormData>({
+      query: (formData) => ({ url: "/uploads", method: "POST", body: formData }),
+      invalidatesTags: [{ type: "Image", id: "LIST" }],
+    }),
+    getImages: builder.query<ArticleImage[], void>({
+      query: () => "/uploads",
+      providesTags: [{ type: "Image", id: "LIST" }],
+    }),
+    deleteImage: builder.mutation<{ message: string }, string>({
+      query: (id) => ({ url: `/uploads/${id}`, method: "DELETE" }),
+      invalidatesTags: [{ type: "Image", id: "LIST" }],
+    }),
   }),
 });
 
@@ -160,4 +180,7 @@ export const {
   useGetArticleRevisionsQuery,
   useGetCommentsQuery,
   useCreateCommentMutation,
+  useUploadImageMutation,
+  useGetImagesQuery,
+  useDeleteImageMutation,
 } = api;

@@ -14,6 +14,11 @@ const SECTIONS = [
     description: "Simamia kategoria za habari zinazoonekana kwenye tovuti.",
   },
   {
+    href: "/admin/media",
+    title: "Picha",
+    description: "Ona na simamia picha zote zilizopakiwa.",
+  },
+  {
     href: "/newsroom",
     title: "Newsroom",
     description: "Bodi ya uhariri — rasimu, ukaguzi, uchapishaji.",

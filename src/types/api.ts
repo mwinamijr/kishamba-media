@@ -69,6 +69,8 @@ export interface ArticleImage {
   id: string;
   title?: string | null;
   url: string;
+  mimeType?: string;
+  size?: number;
 }
 
 export interface Article {
