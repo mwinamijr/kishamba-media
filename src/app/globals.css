@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* No Bootstrap here — Tailwind is the only styling system in this app.
+   See frontend/README.md §2 issue #1 for why the old Vite app had two
+   competing CSS frameworks loaded at once. */
+
+body {
+  @apply bg-paper text-ink;
+}
