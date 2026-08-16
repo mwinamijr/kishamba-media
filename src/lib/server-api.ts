@@ -16,8 +16,15 @@ async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
 // comments) goes through the RTK Query api slice in lib/api.ts instead —
 // both hit the same REST endpoints.
 
-export function getPublishedArticles(params: { category?: string; page?: number } = {}) {
-  const qs = new URLSearchParams({ status: "PUBLISHED", ...(params as Record<string, string>) });
+export function getPublishedArticles(
+  params: { category?: string; q?: string; tag?: string; page?: number; pageSize?: number } = {}
+) {
+  const qs = new URLSearchParams({ status: "PUBLISHED" });
+  if (params.category) qs.set("category", params.category);
+  if (params.q) qs.set("q", params.q);
+  if (params.tag) qs.set("tag", params.tag);
+  if (params.page) qs.set("page", String(params.page));
+  if (params.pageSize) qs.set("pageSize", String(params.pageSize));
   return apiFetch<Paginated<Article>>(`/articles?${qs.toString()}`);
 }
 

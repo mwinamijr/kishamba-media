@@ -117,6 +117,7 @@ new you build here):
 - **Admin dashboard**: user list with pagination, inline role assignment (gated by `user:assign_role`, admin-level roles further gated to admin-level grantors — mirrors the backend's self-escalation guard), account creation with one-time password display, account deletion; category management (create/edit/delete, inline editing); media library (grid view of all uploaded images, delete gated by `media:manage`)
 - Shared dashboard layout (`app/(dashboard)/layout.tsx`) — nav tabs between Newsroom and Admin
 - **Image upload** (`components/ImageUploader.tsx`) — file picker with live preview, uploads immediately on selection, wired into the article authoring form's image blocks; falls back to a plain URL field for external images. Images are stored as bytes directly in Postgres by the backend, not S3 — see `../backend/README.md` §2.1. No crop/resize step (the old app's `react-easy-crop` flow wasn't ported — noted as a gap, not silently dropped)
+- **Search** (`app/tafuta/page.tsx` + `components/SearchBox.tsx`) — server-rendered results using the backend's `?q=` filter, paginated, linked from the header search icon. A basic substring match today, not a real search engine — see the root ROADMAP's suggestions section for when that's worth upgrading (Meilisearch/Algolia)
 
 ### 🔶 Half-done
 - `middleware.ts` protects routes by cookie presence only, not verified role — see the note above
@@ -125,7 +126,6 @@ new you build here):
 
 ### ⬜ Not done
 - Image crop/resize before upload
-- Search page/UI (backend already supports `?q=` filtering)
 - Home page carousel/slider for featured stories
 - Tag management UI (tags are currently only created implicitly via an article's `tagNames` — no dedicated CRUD page)
 - A shared `Button` primitive (buttons are currently ad-hoc Tailwind per use)
