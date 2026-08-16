@@ -106,20 +106,23 @@ new you build here):
 - Public pages: home, category (data-driven), article (full SEO metadata + `NewsArticle` JSON-LD), About, Contact, 404
 - Auth pages: login, register — cookie session set by the backend
 - `middleware.ts` — edge route protection for `/admin`, `/newsroom`, `/profile` (checks cookie presence; each protected page still needs a server-side role/permission check via `getMe`, since the edge runtime can't easily verify a JWT the same way the Node backend does)
-- RTK Query API slice + server-side fetch helper
+- RTK Query API slice + server-side fetch helper — now covers auth, user administration, categories, articles, and comments
 - Shared TypeScript types matching the backend's Prisma schema exactly, including all 13 RBAC roles
+- Client-side permission mirror (`lib/permissions.ts`) for UI gating — hides actions a role can't perform; the backend remains the real enforcement point
 - Design system primitives: `ArticleCard`, `SectionHeader`, `Badge`
 - `Header` (data-driven nav), `Footer`
 - `CommentsSection` — recursive comment tree, RTK Query mutation for posting
-- Unified newsroom board — lists articles, shows status-appropriate workflow action buttons, cache auto-invalidates on every transition
+- Unified newsroom board — lists articles, shows status-appropriate workflow action buttons, cache auto-invalidates on every transition, links to the article authoring form
+- **Article authoring form** (`components/ArticleForm.tsx`) — one form for both create and edit, with a block editor (add/remove/reorder paragraph/subheading/quote/image/embed blocks), category/tag/dateline/breaking-news fields, and a required correction note when editing an already-published article
+- **Admin dashboard**: user list with pagination, inline role assignment (gated by `user:assign_role`, admin-level roles further gated to admin-level grantors — mirrors the backend's self-escalation guard), account creation with one-time password display, account deletion; category management (create/edit/delete, inline editing)
+- Shared dashboard layout (`app/(dashboard)/layout.tsx`) — nav tabs between Newsroom and Admin
 
 ### 🔶 Half-done
-- Newsroom board shows workflow actions but has **no article creation/edit form yet** — `createArticle`/`updateArticle` mutations exist in the API slice but nothing in the UI calls them
 - `middleware.ts` protects routes by cookie presence only, not verified role — see the note above
 - Registration POSTs directly instead of going through the RTK Query slice (intentional for now — it's a one-off action unlike login/logout, which are reused across auth-gated UI state)
+- Admin dashboard has no UI yet for assigning a `SECTION_EDITOR`'s category scope (backend requires this via Prisma Studio for now — see `../backend/README.md` §3.5)
 
 ### ⬜ Not done
-- Admin dashboard (user management, role assignment UI — the backend endpoint `PUT /api/auth/users/:id/role` is ready, no UI yet)
 - Image upload UI (crop/dropzone flow) — the backend endpoint (`POST /api/uploads`) is ready
 - Search page/UI (backend already supports `?q=` filtering)
 - Home page carousel/slider for featured stories
@@ -145,6 +148,15 @@ cp .env.example .env.local   # point at your running backend, see ../backend/REA
 pnpm install
 pnpm run dev
 ```
+
+**Note on `pnpm-workspace.yaml`:** this file exists solely to allowlist the
+build scripts for `sharp` and `unrs-resolver` (native dependencies pulled
+in by Next.js) via `onlyBuiltDependencies` — pnpm 10+ blocks build scripts
+for unlisted dependencies by default as a supply-chain-security measure. It
+does **not** make this a pnpm workspace/monorepo; the `packages: ["."]`
+entry is required by pnpm's schema whenever the file exists at all, even
+for a single package. If you see a `sharp`/`unrs-resolver` build-scripts
+prompt anyway, run `pnpm approve-builds`.
 
 Requires the backend running and seeded (`pnpm run prisma:seed` there) so
 `/api/categories` returns data — the header nav and category pages depend

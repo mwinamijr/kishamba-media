@@ -7,6 +7,7 @@ import type {
   Comment,
   ContentBlock,
   Paginated,
+  Role,
   User,
 } from "@/types/api";
 
@@ -19,7 +20,7 @@ export const api = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
     credentials: "include", // sends the httpOnly session cookie set by the backend
   }),
-  tagTypes: ["Article", "Category", "Comment", "Me"],
+  tagTypes: ["Article", "Category", "Comment", "Me", "User"],
   endpoints: (builder) => ({
     // --- Auth ---------------------------------------------------------
     getMe: builder.query<{ user: User }, void>({
@@ -35,10 +36,49 @@ export const api = createApi({
       invalidatesTags: ["Me"],
     }),
 
+    // --- User administration (ADMIN/SUPER_ADMIN, see backend/README.md §4) ---
+    getUsers: builder.query<Paginated<User>, { page?: number } | void>({
+      query: (params) => ({ url: "/auth/users", params: params ?? undefined }),
+      providesTags: (result) =>
+        result
+          ? [...result.data.map((u) => ({ type: "User" as const, id: u.id })), { type: "User" as const, id: "LIST" }]
+          : [{ type: "User" as const, id: "LIST" }],
+    }),
+    createUserByAdmin: builder.mutation<
+      { user: User; tempPassword: string },
+      { username: string; email: string; role?: Role; phone?: string; firstName?: string; lastName?: string }
+    >({
+      query: (body) => ({ url: "/auth/create", method: "POST", body }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
+    }),
+    assignUserRole: builder.mutation<User, { id: string; role: Role }>({
+      query: ({ id, role }) => ({ url: `/auth/users/${id}/role`, method: "PUT", body: { role } }),
+      invalidatesTags: (_r, _e, { id }) => [{ type: "User", id }, { type: "User", id: "LIST" }],
+    }),
+    deleteUser: builder.mutation<{ message: string }, string>({
+      query: (id) => ({ url: `/auth/users/${id}`, method: "DELETE" }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
+    }),
+
     // --- Categories -----------------------------------------------------
     getCategories: builder.query<Category[], void>({
       query: () => "/categories",
-      providesTags: ["Category"],
+      providesTags: (result) =>
+        result
+          ? [...result.map((c) => ({ type: "Category" as const, id: c.id })), { type: "Category" as const, id: "LIST" }]
+          : [{ type: "Category" as const, id: "LIST" }],
+    }),
+    createCategory: builder.mutation<Category, { name: string; description?: string }>({
+      query: (body) => ({ url: "/categories", method: "POST", body }),
+      invalidatesTags: [{ type: "Category", id: "LIST" }],
+    }),
+    updateCategory: builder.mutation<Category, { id: string; name: string; description?: string }>({
+      query: ({ id, ...body }) => ({ url: `/categories/${id}`, method: "PUT", body }),
+      invalidatesTags: (_r, _e, { id }) => [{ type: "Category", id }, { type: "Category", id: "LIST" }],
+    }),
+    deleteCategory: builder.mutation<{ message: string }, string>({
+      query: (id) => ({ url: `/categories/${id}`, method: "DELETE" }),
+      invalidatesTags: [{ type: "Category", id: "LIST" }],
     }),
 
     // --- Articles ---------------------------------------------------------
@@ -104,7 +144,14 @@ export const {
   useGetMeQuery,
   useLoginMutation,
   useLogoutMutation,
+  useGetUsersQuery,
+  useCreateUserByAdminMutation,
+  useAssignUserRoleMutation,
+  useDeleteUserMutation,
   useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
   useGetArticlesQuery,
   useGetArticleBySlugQuery,
   useCreateArticleMutation,
