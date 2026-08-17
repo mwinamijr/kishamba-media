@@ -2,19 +2,29 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useGetMeQuery } from "@/lib/api";
+import { canAccessRoute } from "@/lib/route-access";
 
 const TABS = [
   { href: "/newsroom", label: "Newsroom" },
   { href: "/admin", label: "Admin" },
+  { href: "/profile", label: "Wasifu" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { data: me } = useGetMeQuery();
+
+  // Only show tabs this role can actually get into — a plain reader on
+  // /profile shouldn't see dead "Newsroom"/"Admin" links that just bounce
+  // them straight back (middleware.ts enforces this either way; this just
+  // keeps the nav honest about it).
+  const tabs = TABS.filter((tab) => !me || canAccessRoute(me.user.role, tab.href));
 
   return (
     <div>
       <nav className="mb-6 flex gap-1 border-b border-secondary-50">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const active = pathname?.startsWith(tab.href);
           return (
             <Link

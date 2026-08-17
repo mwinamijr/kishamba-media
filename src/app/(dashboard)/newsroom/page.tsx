@@ -2,34 +2,77 @@
 
 import Link from "next/link";
 import { useGetArticlesQuery, useTransitionArticleStatusMutation, useGetMeQuery } from "@/lib/api";
-import type { Article, ArticleStatus } from "@/types/api";
+import type { Article, ArticleStatus, User } from "@/types/api";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
-import { PERMISSIONS, hasPermission } from "@/lib/permissions";
+import { PERMISSIONS, hasPermission, isScopedToArticle, type Permission } from "@/lib/permissions";
 
 // One unified editorial board, status-aware actions per article, spanning
 // the whole newsroom workflow instead of siloed per-role dashboards.
 // Because transitionArticleStatus invalidates the "Article" list tag,
 // clicking any action below refetches this list automatically — no manual
 // refresh logic needed.
-
-const NEXT_ACTIONS: Partial<Record<ArticleStatus, { label: string; next: ArticleStatus }[]>> = {
-  DRAFT: [{ label: "Submit for review", next: "IN_REVIEW" }],
+//
+// RBAC-aware in two ways, mirroring backend/controllers/articleController.js
+// exactly (see TRANSITIONS/TRANSITION_PERMISSION there):
+//  1. Each action only renders if the viewer actually holds the permission
+//     it requires — not just any signed-in newsroom user sees every button
+//     regardless of role, previously.
+//  2. A SECTION_EDITOR only sees actions on articles inside their assigned
+//     categories (isScopedToArticle) — outside their section, the article
+//     still appears on the board (read visibility), just with no actions.
+const NEXT_ACTIONS: Partial<
+  Record<ArticleStatus, { label: string; next: ArticleStatus; permission: Permission }[]>
+> = {
+  DRAFT: [{ label: "Peleka kwa ukaguzi", next: "IN_REVIEW", permission: PERMISSIONS.ARTICLE_SUBMIT_REVIEW }],
   IN_REVIEW: [
-    { label: "Approve", next: "APPROVED" },
-    { label: "Send back", next: "DRAFT" },
+    { label: "Idhinisha", next: "APPROVED", permission: PERMISSIONS.ARTICLE_APPROVE },
+    { label: "Rudisha", next: "DRAFT", permission: PERMISSIONS.ARTICLE_REQUEST_CHANGES },
   ],
-  APPROVED: [{ label: "Publish", next: "PUBLISHED" }],
-  PUBLISHED: [{ label: "Retract", next: "RETRACTED" }],
-  CORRECTED: [{ label: "Retract", next: "RETRACTED" }],
+  APPROVED: [{ label: "Chapisha", next: "PUBLISHED", permission: PERMISSIONS.ARTICLE_PUBLISH }],
+  PUBLISHED: [{ label: "Ondoa (Retract)", next: "RETRACTED", permission: PERMISSIONS.ARTICLE_RETRACT }],
+  CORRECTED: [{ label: "Ondoa (Retract)", next: "RETRACTED", permission: PERMISSIONS.ARTICLE_RETRACT }],
 };
 
-function StatusActions({ article }: { article: Article }) {
+// PUBLISHED/CORRECTED articles can't be "corrected" with a bare status
+// flip — a correction is a content edit with a mandatory note (see
+// backend's updateArticle), so this always routes to the edit form rather
+// than calling the transition mutation directly.
+const CORRECTABLE_STATUSES: ArticleStatus[] = ["PUBLISHED", "CORRECTED"];
+
+function StatusActions({ article, me }: { article: Article; me: User | undefined }) {
   const [transition, { isLoading }] = useTransitionArticleStatusMutation();
-  const actions = NEXT_ACTIONS[article.status] || [];
+  const scoped = isScopedToArticle(me, article);
+
+  // Authors submitting their own draft for review is the one transition an
+  // author does to their own work — mirrors the backend's isOwnSubmit
+  // carve-out — so it doesn't require ARTICLE_SUBMIT_REVIEW's usual holder
+  // to also be the one submitting.
+  const isOwnDraftSubmit = (permission: Permission, next: ArticleStatus) =>
+    next === "IN_REVIEW" &&
+    article.reportedBy.id === me?.id &&
+    hasPermission(me?.role, PERMISSIONS.ARTICLE_SUBMIT_REVIEW) &&
+    permission === PERMISSIONS.ARTICLE_SUBMIT_REVIEW;
+
+  const actions = (NEXT_ACTIONS[article.status] || []).filter(
+    (action) =>
+      isOwnDraftSubmit(action.permission, action.next) || (scoped && hasPermission(me?.role, action.permission))
+  );
+
+  const canCorrect =
+    CORRECTABLE_STATUSES.includes(article.status) &&
+    scoped &&
+    hasPermission(me?.role, PERMISSIONS.ARTICLE_EDIT_ANY);
+
+  if (actions.length === 0 && !canCorrect) return null;
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
+      {canCorrect && (
+        <Button href={`/newsroom/${article.slug}/edit`} variant="outline" size="sm">
+          Toa Marekebisho
+        </Button>
+      )}
       {actions.map((action) => (
         <Button
           key={action.next}
@@ -84,7 +127,7 @@ export default function NewsroomPage() {
                 </span>
               </div>
             </div>
-            <StatusActions article={article} />
+            <StatusActions article={article} me={me?.user} />
           </div>
         ))}
       </div>

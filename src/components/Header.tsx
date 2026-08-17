@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCategories } from "@/lib/server-api";
 import MobileNav from "./MobileNav";
-import Button from "./Button";
+import UserMenu from "./UserMenu";
 
 // Categories are fetched from the API — adding a category in the CMS
 // updates the site nav automatically, no code change needed.
@@ -36,12 +36,7 @@ export default async function Header() {
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </Link>
-          <Link href="/ingia" className="hidden text-secondary-500 hover:text-primary-600 sm:block">
-            Ingia
-          </Link>
-          <Button href="/jiunge" size="sm" className="hidden sm:inline-flex">
-            Jiunge
-          </Button>
+          <UserMenu />
 
           <MobileNav categories={categories} />
         </div>

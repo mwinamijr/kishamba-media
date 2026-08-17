@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
 import { useDispatch } from "react-redux";
+import { getDashboardPathForRole, safeNextPath } from "@/lib/dashboard";
 import Button from "@/components/Button";
 
 // Registration isn't in the RTK Query slice by design — it's a one-off
 // action, unlike login/logout which are reused across the auth-gated
 // header state — so it POSTs directly and invalidates the "Me" tag afterward.
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -31,8 +33,12 @@ export default function RegisterPage() {
         const body = await res.json();
         throw new Error(body.message || "Imeshindikana kujisajili");
       }
+      const body = await res.json();
       dispatch(api.util.invalidateTags(["Me"]));
-      router.push("/");
+      // A freshly-registered account is always role USER, but route via the
+      // same helper as login so this stays correct if that ever changes.
+      const destination = safeNextPath(searchParams.get("next")) || getDashboardPathForRole(body.user?.role);
+      router.push(destination);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Imeshindikana kujisajili");
@@ -75,5 +81,14 @@ export default function RegisterPage() {
         </Button>
       </form>
     </div>
+  );
+}
+
+// See ingia/page.tsx for why the Suspense boundary is required here.
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
   );
 }

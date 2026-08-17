@@ -121,3 +121,19 @@ export function hasPermission(role: Role | undefined, permission: Permission): b
   if (grants === "*") return true;
   return grants.includes(permission);
 }
+
+export function hasAnyPermission(role: Role | undefined, permissions: Permission[]): boolean {
+  return permissions.some((p) => hasPermission(role, p));
+}
+
+// Mirrors backend/utils/permissions.js's isScopedToArticle(). Only
+// SECTION_EDITOR is actually scoped; every other role that holds an
+// ARTICLE_* permission is unscoped and this returns true for them.
+export function isScopedToArticle(
+  user: { role: Role; editedCategories?: { id: string }[] } | undefined,
+  article: { category: { id: string } }
+): boolean {
+  if (!user) return false;
+  if (user.role !== "SECTION_EDITOR") return true;
+  return (user.editedCategories || []).some((c) => c.id === article.category.id);
+}

@@ -37,6 +37,21 @@ export const api = createApi({
       query: () => ({ url: "/auth/logout", method: "POST" }),
       invalidatesTags: ["Me"],
     }),
+    // Self-service edit (or an admin editing someone else's profile — the
+    // backend allows both, see backend/README.md §4). Used by /profile.
+    updateMyProfile: builder.mutation<
+      User,
+      { id: string; username?: string; email?: string; phone?: string; firstName?: string; lastName?: string }
+    >({
+      query: ({ id, ...body }) => ({ url: `/auth/users/${id}/profile`, method: "PUT", body }),
+      invalidatesTags: ["Me"],
+    }),
+    updateMyPassword: builder.mutation<
+      { message: string },
+      { id: string; currentPassword: string; newPassword: string }
+    >({
+      query: ({ id, ...body }) => ({ url: `/auth/users/${id}/password`, method: "PUT", body }),
+    }),
 
     // --- User administration (ADMIN/SUPER_ADMIN, see backend/README.md §4) ---
     getUsers: builder.query<Paginated<User>, { page?: number } | void>({
@@ -186,6 +201,8 @@ export const {
   useGetMeQuery,
   useLoginMutation,
   useLogoutMutation,
+  useUpdateMyProfileMutation,
+  useUpdateMyPasswordMutation,
   useGetUsersQuery,
   useCreateUserByAdminMutation,
   useAssignUserRoleMutation,

@@ -37,6 +37,9 @@ export interface User extends UserSummary {
   role: Role;
   phone?: string | null;
   profilePicUrl?: string | null;
+  // Only populated for SECTION_EDITOR — the categories they're allowed to
+  // act on (mirrors backend/utils/permissions.js's isScopedToArticle()).
+  editedCategories?: { id: string; slug: string }[];
 }
 
 export interface Category {

@@ -2,13 +2,28 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { Category } from "@/types/api";
+import { useGetMeQuery, useLogoutMutation } from "@/lib/api";
+import { getDashboardPathForRole } from "@/lib/dashboard";
 
 // Header.tsx is a Server Component (it fetches categories server-side), so
 // the interactive hamburger toggle lives here instead — categories are
-// passed down as props rather than fetched again client-side.
+// passed down as props rather than fetched again client-side. The
+// auth-dependent links below use the same `getMe` RTK Query hook as
+// UserMenu.tsx (the desktop equivalent) so both stay in sync automatically.
 export default function MobileNav({ categories }: { categories: Category[] }) {
   const [open, setOpen] = useState(false);
+  const { data: me } = useGetMeQuery();
+  const [logout] = useLogoutMutation();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    setOpen(false);
+    await logout();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <div className="md:hidden">
@@ -57,23 +72,53 @@ export default function MobileNav({ categories }: { categories: Category[] }) {
             >
               Tafuta
             </Link>
-            <Link
-              href="/ingia"
-              onClick={() => setOpen(false)}
-              className="px-4 py-3 text-sm font-medium text-secondary-500 hover:bg-secondary-50 hover:text-primary-600"
-            >
-              Ingia
-            </Link>
-            <Link
-              href="/jiunge"
-              onClick={() => setOpen(false)}
-              className="px-4 py-3 text-sm font-medium text-primary-600 hover:bg-primary-50"
-            >
-              Jiunge
-            </Link>
+
+            {me ? (
+              <>
+                <Link
+                  href={getDashboardPathForRole(me.user.role)}
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-3 text-sm font-medium text-secondary-500 hover:bg-secondary-50 hover:text-primary-600"
+                >
+                  Dashibodi ({me.user.firstName || me.user.username})
+                </Link>
+                <Link
+                  href="/profile"
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-3 text-sm font-medium text-secondary-500 hover:bg-secondary-50 hover:text-primary-600"
+                >
+                  Wasifu wangu
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-4 py-3 text-left text-sm font-medium text-red-600 hover:bg-red-50"
+                >
+                  Toka
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/ingia"
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-3 text-sm font-medium text-secondary-500 hover:bg-secondary-50 hover:text-primary-600"
+                >
+                  Ingia
+                </Link>
+                <Link
+                  href="/jiunge"
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-3 text-sm font-medium text-primary-600 hover:bg-primary-50"
+                >
+                  Jiunge
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       )}
     </div>
   );
 }
+
