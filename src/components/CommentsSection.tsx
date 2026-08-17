@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useGetCommentsQuery, useCreateCommentMutation } from "@/lib/api";
 import type { Comment as CommentType } from "@/types/api";
+import Button from "./Button";
 
 function CommentItem({ comment }: { comment: CommentType }) {
   return (
@@ -47,13 +48,9 @@ export default function CommentsSection({ articleId }: { articleId: string }) {
           className="rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
           rows={3}
         />
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="self-end rounded bg-primary-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-primary-600 disabled:opacity-50"
-        >
+        <Button type="submit" loading={isSubmitting} className="self-end">
           Tuma
-        </button>
+        </Button>
       </form>
 
       <div className="mt-6 flex flex-col gap-4">

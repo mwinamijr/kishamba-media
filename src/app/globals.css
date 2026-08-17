@@ -9,3 +9,24 @@
 body {
   @apply bg-paper text-ink;
 }
+
+/* Accessibility: a consistent focus-visible ring for every interactive
+   element, not just the ones a component happened to remember to style —
+   keyboard/screen-reader users need this everywhere, not selectively. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid theme("colors.primary.500");
+  outline-offset: 2px;
+}
+
+/* Skip-to-content link — invisible until keyboard-focused, lets keyboard
+   users bypass the header/nav on every page instead of tabbing through it
+   every single time. */
+.skip-link {
+  @apply sr-only focus:not-sr-only;
+  @apply fixed left-4 top-4 z-50 rounded bg-primary-500 px-4 py-2 text-sm font-medium text-white;
+}

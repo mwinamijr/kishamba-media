@@ -2,6 +2,7 @@
 
 import { useGetImagesQuery, useDeleteImageMutation, useGetMeQuery } from "@/lib/api";
 import { PERMISSIONS, hasPermission } from "@/lib/permissions";
+import Button from "@/components/Button";
 
 function formatSize(bytes?: number) {
   if (!bytes) return "";
@@ -36,15 +37,16 @@ export default function MediaPage() {
             <p className="truncate text-xs text-secondary-500">{image.title}</p>
             <p className="text-[10px] text-secondary-500">{formatSize(image.size)}</p>
             {canManage && (
-              <button
+              <Button
+                size="sm"
+                variant="danger"
+                loading={deleting}
                 onClick={() => {
                   if (confirm("Futa picha hii?")) deleteImage(image.id);
                 }}
-                disabled={deleting}
-                className="rounded border border-red-200 px-2 py-0.5 text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
               >
                 Futa
-              </button>
+              </Button>
             )}
           </div>
         ))}

@@ -13,7 +13,7 @@ export default function SectionHeader({
     <div className="mb-4 flex items-center justify-between border-b-2 border-secondary-500 pb-2">
       <h2 className="font-serif text-xl font-bold uppercase tracking-wide text-ink">{title}</h2>
       {href && (
-        <Link href={href} className="text-sm font-medium text-primary-500 hover:underline">
+        <Link href={href} className="text-sm font-medium text-primary-600 hover:underline">
           See all
         </Link>
       )}

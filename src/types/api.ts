@@ -50,6 +50,7 @@ export interface Tag {
   id: string;
   name: string;
   slug: string;
+  articleCount?: number; // present on GET /api/tags (admin list), not on the tags embedded in an Article
 }
 
 export interface ContentBlock {

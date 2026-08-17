@@ -1,31 +1,33 @@
 import { getPublishedArticles } from "@/lib/server-api";
 import ArticleCard from "@/components/ArticleCard";
 import SectionHeader from "@/components/SectionHeader";
+import FeaturedCarousel from "@/components/FeaturedCarousel";
+import AdSlot from "@/components/AdSlot";
 
 export const revalidate = 60; // ISR — regenerate this page in the background at most once a minute
 
+const CAROUSEL_SIZE = 5;
+
 export default async function HomePage() {
   const { data: articles } = await getPublishedArticles({ page: 1 });
-  const [lead, ...rest] = articles;
+
+  // Breaking stories lead the carousel; fill the remaining slots with the
+  // next most recent articles (already sorted publishedAt desc by the
+  // backend). Whatever ends up in the carousel is excluded from the grid
+  // below it, so nothing appears twice on the page.
   const breaking = articles.filter((a) => a.isBreaking);
+  const nonBreaking = articles.filter((a) => !a.isBreaking);
+  const carouselArticles = [...breaking, ...nonBreaking].slice(0, CAROUSEL_SIZE);
+  const carouselIds = new Set(carouselArticles.map((a) => a.id));
+  const rest = articles.filter((a) => !carouselIds.has(a.id));
 
   return (
     <div className="flex flex-col gap-10">
-      {breaking.length > 0 && (
-        <div className="flex items-center gap-3 rounded bg-breaking px-4 py-2 text-sm font-semibold text-ink">
-          <span className="rounded bg-ink px-2 py-0.5 text-xs uppercase text-breaking">
-            Breaking
-          </span>
-          <span className="truncate">{breaking[0].headline}</span>
-        </div>
-      )}
+      {carouselArticles.length > 0 && <FeaturedCarousel articles={carouselArticles} />}
 
-      {lead && (
-        <section>
-          <SectionHeader title="Habari Kuu" />
-          <ArticleCard article={lead} variant="featured" />
-        </section>
-      )}
+      <div className="flex justify-center">
+        <AdSlot size="leaderboard" label="Ad Space — 728×90" />
+      </div>
 
       <section>
         <SectionHeader title="Habari za Hivi Karibuni" href="/habari" />

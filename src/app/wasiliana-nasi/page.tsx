@@ -6,7 +6,7 @@ export default function ContactPage() {
       <h1 className="font-serif text-3xl font-bold text-ink">Wasiliana Nasi</h1>
       <p className="mt-4 text-secondary-500">
         Una habari, maoni, au marekebisho ya kupendekeza? Tuandikie kupitia barua pepe:{" "}
-        <a href="mailto:habari@kishambamedia.co.tz" className="text-primary-500 hover:underline">
+        <a href="mailto:habari@kishambamedia.co.tz" className="text-primary-600 hover:underline">
           habari@kishambamedia.co.tz
         </a>
       </p>

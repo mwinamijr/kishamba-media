@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getArticleBySlug } from "@/lib/server-api";
 import Badge from "@/components/Badge";
 import CommentsSection from "@/components/CommentsSection";
+import AdSlot from "@/components/AdSlot";
 
 export const revalidate = 30;
 
@@ -127,6 +128,10 @@ export default async function ArticlePage({ params }: Props) {
           </ul>
         </div>
       )}
+
+      <div className="my-8 flex justify-center">
+        <AdSlot size="banner" label="Ad Space — In-article" />
+      </div>
 
       <CommentsSection articleId={article.id} />
     </article>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   useGetUsersQuery,
   useGetMeQuery,
@@ -11,6 +10,7 @@ import {
 import type { Role, User } from "@/types/api";
 import { ROLES, ROLE_LABELS, ADMIN_LEVEL_ROLES } from "@/lib/roles";
 import { PERMISSIONS, hasPermission } from "@/lib/permissions";
+import Button from "@/components/Button";
 
 function RoleSelect({ user, canGrantAdminRoles }: { user: User; canGrantAdminRoles: boolean }) {
   const [assignRole, { isLoading }] = useAssignUserRoleMutation();
@@ -50,14 +50,7 @@ export default function UsersPage() {
             {data ? `Jumla ya watumiaji: ${data.total}` : "Inapakia..."}
           </p>
         </div>
-        {canManageUsers && (
-          <Link
-            href="/admin/users/new"
-            className="rounded bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600"
-          >
-            + Mtumiaji Mpya
-          </Link>
-        )}
+        {canManageUsers && <Button href="/admin/users/new">+ Mtumiaji Mpya</Button>}
       </div>
 
       <div className="mt-6 overflow-x-auto">
@@ -92,17 +85,18 @@ export default function UsersPage() {
                 {canManageUsers && (
                   <td className="py-2 pr-4">
                     {user.id !== me?.user.id && (
-                      <button
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        loading={deleting}
                         onClick={() => {
                           if (confirm(`Futa mtumiaji ${user.username}? Hatua hii haiwezi kurudishwa.`)) {
                             deleteUser(user.id);
                           }
                         }}
-                        disabled={deleting}
-                        className="rounded border border-red-200 px-2.5 py-1 text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
                       >
                         Futa
-                      </button>
+                      </Button>
                     )}
                   </td>
                 )}
@@ -114,23 +108,15 @@ export default function UsersPage() {
 
       {data && data.totalPages > 1 && (
         <div className="mt-4 flex items-center gap-2">
-          <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            className="rounded border border-secondary-50 px-3 py-1 text-sm disabled:opacity-30"
-          >
+          <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
             Iliyotangulia
-          </button>
+          </Button>
           <span className="text-sm text-secondary-500">
             Ukurasa {data.page} kati ya {data.totalPages}
           </span>
-          <button
-            onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
-            disabled={page === data.totalPages}
-            className="rounded border border-secondary-50 px-3 py-1 text-sm disabled:opacity-30"
-          >
+          <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))} disabled={page === data.totalPages}>
             Inayofuata
-          </button>
+          </Button>
         </div>
       )}
     </div>

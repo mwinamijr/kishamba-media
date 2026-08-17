@@ -14,6 +14,11 @@ const SECTIONS = [
     description: "Simamia kategoria za habari zinazoonekana kwenye tovuti.",
   },
   {
+    href: "/admin/tags",
+    title: "Tags",
+    description: "Simamia tags zinazotumika kwenye habari.",
+  },
+  {
     href: "/admin/media",
     title: "Picha",
     description: "Ona na simamia picha zote zilizopakiwa.",

@@ -9,6 +9,7 @@ import type {
   ContentBlock,
   Paginated,
   Role,
+  Tag,
   User,
 } from "@/types/api";
 
@@ -21,7 +22,7 @@ export const api = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
     credentials: "include", // sends the httpOnly session cookie set by the backend
   }),
-  tagTypes: ["Article", "Category", "Comment", "Me", "User", "Image"],
+  tagTypes: ["Article", "Category", "TagTaxonomy", "Comment", "Me", "User", "Image"],
   endpoints: (builder) => ({
     // --- Auth ---------------------------------------------------------
     getMe: builder.query<{ user: User }, void>({
@@ -80,6 +81,27 @@ export const api = createApi({
     deleteCategory: builder.mutation<{ message: string }, string>({
       query: (id) => ({ url: `/categories/${id}`, method: "DELETE" }),
       invalidatesTags: [{ type: "Category", id: "LIST" }],
+    }),
+
+    // --- Tags -----------------------------------------------------------
+    getTags: builder.query<Tag[], void>({
+      query: () => "/tags",
+      providesTags: (result) =>
+        result
+          ? [...result.map((t) => ({ type: "TagTaxonomy" as const, id: t.id })), { type: "TagTaxonomy" as const, id: "LIST" }]
+          : [{ type: "TagTaxonomy" as const, id: "LIST" }],
+    }),
+    createTag: builder.mutation<Tag, { name: string }>({
+      query: (body) => ({ url: "/tags", method: "POST", body }),
+      invalidatesTags: [{ type: "TagTaxonomy", id: "LIST" }],
+    }),
+    updateTag: builder.mutation<Tag, { id: string; name: string }>({
+      query: ({ id, ...body }) => ({ url: `/tags/${id}`, method: "PUT", body }),
+      invalidatesTags: (_r, _e, { id }) => [{ type: "TagTaxonomy", id }, { type: "TagTaxonomy", id: "LIST" }],
+    }),
+    deleteTag: builder.mutation<{ message: string }, string>({
+      query: (id) => ({ url: `/tags/${id}`, method: "DELETE" }),
+      invalidatesTags: [{ type: "TagTaxonomy", id: "LIST" }],
     }),
 
     // --- Articles ---------------------------------------------------------
@@ -172,6 +194,10 @@ export const {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
+  useGetTagsQuery,
+  useCreateTagMutation,
+  useUpdateTagMutation,
+  useDeleteTagMutation,
   useGetArticlesQuery,
   useGetArticleBySlugQuery,
   useCreateArticleMutation,

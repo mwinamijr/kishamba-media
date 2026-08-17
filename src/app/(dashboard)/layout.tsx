@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               href={tab.href}
               className={`border-b-2 px-3 py-2 text-sm font-medium ${
                 active
-                  ? "border-primary-500 text-primary-500"
+                  ? "border-primary-500 text-primary-600"
                   : "border-transparent text-secondary-500 hover:text-ink"
               }`}
             >

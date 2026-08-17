@@ -109,28 +109,33 @@ new you build here):
 - RTK Query API slice + server-side fetch helper — now covers auth, user administration, categories, articles, and comments
 - Shared TypeScript types matching the backend's Prisma schema exactly, including all 13 RBAC roles
 - Client-side permission mirror (`lib/permissions.ts`) for UI gating — hides actions a role can't perform; the backend remains the real enforcement point
-- Design system primitives: `ArticleCard`, `SectionHeader`, `Badge`
-- `Header` (data-driven nav), `Footer`
+- Design system primitives: `ArticleCard`, `SectionHeader`, `Badge`, `Button`, `AdSlot`
+- `Header` (data-driven nav, logo, mobile hamburger nav via `MobileNav.tsx`), `Footer` (contact details, social links, quick links, ad slot)
 - `CommentsSection` — recursive comment tree, RTK Query mutation for posting
 - Unified newsroom board — lists articles, shows status-appropriate workflow action buttons, cache auto-invalidates on every transition, links to the article authoring form
 - **Article authoring form** (`components/ArticleForm.tsx`) — one form for both create and edit, with a block editor (add/remove/reorder paragraph/subheading/quote/image/embed blocks), category/tag/dateline/breaking-news fields, and a required correction note when editing an already-published article
-- **Admin dashboard**: user list with pagination, inline role assignment (gated by `user:assign_role`, admin-level roles further gated to admin-level grantors — mirrors the backend's self-escalation guard), account creation with one-time password display, account deletion; category management (create/edit/delete, inline editing); media library (grid view of all uploaded images, delete gated by `media:manage`)
+- **Admin dashboard**: user list with pagination, inline role assignment (gated by `user:assign_role`, admin-level roles further gated to admin-level grantors — mirrors the backend's self-escalation guard), account creation with one-time password display, account deletion; category management (create/edit/delete, inline editing); **tag management** (create/rename/delete, shows per-tag article counts); media library (grid view of all uploaded images, delete gated by `media:manage`)
 - Shared dashboard layout (`app/(dashboard)/layout.tsx`) — nav tabs between Newsroom and Admin
 - **Image upload** (`components/ImageUploader.tsx`) — file picker with live preview, uploads immediately on selection, wired into the article authoring form's image blocks; falls back to a plain URL field for external images. Images are stored as bytes directly in Postgres by the backend, not S3 — see `../backend/README.md` §2.1. No crop/resize step (the old app's `react-easy-crop` flow wasn't ported — noted as a gap, not silently dropped)
 - **Search** (`app/tafuta/page.tsx` + `components/SearchBox.tsx`) — server-rendered results using the backend's `?q=` filter, paginated, linked from the header search icon. A basic substring match today, not a real search engine — see the root ROADMAP's suggestions section for when that's worth upgrading (Meilisearch/Algolia)
+- **Home page carousel** (`components/FeaturedCarousel.tsx`) — auto-advancing (6s), pauses on hover, prev/next + dot navigation, breaking stories shown first. Receives pre-fetched articles as props from the home page's Server Component rather than fetching client-side, so there's no extra request or loading flash
+- **`Button` primitive** (`components/Button.tsx`) — 5 variants (primary/secondary/outline/ghost/danger), 3 sizes, loading state, and an `href` mode that renders as a styled `next/link` for CTAs that navigate rather than mutate. Applied across every form, the newsroom board, all admin pages, and comments — no more ad-hoc per-screen button styling
+- **`AdSlot` primitive** (`components/AdSlot.tsx`) — clearly-labeled placeholder ad units (leaderboard/rectangle/banner/square sizes), placed on the home page, in-article, and in the footer. No real ad network wired in — see root ROADMAP's resolved decisions
+- **Accessibility**: global `focus-visible` ring on every interactive element (one CSS rule, not per-component styling), a skip-to-content link, every image audited for `alt` text, resting-state text contrast fixed (plain-text links on white backgrounds moved from `primary-500` to the darker `primary-600`)
+- **Mobile navigation** (`components/MobileNav.tsx`) — hamburger menu for small screens; the header previously hid the entire category nav below the `md` breakpoint with no alternative at all
+- **Logo/favicon** — wired into `Header`, `Footer`, and `layout.tsx` metadata icons. **Honest caveat**: the actual image files are the original project's default Create React App placeholder (the React atom icon), never replaced with real Kishamba Media branding — swap the files in `public/` when real artwork exists, no code changes needed
 
 ### 🔶 Half-done
 - `middleware.ts` protects routes by cookie presence only, not verified role — see the note above
 - Registration POSTs directly instead of going through the RTK Query slice (intentional for now — it's a one-off action unlike login/logout, which are reused across auth-gated UI state)
 - Admin dashboard has no UI yet for assigning a `SECTION_EDITOR`'s category scope (backend requires this via Prisma Studio for now — see `../backend/README.md` §3.5)
+- Accessibility pass covers contrast/focus/alt-text/skip-link but not a full semantic-heading-order audit, screen-reader walkthrough, or colorblind check on the Breaking News yellow
+- Responsive pass covers the header/nav and verifies no overflow on small screens, but hasn't had a deliberate tablet-breakpoint or touch-target-sizing review
 
 ### ⬜ Not done
 - Image crop/resize before upload
-- Home page carousel/slider for featured stories
-- Tag management UI (tags are currently only created implicitly via an article's `tagNames` — no dedicated CRUD page)
-- A shared `Button` primitive (buttons are currently ad-hoc Tailwind per use)
-- Accessibility pass (contrast, focus-visible states) against the resolved palette
 - Component/e2e tests
+- Dark mode
 - RSS feed, sitemap.xml, newsletter signup — see the root ROADMAP's modern news site feature checklist
 
 ## 5. Environment variables

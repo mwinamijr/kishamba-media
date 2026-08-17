@@ -1,24 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import {
-  useGetCategoriesQuery,
-  useCreateCategoryMutation,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
-} from "@/lib/api";
-import type { Category } from "@/types/api";
+import { useGetTagsQuery, useCreateTagMutation, useUpdateTagMutation, useDeleteTagMutation } from "@/lib/api";
+import type { Tag } from "@/types/api";
 import Button from "@/components/Button";
 
-function CategoryRow({ category }: { category: Category }) {
+function TagRow({ tag }: { tag: Tag }) {
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(category.name);
-  const [description, setDescription] = useState(category.description ?? "");
-  const [updateCategory, { isLoading: saving }] = useUpdateCategoryMutation();
-  const [deleteCategory, { isLoading: deleting }] = useDeleteCategoryMutation();
+  const [name, setName] = useState(tag.name);
+  const [updateTag, { isLoading: saving }] = useUpdateTagMutation();
+  const [deleteTag, { isLoading: deleting }] = useDeleteTagMutation();
 
   const handleSave = async () => {
-    await updateCategory({ id: category.id, name, description: description || undefined }).unwrap();
+    await updateTag({ id: tag.id, name }).unwrap();
     setEditing(false);
   };
 
@@ -32,14 +26,8 @@ function CategoryRow({ category }: { category: Category }) {
             className="w-full rounded border border-secondary-50 p-1.5 text-sm focus:border-primary-500 focus:outline-none"
           />
         </td>
-        <td className="py-2 pr-4 text-xs text-secondary-500">{category.slug}</td>
-        <td className="py-2 pr-4">
-          <input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full rounded border border-secondary-50 p-1.5 text-sm focus:border-primary-500 focus:outline-none"
-          />
-        </td>
+        <td className="py-2 pr-4 text-xs text-secondary-500">{tag.slug}</td>
+        <td className="py-2 pr-4 text-secondary-500">{tag.articleCount ?? 0}</td>
         <td className="py-2 pr-4">
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSave} loading={saving}>
@@ -56,9 +44,9 @@ function CategoryRow({ category }: { category: Category }) {
 
   return (
     <tr className="border-b border-secondary-50">
-      <td className="py-2 pr-4 text-ink">{category.name}</td>
-      <td className="py-2 pr-4 text-xs text-secondary-500">{category.slug}</td>
-      <td className="py-2 pr-4 text-secondary-500">{category.description || "—"}</td>
+      <td className="py-2 pr-4 text-ink">{tag.name}</td>
+      <td className="py-2 pr-4 text-xs text-secondary-500">{tag.slug}</td>
+      <td className="py-2 pr-4 text-secondary-500">{tag.articleCount ?? 0}</td>
       <td className="py-2 pr-4">
         <div className="flex gap-2">
           <Button size="sm" variant="ghost" onClick={() => setEditing(true)}>
@@ -69,9 +57,11 @@ function CategoryRow({ category }: { category: Category }) {
             variant="danger"
             loading={deleting}
             onClick={() => {
-              if (confirm(`Futa kategoria "${category.name}"? Habari zilizopo zenye kategoria hii hazitafutwa lakini zitahitaji kategoria mpya.`)) {
-                deleteCategory(category.id);
-              }
+              const warning =
+                tag.articleCount && tag.articleCount > 0
+                  ? `Tag "${tag.name}" ipo kwenye habari ${tag.articleCount}. Kufuta hakutafuta habari hizo, tag itaondolewa tu. Endelea?`
+                  : `Futa tag "${tag.name}"?`;
+              if (confirm(warning)) deleteTag(tag.id);
             }}
           >
             Futa
@@ -82,24 +72,22 @@ function CategoryRow({ category }: { category: Category }) {
   );
 }
 
-function NewCategoryForm() {
+function NewTagForm() {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [createCategory, { isLoading }] = useCreateCategoryMutation();
+  const [createTag, { isLoading }] = useCreateTagMutation();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     try {
-      await createCategory({ name, description: description || undefined }).unwrap();
+      await createTag({ name }).unwrap();
       setName("");
-      setDescription("");
     } catch (err) {
       const message =
         err && typeof err === "object" && "data" in err && err.data && typeof err.data === "object" && "message" in err.data
           ? String((err.data as { message: unknown }).message)
-          : "Imeshindikana kuongeza kategoria.";
+          : "Imeshindikana kuongeza tag.";
       setError(message);
     }
   };
@@ -107,20 +95,12 @@ function NewCategoryForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-3 rounded border border-secondary-50 p-4">
       <label className="flex flex-col gap-1">
-        <span className="text-xs font-medium text-secondary-500">Jina la kategoria</span>
+        <span className="text-xs font-medium text-secondary-500">Jina la tag</span>
         <input
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Utalii"
-          className="rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
-        />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-xs font-medium text-secondary-500">Maelezo (hiari)</span>
-        <input
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          placeholder="e.g. Uchaguzi2026"
           className="rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
         />
       </label>
@@ -132,19 +112,19 @@ function NewCategoryForm() {
   );
 }
 
-export default function CategoriesPage() {
-  const { data: categories, isLoading } = useGetCategoriesQuery();
+export default function TagsPage() {
+  const { data: tags, isLoading } = useGetTagsQuery();
 
   return (
     <div>
-      <h1 className="font-serif text-2xl font-bold text-ink">Kategoria</h1>
+      <h1 className="font-serif text-2xl font-bold text-ink">Tags</h1>
       <p className="mt-1 text-sm text-secondary-500">
-        Kategoria hizi zinaendesha menyu ya tovuti moja kwa moja — kuongeza hapa kunaonekana kwenye
-        tovuti mara moja.
+        Tags mara nyingi huundwa moja kwa moja wakati wa kuandika habari — hapa unaweza kuzisimamia
+        moja kwa moja, kubadilisha jina, au kuondoa zisizotumika.
       </p>
 
       <div className="mt-6">
-        <NewCategoryForm />
+        <NewTagForm />
       </div>
 
       <div className="mt-6 overflow-x-auto">
@@ -153,7 +133,7 @@ export default function CategoriesPage() {
             <tr className="border-b border-secondary-50 text-secondary-500">
               <th className="py-2 pr-4 font-medium">Jina</th>
               <th className="py-2 pr-4 font-medium">Slug</th>
-              <th className="py-2 pr-4 font-medium">Maelezo</th>
+              <th className="py-2 pr-4 font-medium">Habari</th>
               <th className="py-2 pr-4 font-medium">Vitendo</th>
             </tr>
           </thead>
@@ -165,8 +145,8 @@ export default function CategoriesPage() {
                 </td>
               </tr>
             )}
-            {categories?.map((category) => (
-              <CategoryRow key={category.id} category={category} />
+            {tags?.map((tag) => (
+              <TagRow key={tag.id} tag={tag} />
             ))}
           </tbody>
         </table>

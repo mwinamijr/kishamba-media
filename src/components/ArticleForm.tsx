@@ -9,6 +9,7 @@ import {
 } from "@/lib/api";
 import type { Article, ContentBlock } from "@/types/api";
 import ImageUploader from "./ImageUploader";
+import Button from "./Button";
 
 interface EditableBlock extends ContentBlock {
   _key: string; // local-only React key, not sent to the backend
@@ -220,30 +221,35 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
                   ))}
                 </select>
                 <div className="flex gap-1">
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => moveBlock(block._key, -1)}
                     disabled={i === 0}
-                    className="rounded border border-secondary-50 px-2 py-0.5 text-xs disabled:opacity-30"
+                    aria-label="Hamisha juu"
                   >
                     ↑
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => moveBlock(block._key, 1)}
                     disabled={i === blocks.length - 1}
-                    className="rounded border border-secondary-50 px-2 py-0.5 text-xs disabled:opacity-30"
+                    aria-label="Hamisha chini"
                   >
                     ↓
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    variant="danger"
+                    size="sm"
                     onClick={() => removeBlock(block._key)}
                     disabled={blocks.length === 1}
-                    className="rounded border border-red-200 px-2 py-0.5 text-xs text-red-600 disabled:opacity-30"
                   >
                     Ondoa
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -269,14 +275,9 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
           {BLOCK_TYPES.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => addBlock(t)}
-              className="rounded border border-primary-500 px-2.5 py-1 text-xs font-medium text-primary-500 hover:bg-primary-50"
-            >
+            <Button key={t} type="button" variant="outline" size="sm" onClick={() => addBlock(t)}>
               + {t}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -298,13 +299,9 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
       )}
 
       <div className="flex justify-end gap-2">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="rounded bg-primary-500 px-5 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:opacity-50"
-        >
-          {isSubmitting ? "Inahifadhi..." : mode === "create" ? "Hifadhi Rasimu" : "Hifadhi Mabadiliko"}
-        </button>
+        <Button type="submit" size="lg" loading={isSubmitting}>
+          {mode === "create" ? "Hifadhi Rasimu" : "Hifadhi Mabadiliko"}
+        </Button>
       </div>
     </form>
   );

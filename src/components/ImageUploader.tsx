@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useUploadImageMutation } from "@/lib/api";
+import Button from "./Button";
 
 interface ImageUploaderProps {
   value?: string; // current image URL, if any
@@ -69,22 +70,19 @@ export default function ImageUploader({ value, onChange, articleId }: ImageUploa
       )}
 
       <div className="flex items-center gap-2">
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={() => inputRef.current?.click()}
-          disabled={isLoading}
-          className="rounded border border-primary-500 px-3 py-1.5 text-xs font-medium text-primary-500 hover:bg-primary-50 disabled:opacity-50"
+          loading={isLoading}
         >
-          {isLoading ? "Inapakia..." : value ? "Badilisha Picha" : "Pakia Picha"}
-        </button>
+          {value ? "Badilisha Picha" : "Pakia Picha"}
+        </Button>
         {value && !isLoading && (
-          <button
-            type="button"
-            onClick={() => onChange("")}
-            className="text-xs text-secondary-500 hover:text-red-600"
-          >
+          <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
             Ondoa
-          </button>
+          </Button>
         )}
       </div>
 

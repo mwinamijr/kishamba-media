@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCreateUserByAdminMutation, useGetMeQuery } from "@/lib/api";
 import type { Role } from "@/types/api";
 import { ROLES, ROLE_LABELS, ADMIN_LEVEL_ROLES } from "@/lib/roles";
+import Button from "@/components/Button";
 
 export default function NewUserPage() {
   const { data: me } = useGetMeQuery();
@@ -52,15 +53,12 @@ export default function NewUserPage() {
           </p>
         </div>
         <div className="mt-4 flex gap-3">
-          <Link href="/admin/users" className="text-sm text-primary-500 hover:underline">
+          <Link href="/admin/users" className="text-sm text-primary-600 hover:underline">
             Rudi kwenye orodha ya watumiaji
           </Link>
-          <button
-            onClick={() => setResult(null)}
-            className="text-sm text-secondary-500 hover:underline"
-          >
+          <Button variant="ghost" size="sm" onClick={() => setResult(null)}>
             Ongeza mwingine
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -126,13 +124,9 @@ export default function NewUserPage() {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="mt-2 rounded bg-primary-500 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:opacity-50"
-        >
-          {isLoading ? "Inaunda..." : "Unda Mtumiaji"}
-        </button>
+        <Button type="submit" loading={isLoading} className="mt-2 w-full">
+          Unda Mtumiaji
+        </Button>
       </form>
     </div>
   );

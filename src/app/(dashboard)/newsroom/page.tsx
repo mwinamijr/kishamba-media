@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useGetArticlesQuery, useTransitionArticleStatusMutation, useGetMeQuery } from "@/lib/api";
 import type { Article, ArticleStatus } from "@/types/api";
 import Badge from "@/components/Badge";
+import Button from "@/components/Button";
 import { PERMISSIONS, hasPermission } from "@/lib/permissions";
 
 // One unified editorial board, status-aware actions per article, spanning
@@ -30,14 +31,15 @@ function StatusActions({ article }: { article: Article }) {
   return (
     <div className="flex gap-2">
       {actions.map((action) => (
-        <button
+        <Button
           key={action.next}
-          disabled={isLoading}
+          variant="outline"
+          size="sm"
+          loading={isLoading}
           onClick={() => transition({ id: article.id, status: action.next })}
-          className="rounded border border-primary-500 px-2.5 py-1 text-xs font-medium text-primary-500 hover:bg-primary-50 disabled:opacity-50"
         >
           {action.label}
-        </button>
+        </Button>
       ))}
     </div>
   );
@@ -57,14 +59,7 @@ export default function NewsroomPage() {
             Unified editorial board — submit, review, approve, publish, and correct from one place.
           </p>
         </div>
-        {canCreate && (
-          <Link
-            href="/newsroom/new"
-            className="rounded bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600"
-          >
-            + Habari Mpya
-          </Link>
-        )}
+        {canCreate && <Button href="/newsroom/new">+ Habari Mpya</Button>}
       </div>
 
       <div className="mt-6 flex flex-col divide-y divide-secondary-50">
@@ -73,15 +68,15 @@ export default function NewsroomPage() {
           <p className="py-4 text-sm text-secondary-500">Hakuna habari bado. Anza kwa kuandika mpya.</p>
         )}
         {data?.data.map((article) => (
-          <div key={article.id} className="flex items-center justify-between gap-4 py-3">
+          <div key={article.id} className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <Link
                 href={`/newsroom/${article.slug}/edit`}
-                className="font-medium text-ink hover:text-primary-500 hover:underline"
+                className="font-medium text-ink hover:text-primary-600 hover:underline"
               >
                 {article.headline}
               </Link>
-              <div className="mt-1 flex items-center gap-2">
+              <div className="mt-1 flex flex-wrap items-center gap-2">
                 <Badge tone="neutral">{article.status.replace("_", " ")}</Badge>
                 <span className="text-xs text-secondary-500">{article.category.name}</span>
                 <span className="text-xs text-secondary-500">

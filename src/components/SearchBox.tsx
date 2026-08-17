@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "./Button";
 
 export default function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
   const router = useRouter();
@@ -22,12 +23,7 @@ export default function SearchBox({ initialQuery = "" }: { initialQuery?: string
         placeholder="Tafuta habari..."
         className="flex-1 rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
       />
-      <button
-        type="submit"
-        className="rounded bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600"
-      >
-        Tafuta
-      </button>
+      <Button type="submit">Tafuta</Button>
     </form>
   );
 }

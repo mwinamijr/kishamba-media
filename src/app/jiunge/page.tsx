@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useDispatch } from "react-redux";
+import Button from "@/components/Button";
 
 // Registration isn't in the RTK Query slice by design — it's a one-off
 // action, unlike login/logout which are reused across the auth-gated
@@ -69,13 +70,9 @@ export default function RegisterPage() {
           className="rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
         />
         {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="mt-2 rounded bg-primary-500 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:opacity-50"
-        >
-          {isLoading ? "Inajisajili..." : "Jiunge"}
-        </button>
+        <Button type="submit" loading={isLoading} className="mt-2 w-full">
+          Jiunge
+        </Button>
       </form>
     </div>
   );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/lib/api";
+import Button from "@/components/Button";
 
 // The JWT never touches client-side JS — the backend sets an httpOnly
 // session cookie on login (see backend/README.md §5).
@@ -44,13 +45,9 @@ export default function LoginPage() {
           className="rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
         />
         {error && <p className="text-sm text-red-600">Barua pepe au nywila si sahihi.</p>}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="mt-2 rounded bg-primary-500 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:opacity-50"
-        >
-          {isLoading ? "Inaingia..." : "Ingia"}
-        </button>
+        <Button type="submit" loading={isLoading} className="mt-2 w-full">
+          Ingia
+        </Button>
       </form>
     </div>
   );
