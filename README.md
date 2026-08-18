@@ -40,6 +40,9 @@ frontend/src/
     store.ts, StoreProvider.tsx         # Redux store setup (RTK Query needs this even in the App Router)
   types/api.ts                          # shared TypeScript types matching the backend's Prisma schema
   middleware.ts                          # edge route protection for /admin, /newsroom, /profile — verifies the JWT's role claim (§4)
+e2e/                                       # Playwright specs — see TESTING.md
+vitest.config.ts, vitest.setup.ts           # unit/component test config — see TESTING.md
+playwright.config.ts                         # e2e test config — see TESTING.md
 ```
 
 **Stack:** Next.js 15 (App Router), React 19, TypeScript throughout,
@@ -135,6 +138,7 @@ new you build here):
 - **Accessibility**: global `focus-visible` ring on every interactive element (one CSS rule, not per-component styling), a skip-to-content link, every image audited for `alt` text, resting-state text contrast fixed (plain-text links on white backgrounds moved from `primary-500` to the darker `primary-600`)
 - **Mobile navigation** (`components/MobileNav.tsx`) — hamburger menu for small screens; the header previously hid the entire category nav below the `md` breakpoint with no alternative at all
 - **Logo/favicon** — wired into `Header`, `Footer`, and `layout.tsx` metadata icons. **Honest caveat**: the actual image files are the original project's default Create React App placeholder (the React atom icon), never replaced with real Kishamba Media branding — swap the files in `public/` when real artwork exists, no code changes needed
+- **Testing**: 41/41 unit/component tests verified passing (`lib/permissions.ts`, `lib/dashboard.ts`, `lib/route-access.ts`, `UserMenu.tsx`, `Button.tsx`); Playwright e2e specs written and structurally reviewed against the actual app but not executable in the sandbox that wrote them (browser binary download blocked there) — see `TESTING.md` for exactly what's verified vs. not
 
 ### 🔶 Half-done
 - Registration POSTs directly instead of going through the RTK Query slice (intentional for now — it's a one-off action unlike login/logout, which are reused across auth-gated UI state)
@@ -142,10 +146,10 @@ new you build here):
 - Accessibility pass covers contrast/focus/alt-text/skip-link but not a full semantic-heading-order audit, screen-reader walkthrough, or colorblind check on the Breaking News yellow
 - Responsive pass covers the header/nav and verifies no overflow on small screens, but hasn't had a deliberate tablet-breakpoint or touch-target-sizing review
 - `/profile` covers name/username/email/phone/password; no profile picture upload UI yet (the backend field `profilePicUrl` already exists — `ImageUploader.tsx` isn't wired into this form)
+- e2e coverage: written for auth/middleware and the core editorial workflow, but not yet run for real anywhere — see `TESTING.md`. Comments, image upload, and the admin CRUD screens have no e2e coverage at all yet
 
 ### ⬜ Not done
 - Image crop/resize before upload
-- Component/e2e tests
 - Dark mode
 - RSS feed, sitemap.xml, newsletter signup — see the root ROADMAP's modern news site feature checklist
 - Revision history UI (backend's `ArticleRevision` records exist and are shown as a "this story has been corrected" banner, but there's no page listing the full history of corrections for a story yet — see root ROADMAP Priority 4)
