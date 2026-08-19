@@ -19,7 +19,7 @@ No backend, no database — `lib/permissions.ts`, `lib/dashboard.ts`, and
 are rendered with React Testing Library against a real Redux store
 (`makeStore()`) with `global.fetch` mocked.
 
-**Verified**: all 41 tests pass in the environment that wrote this
+**Verified**: all 44 tests pass in the environment that wrote this
 feature — `pnpm test` ran clean, both individually per file and as the
 full suite together. Two non-obvious things made this actually work, in
 case a future test file hits the same wall:

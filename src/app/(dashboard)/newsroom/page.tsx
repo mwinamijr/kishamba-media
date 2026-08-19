@@ -6,6 +6,7 @@ import type { Article, ArticleStatus, User } from "@/types/api";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import { PERMISSIONS, hasPermission, isScopedToArticle, type Permission } from "@/lib/permissions";
+import { isEmbargoed } from "@/lib/scheduling";
 
 // One unified editorial board, status-aware actions per article, spanning
 // the whole newsroom workflow instead of siloed per-role dashboards.
@@ -54,20 +55,32 @@ function StatusActions({ article, me }: { article: Article; me: User | undefined
     hasPermission(me?.role, PERMISSIONS.ARTICLE_SUBMIT_REVIEW) &&
     permission === PERMISSIONS.ARTICLE_SUBMIT_REVIEW;
 
-  const actions = (NEXT_ACTIONS[article.status] || []).filter(
-    (action) =>
-      isOwnDraftSubmit(action.permission, action.next) || (scoped && hasPermission(me?.role, action.permission))
-  );
+  const actions = (NEXT_ACTIONS[article.status] || [])
+    .filter(
+      (action) =>
+        isOwnDraftSubmit(action.permission, action.next) || (scoped && hasPermission(me?.role, action.permission))
+    )
+    // The backend rejects a manual PUBLISH while still embargoed (see
+    // articleController.js's transitionStatus) — don't offer a button that
+    // would just 400. The scheduled badge below tells the story instead.
+    .filter((action) => !(action.next === "PUBLISHED" && isEmbargoed(article)));
+
+  const embargoed = article.status === "APPROVED" && isEmbargoed(article);
 
   const canCorrect =
     CORRECTABLE_STATUSES.includes(article.status) &&
     scoped &&
     hasPermission(me?.role, PERMISSIONS.ARTICLE_EDIT_ANY);
 
-  if (actions.length === 0 && !canCorrect) return null;
+  if (actions.length === 0 && !canCorrect && !embargoed) return null;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-2">
+      {embargoed && (
+        <Badge tone="neutral">
+          Imepangwa: {new Date(article.publishAt as string).toLocaleString("sw-TZ")}
+        </Badge>
+      )}
       {canCorrect && (
         <Button href={`/newsroom/${article.slug}/edit`} variant="outline" size="sm">
           Toa Marekebisho

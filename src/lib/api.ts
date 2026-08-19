@@ -139,7 +139,16 @@ export const api = createApi({
     }),
     createArticle: builder.mutation<
       Article,
-      { headline: string; summary?: string; contentBlocks: ContentBlock[]; categoryId: string; tagNames?: string[] }
+      {
+        headline: string;
+        summary?: string;
+        contentBlocks: ContentBlock[];
+        categoryId: string;
+        tagNames?: string[];
+        dateline?: string;
+        isBreaking?: boolean;
+        publishAt?: string | null;
+      }
     >({
       query: (body) => ({ url: "/articles", method: "POST", body }),
       invalidatesTags: [{ type: "Article", id: "LIST" }],

@@ -37,6 +37,7 @@ frontend/src/
     permissions.ts                     # client-side RBAC mirror: hasPermission/hasAnyPermission/isScopedToArticle
     route-access.ts                     # which permissions each protected route section requires — used by both middleware.ts and (dashboard)/layout.tsx
     dashboard.ts                        # getDashboardPathForRole, safeNextPath (open-redirect guard)
+    scheduling.ts                        # isEmbargoed() — mirrors backend/utils/scheduling.js, used by the newsroom board's UI-only embargo badge
     store.ts, StoreProvider.tsx         # Redux store setup (RTK Query needs this even in the App Router)
   types/api.ts                          # shared TypeScript types matching the backend's Prisma schema
   middleware.ts                          # edge route protection for /admin, /newsroom, /profile — verifies the JWT's role claim (§4)
@@ -105,6 +106,15 @@ new you build here):
   Components use for the first ISR-cached paint of public pages — Server
   Components can't use client-side hooks, so this hits the same REST
   endpoints a different way, with Next's `revalidate` for cache control.
+  `getArticleBySlug` takes an explicit `forwardSession` param (default
+  `false`) — the newsroom edit page (`(dashboard)/newsroom/[slug]/edit`)
+  passes `true` to preview a draft/in-review article server-side, which
+  only works if the session cookie actually reaches the backend (plain
+  server-side `fetch` has no browser cookie jar). This is opt-in and
+  never inferred from `revalidate`, specifically so a *cacheable*
+  (`revalidate > 0`) public-page fetch can never accidentally attach one
+  visitor's session cookie to a response Next.js might serve to a
+  different visitor from cache.
 - `src/lib/StoreProvider.tsx` wraps the app in a client-boundary `Provider`,
   which RTK Query's cache needs even though most of the app is otherwise
   server-rendered.
@@ -126,7 +136,8 @@ new you build here):
 - **`/profile` page** (`app/(dashboard)/profile/page.tsx`) — the "dashboard" every role has, including plain `USER`/`SUBSCRIBER` readers who have nothing else under `(dashboard)`. Self-service profile edit and password change, both server-enforced as self-only (or `user:manage` for the profile edit) — see `../backend/README.md` §4 for a bugfix note on this
 - `(dashboard)/layout.tsx` — nav tabs (Newsroom / Admin / Wasifu) filtered per-role via the same `lib/route-access.ts` map the middleware uses, so a reader on `/profile` doesn't see dead links that just bounce them back
 - `CommentsSection` — recursive comment tree, RTK Query mutation for posting
-- Unified newsroom board — lists articles, shows status-appropriate workflow action buttons **filtered by the viewer's actual permission and, for `SECTION_EDITOR`, their assigned category scope** (mirrors `backend/controllers/articleController.js`'s `TRANSITION_PERMISSION`/`isScopedToArticle` exactly — previously every signed-in newsroom user saw every action button regardless of role and just got a 403 on click). Published/corrected articles get a "Toa Marekebisho" action that routes to the edit form instead of a bare status button, since a correction is always a content edit with a mandatory note, never a status flip alone — see the backend README's note on the matching `TRANSITIONS` fix. Cache auto-invalidates on every transition
+- Unified newsroom board — lists articles, shows status-appropriate workflow action buttons **filtered by the viewer's actual permission and, for `SECTION_EDITOR`, their assigned category scope** (mirrors `backend/controllers/articleController.js`'s `TRANSITION_PERMISSION`/`isScopedToArticle` exactly — previously every signed-in newsroom user saw every action button regardless of role and just got a 403 on click). Published/corrected articles get a "Toa Marekebisho" action that routes to the edit form instead of a bare status button, since a correction is always a content edit with a mandatory note, never a status flip alone — see the backend README's note on the matching `TRANSITIONS` fix. An `APPROVED` article that's still embargoed (`lib/scheduling.ts`'s `isEmbargoed`, mirrors the backend's) shows an "Imepangwa: &lt;date&gt;" badge instead of a clickable Chapisha button that would just 400. Cache auto-invalidates on every transition
+- `ArticleForm.tsx` has a "Ratiba ya kuchapisha (embargo)" `datetime-local` field for scheduling/embargoing a story — hidden once the article is already published, since the backend ignores it at that point. Fixed in passing while adding this: `dateline`/`isBreaking` were being silently dropped on article *creation* (never sent in the request body) — a pre-existing gap unrelated to scheduling, noticed and fixed alongside it
 - **Article authoring form** (`components/ArticleForm.tsx`) — one form for both create and edit, with a block editor (add/remove/reorder paragraph/subheading/quote/image/embed blocks), category/tag/dateline/breaking-news fields, and a required correction note when editing an already-published article
 - **Admin dashboard**: user list with pagination, inline role assignment (gated by `user:assign_role`, admin-level roles further gated to admin-level grantors — mirrors the backend's self-escalation guard), account creation with one-time password display, account deletion; category management (create/edit/delete, inline editing); **tag management** (create/rename/delete, shows per-tag article counts); media library (grid view of all uploaded images, delete gated by `media:manage`)
 - Shared dashboard layout (`app/(dashboard)/layout.tsx`) — nav tabs between Newsroom and Admin
@@ -138,7 +149,7 @@ new you build here):
 - **Accessibility**: global `focus-visible` ring on every interactive element (one CSS rule, not per-component styling), a skip-to-content link, every image audited for `alt` text, resting-state text contrast fixed (plain-text links on white backgrounds moved from `primary-500` to the darker `primary-600`)
 - **Mobile navigation** (`components/MobileNav.tsx`) — hamburger menu for small screens; the header previously hid the entire category nav below the `md` breakpoint with no alternative at all
 - **Logo/favicon** — wired into `Header`, `Footer`, and `layout.tsx` metadata icons. **Honest caveat**: the actual image files are the original project's default Create React App placeholder (the React atom icon), never replaced with real Kishamba Media branding — swap the files in `public/` when real artwork exists, no code changes needed
-- **Testing**: 41/41 unit/component tests verified passing (`lib/permissions.ts`, `lib/dashboard.ts`, `lib/route-access.ts`, `UserMenu.tsx`, `Button.tsx`); Playwright e2e specs written and structurally reviewed against the actual app but not executable in the sandbox that wrote them (browser binary download blocked there) — see `TESTING.md` for exactly what's verified vs. not
+- **Testing**: 44/44 unit/component tests verified passing (`lib/permissions.ts`, `lib/dashboard.ts`, `lib/route-access.ts`, `lib/scheduling.ts`, `UserMenu.tsx`, `Button.tsx`); Playwright e2e specs written and structurally reviewed against the actual app but not executable in the sandbox that wrote them (browser binary download blocked there) — see `TESTING.md` for exactly what's verified vs. not
 
 ### 🔶 Half-done
 - Registration POSTs directly instead of going through the RTK Query slice (intentional for now — it's a one-off action unlike login/logout, which are reused across auth-gated UI state)

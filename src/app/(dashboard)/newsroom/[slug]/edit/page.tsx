@@ -17,9 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // editing. Editing requires article:edit_own or article:edit_any on the
 // backend — this page doesn't gate on role itself yet (see
 // frontend/README.md §4 note on middleware.ts), a 403 from the backend on
-// submit is the current guardrail.
+// submit is the current guardrail. The backend now also gates *reading* an
+// unpublished article to the same permission (see articleController.js),
+// so `forwardSession: true` here is required, not optional — without it
+// this 404s for anything short of PUBLISHED/CORRECTED.
 export default async function EditArticlePage({ params }: Props) {
-  const article = await getArticleBySlug(params.slug, 0).catch(() => null);
+  const article = await getArticleBySlug(params.slug, 0, true).catch(() => null);
   if (!article) notFound();
 
   return (

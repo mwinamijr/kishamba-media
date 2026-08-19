@@ -27,6 +27,19 @@ function toEditableBlocks(blocks: ContentBlock[]): EditableBlock[] {
 
 const BLOCK_TYPES: ContentBlock["type"][] = ["paragraph", "subheading", "quote", "image", "embed"];
 
+// <input type="datetime-local"> needs "YYYY-MM-DDTHH:mm" in the *browser's*
+// local time, with no timezone suffix — different from the ISO string the
+// API sends/expects. These two are the only place that distinction matters.
+function toDatetimeLocalValue(iso: string): string {
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function fromDatetimeLocalValue(value: string): string {
+  return new Date(value).toISOString();
+}
+
 interface ArticleFormProps {
   mode: "create" | "edit";
   initial?: Article; // required for edit mode
@@ -48,6 +61,7 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
   const [isBreaking, setIsBreaking] = useState(initial?.isBreaking ?? false);
   const [categoryId, setCategoryId] = useState(initial?.category.id ?? "");
   const [tagsInput, setTagsInput] = useState(initial?.tags.map((t) => t.name).join(", ") ?? "");
+  const [publishAt, setPublishAt] = useState(initial?.publishAt ? toDatetimeLocalValue(initial.publishAt) : "");
   const [blocks, setBlocks] = useState<EditableBlock[]>(toEditableBlocks(initial?.contentBlocks ?? []));
   const [correctionNote, setCorrectionNote] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -108,6 +122,9 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
           contentBlocks,
           categoryId,
           tagNames,
+          dateline: dateline || undefined,
+          isBreaking,
+          publishAt: publishAt ? fromDatetimeLocalValue(publishAt) : undefined,
         }).unwrap();
         router.push(`/newsroom/${article.slug}/edit`);
       } else if (initial) {
@@ -119,7 +136,7 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
           categoryId,
           dateline: dateline || undefined,
           isBreaking,
-          ...(requiresCorrectionNote ? { correctionNote } : {}),
+          ...(requiresCorrectionNote ? { correctionNote } : { publishAt: publishAt ? fromDatetimeLocalValue(publishAt) : null }),
         }).unwrap();
         router.push("/newsroom");
       }
@@ -200,6 +217,24 @@ export default function ArticleForm({ mode, initial }: ArticleFormProps) {
           <input type="checkbox" checked={isBreaking} onChange={(e) => setIsBreaking(e.target.checked)} />
           Alama ya Breaking News
         </label>
+
+        {!requiresCorrectionNote && (
+          <label className="flex flex-col gap-1 sm:col-span-2">
+            <span className="text-sm font-medium text-secondary-500">
+              Ratiba ya kuchapisha (hiari — embargo)
+            </span>
+            <input
+              type="datetime-local"
+              value={publishAt}
+              onChange={(e) => setPublishAt(e.target.value)}
+              className="rounded border border-secondary-50 p-2 text-sm focus:border-primary-500 focus:outline-none"
+            />
+            <span className="text-xs text-secondary-500">
+              Ukiweka tarehe ya baadaye, habari haitachapishwa kabla ya wakati huo — hata ukibofya
+              &quot;Chapisha&quot; kabla ya hapo. Itachapishwa yenyewe wakati ukifika. Acha wazi kuchapisha mara moja.
+            </span>
+          </label>
+        )}
       </div>
 
       {/* Content block editor */}
