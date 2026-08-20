@@ -72,6 +72,14 @@ export const api = createApi({
       query: ({ id, role }) => ({ url: `/auth/users/${id}/role`, method: "PUT", body: { role } }),
       invalidatesTags: (_r, _e, { id }) => [{ type: "User", id }, { type: "User", id: "LIST" }],
     }),
+    // Dedicated admin-UI endpoint (previously Prisma Studio only, see
+    // backend/README.md §3.5) for setting which categories a SECTION_EDITOR
+    // has authority over. Full-replace: categoryIds is the user's entire
+    // scope after this call, not an incremental add/remove.
+    assignUserCategoryScope: builder.mutation<User, { id: string; categoryIds: string[] }>({
+      query: ({ id, categoryIds }) => ({ url: `/auth/users/${id}/categories`, method: "PUT", body: { categoryIds } }),
+      invalidatesTags: (_r, _e, { id }) => [{ type: "User", id }, { type: "User", id: "LIST" }],
+    }),
     deleteUser: builder.mutation<{ message: string }, string>({
       query: (id) => ({ url: `/auth/users/${id}`, method: "DELETE" }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
@@ -215,6 +223,7 @@ export const {
   useGetUsersQuery,
   useCreateUserByAdminMutation,
   useAssignUserRoleMutation,
+  useAssignUserCategoryScopeMutation,
   useDeleteUserMutation,
   useGetCategoriesQuery,
   useCreateCategoryMutation,
