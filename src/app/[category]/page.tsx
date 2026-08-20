@@ -35,6 +35,12 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div>
+      {/* SectionHeader below renders an h2, styled as this page's visible
+          title. Found during the accessibility heading-order audit: this
+          page had no h1 at all — screen readers had nothing to announce
+          as the page's main heading. sr-only so sighted users see no
+          visible duplicate of the SectionHeader text right below it. */}
+      <h1 className="sr-only">{category.name}</h1>
       <SectionHeader title={category.name} />
       {articles.length === 0 ? (
         <p className="text-secondary-500">Hakuna habari bado katika sehemu hii.</p>

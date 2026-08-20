@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Category } from "@/types/api";
@@ -17,6 +17,24 @@ export default function MobileNav({ categories }: { categories: Category[] }) {
   const { data: me } = useGetMeQuery();
   const [logout] = useLogoutMutation();
   const router = useRouter();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const close = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    // Same Escape-to-close-and-return-focus pattern as UserMenu.tsx's
+    // dropdown — a keyboard-only user opening this panel otherwise has no
+    // way to dismiss it without tabbing all the way through every link.
+    if (!open) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        close();
+        triggerRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open, close]);
 
   const handleLogout = async () => {
     setOpen(false);
@@ -28,6 +46,7 @@ export default function MobileNav({ categories }: { categories: Category[] }) {
   return (
     <div className="md:hidden">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}

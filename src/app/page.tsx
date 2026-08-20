@@ -23,6 +23,15 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col gap-10">
+      {/* The visible masthead in Header.tsx already carries the site's
+          branding, so a second big visible "Kishamba Media" heading here
+          would be redundant for sighted users — but screen readers still
+          need a real page-level h1 to announce and navigate by (found
+          during the accessibility heading-order audit: this page had no
+          h1 at all, with the carousel's h2 as the first heading in the
+          DOM). sr-only, mirroring the page's <title>. */}
+      <h1 className="sr-only">Kishamba Media — Habari za Hivi Karibuni</h1>
+
       {carouselArticles.length > 0 && <FeaturedCarousel articles={carouselArticles} />}
 
       <div className="flex justify-center">

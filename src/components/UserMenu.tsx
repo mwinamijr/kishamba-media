@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useGetMeQuery, useLogoutMutation } from "@/lib/api";
@@ -21,14 +21,32 @@ export default function UserMenu() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node)) close();
+    }
+    // Keyboard-only users need a way to dismiss the menu that doesn't
+    // depend on a mouse click landing outside it — Escape returning focus
+    // to the trigger button is the standard pattern (matches the native
+    // <select>/<details> behavior the rest of the app leans on elsewhere,
+    // e.g. CategoryScopeEditor's <details>).
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        close();
+        triggerRef.current?.focus();
+      }
     }
     document.addEventListener("mousedown", onClickOutside);
-    return () => document.removeEventListener("mousedown", onClickOutside);
-  }, []);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onClickOutside);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [close]);
 
   const handleLogout = async () => {
     setOpen(false);
@@ -61,6 +79,7 @@ export default function UserMenu() {
   return (
     <div ref={ref} className="relative hidden sm:block">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}

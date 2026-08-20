@@ -26,6 +26,9 @@ export default async function SearchPage({ searchParams }: Props) {
 
   return (
     <div>
+      {/* Same sr-only h1 pattern as [category]/page.tsx — see the comment
+          there. Found during the accessibility heading-order audit. */}
+      <h1 className="sr-only">Tafuta Habari</h1>
       <SectionHeader title="Tafuta Habari" />
 
       <div className="max-w-md">
